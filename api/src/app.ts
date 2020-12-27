@@ -1,9 +1,9 @@
 import * as express from "express";
 
 // Routes
-import { index } from "./routes/index";
+import { router } from "./routes/url.routes";
 // Create Express server
 export const app = express();
 
 // Express configuration
-app.use("/", index);
+app.use("/", router);
