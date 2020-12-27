@@ -1,3 +1,9 @@
 FROM node:12
 
-CMD ["npm" , "run", "server"]
+WORKDIR /usr/app
+
+COPY . .
+
+RUN npm install
+
+CMD ["npm" , "start"]
