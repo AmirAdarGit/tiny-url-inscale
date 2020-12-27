@@ -10,10 +10,10 @@ export const read = async (req: Request, res: Response): Promise<void> => {
 export const create = async (req: Request, res: Response): Promise<any> => {
     
     try {
-       return res.json(({ username: gerUserName(),
+       return res.json(({ username: "asdasdasdad",
             method: "post"})).send(200)
     } catch (error) {
-        console.log("here111",error);
+        console.log("asdasdasd",error);
        return res.sendStatus(500)
     }
 
