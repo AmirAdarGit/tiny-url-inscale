@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-
-
+const os = require('os');
 
 
 export const read = async (req: Request, res: Response): Promise<void> => {
