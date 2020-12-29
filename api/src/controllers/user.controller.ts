@@ -6,7 +6,7 @@ export const read = async (req: Request, res: Response): Promise<void> => {
     res.send({ username: os.userInfo().username, 
                method: "get"})
 };
-
+ 
 export const create = async (req: Request, res: Response): Promise<any> => {
     
     try {
