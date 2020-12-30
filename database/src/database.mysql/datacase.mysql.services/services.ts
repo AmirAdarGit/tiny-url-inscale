@@ -23,6 +23,18 @@ export const addNewUserToMysql = (userEmail: String, userName:String, userPasswo
   }
 
 
+  export const getUserInfo  = (email: String):void =>{
+    connection.query(`SELECT * FROM Tiny_URL.Users where Email = '${email}' `
+    ,(err:Error, rows: String) => {
+      if(err) throw err;
+    
+      console.log('Data received from Db:');
+      console.log('New user insert to the DB');
+      console.log(rows);
+    });
+  }
+
+
 
 
 
