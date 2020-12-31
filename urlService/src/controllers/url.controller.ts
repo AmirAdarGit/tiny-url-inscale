@@ -13,11 +13,14 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 };
 
 
-
 export const get = async (req:Request, res:Response): Promise<void> => {
-    res.send({user:"amiraaaaaa",
-    method:"get"});
+    const shotrUtl = req.query.ShortURL;
+    console.log("short url from the http request:", shotrUtl);
+    servsices.getUrlInfo(`${shotrUtl}`);
+    res.send("Getting the LongUrl...");
 };
+
+
 export const update = async (req:Request, res:Response): Promise<void> => {
     res.send({user:"amiraaaaaa",
     method:"put"});

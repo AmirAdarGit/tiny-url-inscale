@@ -1,5 +1,5 @@
 import * as express from "express"
-import { router } from './routes/url.route'
+import { router } from './routes/user.route'
 
 export const app = express();
 

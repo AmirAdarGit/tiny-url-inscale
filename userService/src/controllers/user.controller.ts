@@ -12,9 +12,10 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 };
 
 export const get = async (req:Request, res:Response): Promise<void> => {
-    // const userInfo = { servsices.getUserInfo() }
-    res.send({user:"amiraaaaaa",
-    method:"get"});
+    const userEmail = req.query.Email;
+    console.log(userEmail);
+    servsices.getUserInfo(`${userEmail}`);
+    res.send("Getting the user informations...");
 };
 export const update = async (req:Request, res:Response): Promise<void> => {
     res.send({user:"amiraaaaaa",
