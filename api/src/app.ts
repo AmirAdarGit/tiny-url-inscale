@@ -9,3 +9,5 @@ export const app = express();
 // Express configuration
 app.use("/api/user", userRouter);
 app.use("/api/url", urlRouter);
+
+

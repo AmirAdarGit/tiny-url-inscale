@@ -1,34 +1,23 @@
 import { Request, Response } from "express";
-const os = require('os');
 
 
-export const read = async (req: Request, res: Response): Promise<void> => {
-    res.send({ username: os.userInfo().username, 
-               method: "get"})
+export const post = async (req: Request, res: Response): Promise<void> => {
+    res.send({user:"amiraaaaaa",
+    method:"delete"});
 };
  
-export const create = async (req: Request, res: Response): Promise<any> => {
-    
-    try {
-       return res.json(({ username: "asdasdasdad",
-            method: "post"})).send(200)
-    } catch (error) {
-        console.log("asdasdasd",error);
-       return res.sendStatus(500)
-    }
+export const get = async (req: Request, res: Response): Promise<any> => {
+    res.send({user:"amiraaaaaa",
+    method:"delete"});
 
 };
 
-function gerUserName(){
-    throw new Error("here error");
-    return os.userInfo().username;
-}
-
 export const update = async (req: Request, res: Response): Promise<void> => {
-    res.send({ username: os.userInfo().username, 
-        method: "put"})};
+    res.send({user:"amiraaaaaa",
+    method:"delete"});
+};
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
-    res.send({ username: os.userInfo().username, 
-        method: "delete"})    
+    res.send({user:"amiraaaaaa",
+    method:"delete"});
 };

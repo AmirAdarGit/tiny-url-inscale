@@ -1,11 +1,10 @@
 import { app } from "./app";
 
-const server = app.listen(8080, onListening);
+const PORT = '8070';
+const server = app.listen(PORT, onListening);
 
 function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
-  console.log(`Listening on ${bind}`);
+  console.log(`Listening on ${PORT}`);
 }
 
 export default server;
