@@ -9,7 +9,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const shortUrl = req.body.ShortURL;
     const email = req.body.Email;
     res.send(req.body);
-    servsices.addNewUserToMysql(longUrl, shortUrl, email);
+    servsices.addNewUrlToMysql(longUrl, shortUrl, email);
 };
 
 

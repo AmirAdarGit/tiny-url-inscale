@@ -12,7 +12,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 };
 
 export const get = async (req:Request, res:Response): Promise<void> => {
-    const userInfo = { servsices.getUserInfo() }
+    // const userInfo = { servsices.getUserInfo() }
     res.send({user:"amiraaaaaa",
     method:"get"});
 };
