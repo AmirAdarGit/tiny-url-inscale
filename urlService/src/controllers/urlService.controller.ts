@@ -1,6 +1,5 @@
 import {Request, Response} from "express"   
 
-import * as connector from "../../../database/src/database.mysql/database.mysql.connection/connection"
 import * as servsices from "../../../database/src/database.mysql/datacase.mysql.services/services"
 
 

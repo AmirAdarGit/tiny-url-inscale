@@ -2,8 +2,9 @@ FROM node:12
 
 WORKDIR /usr/app
 
-COPY . .
+COPY ./package.json .
+COPY ./dist ./dist
 
 RUN npm install
 
-CMD ["npm" , "start"]
+CMD ["npm" , "run", "prod"]

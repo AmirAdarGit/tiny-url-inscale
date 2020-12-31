@@ -1,6 +1,6 @@
 import { app } from "./app";
 
-const PORT = '8070';
+const PORT = '8080';
 const server = app.listen(PORT, onListening);
 
 function onListening() {
