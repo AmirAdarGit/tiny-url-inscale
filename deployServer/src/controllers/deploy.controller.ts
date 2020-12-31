@@ -5,6 +5,7 @@ export const deploy = async (req:Request, res:Response): Promise<any> => {
     const cmd = `
         sh deploy-api.sh
         sh deploy-url-service.sh
+        sh deploy-user-service.sh
     `
 
     console.log("running deploy script");
