@@ -17,6 +17,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
+        pwd
         cd api
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.api .
@@ -33,6 +34,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
+        pwd
         cd url-service
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.url-service .
@@ -50,6 +52,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
+        pwd
         cd user-service
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.user-service .
