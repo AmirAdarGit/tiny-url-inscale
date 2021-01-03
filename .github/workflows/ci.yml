@@ -33,6 +33,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
+        ls
         cd utlService
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.url-service .
@@ -49,7 +50,8 @@ jobs:
 
     - name: Build, tag, and push image to Docker Hub
       id: build-image
-      run: |
+      run: 
+        ls|
         cd userService
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.user-service .
