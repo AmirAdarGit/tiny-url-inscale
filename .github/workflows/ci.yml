@@ -35,7 +35,7 @@ jobs:
       id: build-image
       run: |
         pwd
-        cd url-service
+        # cd url-service
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.url-service .
         docker push amiradar/tiny-url.url-service
@@ -53,7 +53,7 @@ jobs:
       id: build-image
       run: |
         pwd
-        cd user-service
+        # cd user-service
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.user-service .
         docker push amiradar/tiny-url.user-service
