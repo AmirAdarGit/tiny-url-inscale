@@ -13,6 +13,7 @@ docker build -t amiradar/tiny-url.url-service .
 docker container rm tiny-url.url-service -f
 docker run -d -p 3000:8080 --name=tiny-url.url-service amiradar/tiny-url.url-service
 
+
 cd ../userService
 tsc
 docker build -t amiradar/tiny-url.user-service .

@@ -13,15 +13,22 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 
 export const get = async (req:Request, res:Response): Promise<void> => {
     const userEmail = req.query.Email;
-    console.log(userEmail);
+    console.log(userEmail); // console the user email
     servsices.getUserInfo(`${userEmail}`);
-    res.send("Getting the user informations...");
+    res.send("Getting the " + userEmail + " user informations...");
 };
+
+
+export const remove = async (req:Request, res:Response): Promise<void> => {
+    const userEmail = req.query.Email;
+    console.log(userEmail); // console the undefined
+    servsices.removeUesrFromUsersTable(`${userEmail}`);
+    res.send("the user " + userEmail + " has been removed");
+};
+
+
+
 export const update = async (req:Request, res:Response): Promise<void> => {
     res.send({user:"amiraaaaaa",
     method:"put"});
-};
-export const remove = async (req:Request, res:Response): Promise<void> => {
-    res.send({user:"amiraaaaaa",
-    method:"delete"});
 };

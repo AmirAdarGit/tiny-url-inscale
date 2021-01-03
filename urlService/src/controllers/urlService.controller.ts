@@ -19,12 +19,16 @@ export const get = async (req:Request, res:Response): Promise<void> => {
     res.send("Getting the LongUrl...");
 };
 
+export const remove = async (req:Request, res:Response): Promise<void> => {
+    const shotrUtl = req.query.ShortURL;
+    console.log(shotrUtl); 
+    servsices.removeShortUrlFromTable(`${shotrUtl}`);
+    res.send("the user " + shotrUtl + " has been removed");
+};
+
 
 export const update = async (req:Request, res:Response): Promise<void> => {
     res.send({user:"amiraaaaaa",
     method:"put"});
 };
-export const remove = async (req:Request, res:Response): Promise<void> => {
-    res.send({user:"amiraaaaaa",
-    method:"delete"});
-};
+
