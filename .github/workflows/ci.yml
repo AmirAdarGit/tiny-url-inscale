@@ -34,11 +34,11 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
-        cd api
         pwd
-        ls -ld .
-        ls -l
-        ls -ld /repo
+        cd url-service
+        docker login --username=amiradar --password=amiradar123
+        docker build -t amiradar/tiny-url.url-service .
+        docker push amiradar/tiny-url.url-service
 
 
   build-user-service:
