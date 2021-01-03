@@ -33,7 +33,7 @@ jobs:
 
     - name: Build, tag, and push image to Docker Hub
       id: build-image
-      run: 
+      run: |
         pwd
         cd url-service
         docker login --username=amiradar --password=amiradar123
@@ -51,7 +51,7 @@ jobs:
 
     - name: Build, tag, and push image to Docker Hub
       id: build-image
-      run:
+      run: |
         pwd 
         cd user-service
         docker login --username=amiradar --password=amiradar123
