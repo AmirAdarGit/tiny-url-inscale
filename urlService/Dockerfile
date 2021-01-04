@@ -2,8 +2,8 @@ FROM node:12
 
 WORKDIR /usr/app
 
-COPY ./dist .
-COPY ./package.json .
+COPY ./dist ./dist
+COPY ./package.json ./package.json
 
 
 RUN npm install
