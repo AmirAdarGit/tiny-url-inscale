@@ -38,16 +38,19 @@ export const addNewUserToMysql = (userEmail: String, userName:String, userPasswo
     });
   }
 
-  export const getUrlInfo  = (shortUrl: String):void =>{
+  export const getUrlInfo  = (shortUrl: String):String =>{
     console.log(shortUrl);
-    connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,
+    const ans = connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,
     (err:Error, rows: String) => {
       if(err) throw err;
       
       console.log('Data received from Db:');
       console.log('Getting the LongUrl from ShortUrl');
       console.log(rows);
+      return rows;
     });
+    
+    return ans;
   }
 
 

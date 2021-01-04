@@ -7,7 +7,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const longUrl = req.body.LongURL;
     const shortUrl = req.body.ShortURL;
     const email = req.body.Email;
-    res.send(req.body);
+    res.send("Success \n" + req.body);
     servsices.addNewUrlToMysql(longUrl, shortUrl, email);
 };
 
@@ -15,8 +15,8 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 export const get = async (req:Request, res:Response): Promise<void> => {
     const shotrUtl = req.query.ShortURL;
     console.log("short url from the http request:", shotrUtl);
-    servsices.getUrlInfo(`${shotrUtl}`);
-    res.send("Getting the LongUrl...");
+    const ans = servsices.getUrlInfo(`${shotrUtl}`);
+    res.send("Getting the LongUrl... \n" +  ans);
 };
 
 export const remove = async (req:Request, res:Response): Promise<void> => {
