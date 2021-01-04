@@ -2,9 +2,9 @@ FROM node:12
 
 WORKDIR /usr/app
 
-RUN ls -a
-COPY ./dist ./dist
-COPY package.json ./package.json
+
+COPY ./dist /dist
+COPY package.json /package.json
 
 
 RUN npm install
