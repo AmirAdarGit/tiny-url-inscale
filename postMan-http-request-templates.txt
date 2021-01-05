@@ -1,7 +1,7 @@
 User-Service:
 
  - POST:
-URL : localhost:3001/api/user
+URL : localhost:4000/api/user
 BODY:
 {
     "userEmail": "yyy@gmail.com",
@@ -10,11 +10,11 @@ BODY:
 }
 
  - GET: 
-URL : localhost:3001/api/user?Email=yyy@gmail.com
+URL : localhost:4000/api/user?Email=yyy@gmail.com
 BODY:{empty}
 
  - DELETE:
-URL : localhost:3001/api/user?Email=yyy@gmail.com
+URL : localhost:4000/api/user?Email=yyy@gmail.com
 BODY:{empty}
 
 
