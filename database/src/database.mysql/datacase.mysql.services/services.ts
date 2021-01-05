@@ -38,27 +38,27 @@ export const addNewUserToMysql = (userEmail: String, userName:String, userPasswo
     });
   }
 
-  export const getUrlInfo  = (shortUrl: String):String =>{
-    console.log(shortUrl);
-    const ans = connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,
+  export const getUrlInfo  = async (shortUrl: String):Promise<Boolean> =>{
+    var flag = true;
+    await connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,
     (err:Error, rows: String) => {
       if(err) throw err;
-      
-      console.log('Data received from Db:');
-      console.log('Getting the LongUrl from ShortUrl');
-      console.log(rows);
-      return rows;
+      console.log('DB answer: ');
+
+      if(rows.length == 0){
+        console.log("error doesnt find the url in the Database!")
+        flag = false;
+    }
+      else
+      { 
+        console.log(rows);
+        flag = true;
+      }
     });
-    
-    return ans;
+    console.log("flag value: "+ flag); //print this line first 
+    return flag;
   }
 
-
-
-
-
-
-  
   export const removeShortUrlFromTable  = (shortUrl: String):void =>{
     connection.query(`DELETE FROM Tiny_URL.Links WHERE ShortURL = '${shortUrl}'`
     ,(err:Error, rows: String) => {
