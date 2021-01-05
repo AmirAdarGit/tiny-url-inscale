@@ -15,12 +15,31 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build, tag, and push image to Docker Hub
-      id: build-image
+      id: build-image 
       run: |
         cd api
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.api .
         docker push amiradar/tiny-url.api
+
+  build-user-service:
+      name: build-user-service
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build, tag, and push image to Docker Hub
+        id: build-image
+        run: |
+          cd userService
+          npm install 
+          tsc
+          docker login --username=amiradar --password=amiradar123
+          docker build -t amiradar/tiny-url.user-service .
+          docker push amiradar/tiny-url.user-service
+
 
   build-url-service:
     name: build-url-service
@@ -41,23 +60,7 @@ jobs:
         docker push amiradar/tiny-url.url-service
 
 
-  build-user-service:
-    name: build-user-service
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Build, tag, and push image to Docker Hub
-      id: build-image
-      run: |
-        cd userService
-        npm install 
-        tsc
-        docker login --username=amiradar --password=amiradar123
-        docker build -t amiradar/tiny-url.user-service .
-        docker push amiradar/tiny-url.user-service
+  
 
 
   deploy:
