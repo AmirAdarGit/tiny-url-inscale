@@ -4,8 +4,8 @@ import { exec } from 'child_process';
 export const deploy = async (req:Request, res:Response): Promise<any> => {
     const cmd = `
         sh deploy-api.sh
-        sh deploy-url-service.sh
         sh deploy-user-service.sh
+        sh deploy-url-service.sh
     ` 
 
     console.log("running deploy script");
