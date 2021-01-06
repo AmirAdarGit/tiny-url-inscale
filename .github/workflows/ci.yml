@@ -18,6 +18,7 @@ jobs:
       id: build-image 
       run: |
         cd api
+        npm install 
         tsc
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.api .
