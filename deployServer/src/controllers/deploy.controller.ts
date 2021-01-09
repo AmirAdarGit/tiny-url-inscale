@@ -4,7 +4,7 @@ import { exec } from 'child_process';
 export const deploy = async (req:Request, res:Response): Promise<any> => {
     const cmd = `
         sudo sh deploy-api.sh
-        audo sh deploy-user-service.sh
+        sudo sh deploy-user-service.sh
         sudo sh deploy-url-service.sh
     ` 
 
