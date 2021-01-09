@@ -1,3 +1,5 @@
+sudo su
+
 docker login --username=amiradar --password=amiradar123
 
 docker pull amiradar/tiny-url.user-service
