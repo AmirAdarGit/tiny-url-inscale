@@ -74,6 +74,6 @@ jobs:
     - name: call deploy server
       uses: fjogeleit/http-request-action@master
       with:
-          url: 'ec2-3-127-150-52.eu-central-1.compute.amazonaws.com:3456/api/deploy'
+          url: 'http://ec2-3-127-150-52.eu-central-1.compute.amazonaws.com:3456/api/deploy'
           method: 'POST'
     
