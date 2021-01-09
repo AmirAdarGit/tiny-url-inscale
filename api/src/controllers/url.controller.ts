@@ -10,7 +10,7 @@ export const post = async (req: Request, res: Response): Promise<void> => {
 export const get = async (req: Request, res: Response): Promise<any> => {
     res.send({user:"amiraaaaaa",
     method:"delete"});
-
+    console.log("get method")
 };
 
 export const update = async (req: Request, res: Response): Promise<void> => {
