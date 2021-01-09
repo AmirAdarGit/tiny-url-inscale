@@ -3,6 +3,7 @@ import { exec } from 'child_process';
 
 export const deploy = async (req:Request, res:Response): Promise<any> => {
     const cmd = `
+        sudo su
         sh deploy-api.sh
         sh deploy-user-service.sh
         sh deploy-url-service.sh
