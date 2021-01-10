@@ -1,40 +1,50 @@
 import {Request, response, Response} from "express"   
+import { isCallChain } from "typescript";
 
 import * as servsices from "../../../database/src/database.mysql/datacase.mysql.services/services"
-import baseUrl from "../config/baseUrl";
-// import * as axios from 'axios';
-// const axios = require('axios').default;
+  
 
 export const post = async (req:Request, res:Response): Promise<void> => {   
     const longUrl = req.body.LongURL;
     const email = req.body.Email;
 
     //cheakin if the Long URL is already in the database.
-
-    servsices.addNewUrlToMysql(longUrl, email);
-
-    res.send("Success");
-
+    await servsices.cheackIfLongUrlExsist(longUrl).then(isExist => {
+        if(isExist){
+            res.send("Url is alredy exist");
+            console.log("Url is alredy exist")
+        }
+        else{
+            servsices.addNewUrlToMysql(longUrl, email);
+            res.send("Success")
+            console.log("add new user")
+        }
+    })
 };
-
 
 export const get = async (req:Request, res:Response): Promise<void> => {
-    console.log(req.params.id);
-    // const shotrUtl = req.params(ShortURL);
-    // console.log("The user looking for the original (long) url of ", shotrUtl);
-    // const ans = await servsices.getUrlInfo(`${shotrUtl}`);
-    // //ans = true if find the property in the DB
-    // //ans = false otherwise
-    // //TODO: ask Carmel why i cannot catch if there is not short url at the DB. 
-    // if(ans == false) 
-    // {
-    //     res.send("error, short URL doesnt found in the database!");
-    // }
-    // else
-    { 
-        res.send("Success");
-    }
+    const shortUrlId = req.params.id;     
+    await servsices.cheackIfShortUrlExsist(shortUrlId).then(isExist => {//first cheack if the shortURL is exsist in the DB
+        if(isExist){
+            const ans =  servsices.getUrlInfo(`${shortUrlId}`).then(ans => { //return the Long url from the BD.
+                res.send("Success\n " + ans);
+                console.log("Success");
+            })
+        }
+        else{
+            res.send("Short url does not exist");
+            console.log("Short url does not found in the DB");
+
+        }
+    })
 };
+
+
+
+
+
+
+
 
 export const remove = async (req:Request, res:Response): Promise<void> => {
     const shotrUtl = req.query.ShortURL;

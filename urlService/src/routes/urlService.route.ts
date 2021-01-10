@@ -8,6 +8,6 @@ var jsonParser = bodyParser.json() //for parsing the data from the http post
 
 
 router.post('/',jsonParser , urlController.post);
-router.get('/ShortURL/:id',jsonParser , urlController.get);
+router.get('/shortUrl/:id',jsonParser ,urlController.get); //use for get request:localhost:3000/api/url/ShortURL/[short url number]
 router.put('/', urlController.update);
 router.delete('/',jsonParser, urlController.remove);
