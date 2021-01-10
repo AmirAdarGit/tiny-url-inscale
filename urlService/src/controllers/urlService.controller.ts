@@ -1,5 +1,4 @@
-import {Request, response, Response} from "express"   
-import { isCallChain } from "typescript";
+import {Request, Response} from "express"   
 
 import * as servsices from "../../../database/src/database.mysql/datacase.mysql.services/services"
   
@@ -38,13 +37,6 @@ export const get = async (req:Request, res:Response): Promise<void> => {
         }
     })
 };
-
-
-
-
-
-
-
 
 export const remove = async (req:Request, res:Response): Promise<void> => {
     const shotrUtl = req.query.ShortURL;

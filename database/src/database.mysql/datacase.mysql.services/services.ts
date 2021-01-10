@@ -1,5 +1,43 @@
 import  {connection} from "../database.mysql.connection/connection"
 
+
+export const cheackIfLongUrlExsist = (url: String): Promise<boolean> => {
+  return new Promise((isExist) => {
+    connection.query(`SELECT * FROM Tiny_URL.Links where LongURL = '${url}'`
+    ,(err:Error, rows: String) => {
+      
+      if(JSON.stringify(rows) == "[]")
+      {
+        console.log("json" + JSON.stringify(rows));
+        return isExist(false);
+      }
+      else{
+        console.log("json" + JSON.stringify(rows));
+        return isExist(true);
+      }
+    })
+  });
+}
+
+export const cheackIfShortUrlExsist = (id: String): Promise<boolean> => {
+  return new Promise((isExist) => {
+    connection.query(`SELECT * FROM Tiny_URL.Links where ShortURL = '${id}'`
+    ,(err:Error, rows: String) => {
+      
+      if(JSON.stringify(rows) == "[]")
+      {
+        return isExist(false);
+      }
+      else{
+        return isExist(true);
+      }
+    })
+  });
+}
+
+
+
+
 export const addNewUrlToMysql = (url: String, userEmail:String):void =>{
     connection.query(`INSERT INTO Tiny_URL.Links (LongURL, Email)
     VALUES ('${url}', '${userEmail}');`
@@ -25,9 +63,6 @@ export const addNewUserToMysql = (userEmail: String, userName:String, userPasswo
 
 
 
-
-
-
   export const getUserInfo  = (email: string):void =>{
     connection.query(`SELECT * FROM Tiny_URL.Users where Email = '${email}' `
     ,(err:Error, rows: String) => {
@@ -39,26 +74,15 @@ export const addNewUserToMysql = (userEmail: String, userName:String, userPasswo
     });
   }
 
-  export const getUrlInfo  = async (shortUrl: String):Promise<Boolean> =>{
-    var flag = true;
-    await connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,
+  export const getUrlInfo  = async (shortUrl: String):Promise<String> =>{
+    return new Promise((exist) => {
+      connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,
     (err:Error, rows: String) => {
-      if(err) return new Error;;
-      console.log('DB answer: ');
-
-      if(rows.length == 0){
-        console.log("error doesnt find the url in the Database!")
-        flag = false;
-    }
-      else
-      { 
-        console.log(rows);
-        flag = true;
-      }
-    });
-    console.log("flag value: "+ flag); //print this line first 
-    return flag;
-  }
+      if(err) return new Error;
+      return exist(JSON.stringify(rows));
+    })
+  });
+}
 
   export const removeShortUrlFromTable  = (shortUrl: String):void =>{
     connection.query(`DELETE FROM Tiny_URL.Links WHERE ShortURL = '${shortUrl}'`
