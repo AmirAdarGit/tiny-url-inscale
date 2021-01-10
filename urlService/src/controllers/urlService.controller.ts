@@ -16,7 +16,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
         else{
             servsices.addNewUrlToMysql(longUrl, email);
             res.send("Success")
-            console.log("add new user")
+            console.log("add new Url")
         }
     })
 };

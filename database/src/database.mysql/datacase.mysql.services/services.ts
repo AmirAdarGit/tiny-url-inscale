@@ -8,11 +8,9 @@ export const cheackIfLongUrlExsist = (url: String): Promise<boolean> => {
       
       if(JSON.stringify(rows) == "[]")
       {
-        console.log("json" + JSON.stringify(rows));
         return isExist(false);
       }
       else{
-        console.log("json" + JSON.stringify(rows));
         return isExist(true);
       }
     })
