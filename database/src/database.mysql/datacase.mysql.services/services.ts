@@ -35,18 +35,17 @@ export const cheackIfShortUrlExsist = (id: String): Promise<boolean> => {
 
 
 
-
-export const addNewUrlToMysql = (url: String, userEmail:String):void =>{
-    connection.query(`INSERT INTO Tiny_URL.Links (LongURL, Email)
-    VALUES ('${url}', '${userEmail}');`
+export const addNewUrlToMysql = async (url: String, userEmail:String):Promise<String> =>{
+      return new Promise ((urlNumber) => {
+        connection.query(`INSERT INTO Tiny_URL.Links (LongURL, Email) VALUES ('${url}', '${userEmail}');`
     ,(err:Error, rows: String) => {
       if(err) return new Error;
-    
-      console.log('Data received from Db:');
       console.log('New short url insert to the DB')
-      console.log(rows);
+      console.log(JSON.stringify(rows));
     });
-  }
+      return urlNumber("success!");
+    })
+}
 
 export const addNewUserToMysql = (userEmail: String, userName:String, userPasswor:String):void =>{
     connection.query(`INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPasswor}')`
@@ -81,6 +80,17 @@ export const addNewUserToMysql = (userEmail: String, userName:String, userPasswo
     })
   });
 }
+
+export const getShortUrlNumber  = async (url: String):Promise<String> =>{
+  return new Promise((exist) => {
+    connection.query(`SELECT ShortURL FROM Tiny_URL.Links where LongURL = '${url}' `,
+  (err:Error, rows: String) => {
+    if(err) return new Error;
+    return exist(rows);
+  })
+});
+}
+
 
   export const removeShortUrlFromTable  = (shortUrl: String):void =>{
     connection.query(`DELETE FROM Tiny_URL.Links WHERE ShortURL = '${shortUrl}'`
