@@ -6,17 +6,24 @@ import * as servsices from "../../../database/src/database.mysql/datacase.mysql.
 export const post = async (req:Request, res:Response): Promise<void> => {   
     const longUrl = req.body.LongURL;
     const email = req.body.Email;
-
     //cheakin if the Long URL is already in the database.
     await servsices.cheackIfLongUrlExsist(longUrl).then(isExist => {
         if(isExist){
-            res.send("Url is alredy exist");
-            console.log("Url is alredy exist")
+            servsices.getShortUrlNumber(longUrl).then(shortNum => {
+                console.log("Short url is already generate, num: " + JSON.stringify(shortNum));
+                res.json(shortNum);
+            })
         }
         else{
-            servsices.addNewUrlToMysql(longUrl, email);
-            res.send("Success")
-            console.log("add new Url")
+            servsices.addNewUrlToMysql(longUrl, email).then(message => {
+            console.log("add new Url" + message);
+            });
+            servsices.getShortUrlNumber(longUrl).then(shortNum => {
+                console.log("hereeeee");
+                console.log("the num" + JSON.stringify(shortNum));
+                res.json(shortNum);
+            })
+            
         }
     })
 };
