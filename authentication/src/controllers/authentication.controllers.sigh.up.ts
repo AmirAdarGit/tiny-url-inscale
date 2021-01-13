@@ -15,7 +15,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
         }
         console.log(newUser);
         
-        await axios.post('localhost:4000/api/user', newUser).then((ans) => {
+        await axios.post('http://localhost:8090/api/user', newUser).then((ans) => {
             console.log(ans.data);
             res.status(201).send("Success");
         })

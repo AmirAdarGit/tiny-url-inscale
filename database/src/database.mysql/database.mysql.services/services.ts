@@ -73,6 +73,27 @@ export const addNewUserToMysql = (userEmail: String, userName: String, userPassw
   })
 }
 
+
+export const getAllUserUrls  = (email: any):Promise<String> =>{
+  console.log(email);
+  const { name } = email;  
+  return new Promise ((allUrl) => {
+    connection.query(`SELECT ShortURL, LongURL from Tiny_URL.Links WHERE Email = '${name}'`
+  ,(err:Error, rows: String) => {
+    if(err) return new Error;
+  
+    console.log('Data received from Db:');
+    console.log('Getting the user info');
+    for(var i = 0; i<rows.length; i++){
+      console.log(rows[i]);
+    }
+    return allUrl(JSON.stringify(rows));
+  });
+  
+})
+}
+
+
   export const getUrlInfo  = async (shortUrl: String):Promise<String> =>{
     return new Promise((exist) => {
       connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,

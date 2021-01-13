@@ -8,7 +8,6 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const userFullName = req.body.userFullName;
     const userPassword = req.body.userPassword;
     res.send(req.body);
-    console.log("hereeeeee");
     servsices.addNewUserToMysql(userEmail, userFullName, userPassword);
 };
 
