@@ -47,7 +47,7 @@ export const addNewUrlToMysql = async (url: String, userEmail:String):Promise<St
     })
 }
 
-export const addNewUserToMysql = (userEmail: String, userName:String, userPasswor:String):void =>{
+export const addNewUserToMysql = (userEmail: String, userName: String, userPasswor: String):void =>{
     connection.query(`INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPasswor}')`
     ,(err:Error, rows: String) => {
       if(err) return new Error;;
@@ -58,18 +58,20 @@ export const addNewUserToMysql = (userEmail: String, userName:String, userPasswo
     });
   }
 
-
-
-  export const getUserInfo  = (email: string):void =>{
-    connection.query(`SELECT * FROM Tiny_URL.Users where Email = '${email}' `
+  export const getUserPassword  = (email: string):Promise<String> =>{
+    return new Promise ((password) => {
+      connection.query(`SELECT UserPassword FROM Tiny_URL.Users where Email = '${email}' `
     ,(err:Error, rows: String) => {
-      if(err) return new Error;;
+      if(err) return new Error;
     
       console.log('Data received from Db:');
       console.log('Getting the user info');
       console.log(rows);
+      return password(JSON.stringify(rows));
     });
-  }
+    
+  })
+}
 
   export const getUrlInfo  = async (shortUrl: String):Promise<String> =>{
     return new Promise((exist) => {

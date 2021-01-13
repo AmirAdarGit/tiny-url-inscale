@@ -3,4 +3,4 @@ import { router } from './routes/user.route'
 
 export const app = express();
 
-app.use('/',router)
+app.use('/api/user',router)

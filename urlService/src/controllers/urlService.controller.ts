@@ -1,6 +1,6 @@
 import {Request, Response} from "express"   
 
-import * as servsices from "../../../database/src/database.mysql/datacase.mysql.services/services"
+import * as servsices from "../../../database/src/database.mysql/database.mysql.services/services"
   
 
 export const post = async (req:Request, res:Response): Promise<void> => {   
@@ -19,7 +19,6 @@ export const post = async (req:Request, res:Response): Promise<void> => {
             console.log("add new Url" + message);
             });
             servsices.getShortUrlNumber(longUrl).then(shortNum => {
-                console.log("hereeeee");
                 console.log("the num" + JSON.stringify(shortNum));
                 res.json(shortNum);
             })
@@ -29,7 +28,8 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 };
 
 export const get = async (req:Request, res:Response): Promise<void> => {
-    const shortUrlId = req.params.id;     
+    const shortUrlId = req.params.shortUrl;     
+    console.log("heree" + shortUrlId);
     await servsices.cheackIfShortUrlExsist(shortUrlId).then(isExist => {//first cheack if the shortURL is exsist in the DB
         if(isExist){
             const ans =  servsices.getUrlInfo(`${shortUrlId}`).then(ans => { //return the Long url from the BD.

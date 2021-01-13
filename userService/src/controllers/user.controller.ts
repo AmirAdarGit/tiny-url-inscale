@@ -1,6 +1,6 @@
 import {Request, Response} from "express"   
 
-import * as servsices from "../../../database/src/database.mysql/datacase.mysql.services/services"
+import * as servsices from "../../../database/src/database.mysql/database.mysql.services/services"
 
 
 export const post = async (req:Request, res:Response): Promise<void> => {
@@ -8,14 +8,16 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const userFullName = req.body.userFullName;
     const userPassword = req.body.userPassword;
     res.send(req.body);
+    console.log("hereeeeee");
     servsices.addNewUserToMysql(userEmail, userFullName, userPassword);
 };
 
 export const get = async (req:Request, res:Response): Promise<void> => {
     const userEmail = req.query.Email;
-    console.log(userEmail); // console the user email
-    servsices.getUserInfo(`${userEmail}`);
-    res.send("Getting the " + userEmail + " user informations...");
+        await servsices.getUserPassword(`${userEmail}`).then((pass) => {
+        console.log(pass);
+        res.send(pass);
+    });
 };
 
 
