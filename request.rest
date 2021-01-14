@@ -2,9 +2,9 @@ POST http://localhost:8080/api/signUp
 Content-Type: application/json
 
 {
-    "userEmail": "yamit@gmail.com",
-    "userFullName": "yamit adar",
-    "userPassword": "yamit123"
+    "userEmail": "tom@gmail.com",
+    "userFullName": "tom ronen",
+    "userPassword": "tom123"
 }
 
 ###
@@ -13,35 +13,27 @@ POST http://localhost:8080/api/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "amir@gmail.com",
-    "userPassword": "amir123"
+    "userEmail": "yamit@gmail.com",
+    "userPassword": "yamit123"
 }
 
 ###
 
-POST http://localhost:8090/api/user
+
+POST http://localhost:8080/api/newLink
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidG9tQGdtYWlsLmNvbSIsImlhdCI6MTYxMDYyNjE3NH0.Wow53syo-myl-jIdUaI8Fk0AG6d1dlkCkchD05vx-5c
 
 {
-    "userEmail": "reut@gmail.com",
-    "userFullName": "reut adar",
-    "userPassword": "reut123"
-}
-
-###
-
-POST http://localhost:8070/api/url
-Content-Type: application/json
-
-{
-    "LongURL": "https://www.yamitWeb_3_.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
-    "Email": "yamit@gmail.com"
+    "LongURL": "https://www.pornhubTomsWeb.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
+    "Email": "tom@gmail.com"
 }
 
 ###
 
 GET http://localhost:8080/api/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYW1pckBnbWFpbC5jb20iLCJpYXQiOjE2MTA1NTU0MzV9.-1UTzKs2kgObaoDRbzpYAAdRaqKoa1Vl62BOlzBk1qY
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE
 
 ###
+
+

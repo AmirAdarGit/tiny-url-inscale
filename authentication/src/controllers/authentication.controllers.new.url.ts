@@ -3,23 +3,30 @@ import * as express from "express"
 import * as jwt from "jsonwebtoken"
 import axios from 'axios'
 
+
 interface IUserRequest extends express.Request {
-    auth: any
+    Email: any
 }
   
-export const get = async (req:IUserRequest, res:Response): Promise<void> => {
-    const authorization = req.auth;
-    
-    await axios.get('http://localhost:8070/api/url/list', { params:  authorization  }).then((ans) => {
+export const post = async (req:IUserRequest, res:Response): Promise<void> => {
+   console.log("here!!!");
+   const newUser = {
+    Email : req.body.Email,
+    longUrlLink : req.body.LongURL,
+}
+console.log(newUser);
+
+await axios.post('http://localhost:8070/api/url', newUser).then((ans) => {
     console.log(ans.data);
-    res.status(201).send("Success\n" + ans.data);
+    res.status(201).send("Success");
 }).catch((err) => {
     console.log(err);
     res.status(500).send("Internal Server Error");
 })
-    
 
 };
+
+
 
 export const authenticateToken = (req:IUserRequest, res:Response, next:any):void => {
     const authHeader = req.headers['authorization'].split(" ");
@@ -32,7 +39,7 @@ export const authenticateToken = (req:IUserRequest, res:Response, next:any):void
             if(err){
                 return res.status(403).send("Forbidden");
             }else{
-                req.auth = userEmail;// adding to the request the user email for future actions from the DB
+                req.Email = userEmail;// adding to the request the user email for future actions from the DB
                 next();
                 }
             })

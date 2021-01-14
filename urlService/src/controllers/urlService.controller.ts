@@ -4,8 +4,11 @@ import * as servsices from "../../../database/src/database.mysql/database.mysql.
   
 
 export const post = async (req:Request, res:Response): Promise<void> => {   
-    const longUrl = req.body.LongURL;
+    console.log(req.body);
+    const longUrl = req.body.longUrlLink;
     const email = req.body.Email;
+    console.log(longUrl);
+    console.log(email);
     //cheakin if the Long URL is already in the database.
     await servsices.cheackIfLongUrlExsist(longUrl).then(isExist => {
         if(isExist){
@@ -15,6 +18,8 @@ export const post = async (req:Request, res:Response): Promise<void> => {
             })
         }
         else{
+            console.log(longUrl);
+            console.log(email);
             servsices.addNewUrlToMysql(longUrl, email).then(message => {
             console.log("add new Url" + message);
             });

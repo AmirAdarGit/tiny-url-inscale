@@ -36,6 +36,8 @@ export const cheackIfShortUrlExsist = (id: String): Promise<boolean> => {
 
 
 export const addNewUrlToMysql = async (url: String, userEmail:String):Promise<String> =>{
+      console.log(url);
+      console.log(userEmail);
       return new Promise ((urlNumber) => {
         connection.query(`INSERT INTO Tiny_URL.Links (LongURL, Email) VALUES ('${url}', '${userEmail}');`
     ,(err:Error, rows: String) => {
@@ -75,10 +77,8 @@ export const addNewUserToMysql = (userEmail: String, userName: String, userPassw
 
 
 export const getAllUserUrls  = (email: any):Promise<String> =>{
-  console.log(email);
-  const { name } = email;  
   return new Promise ((allUrl) => {
-    connection.query(`SELECT ShortURL, LongURL from Tiny_URL.Links WHERE Email = '${name}'`
+    connection.query(`SELECT ShortURL, LongURL from Tiny_URL.Links WHERE Email = '${email}'`
   ,(err:Error, rows: String) => {
     if(err) return new Error;
   
