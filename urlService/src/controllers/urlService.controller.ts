@@ -3,12 +3,13 @@ import {Request, Response} from "express"
 import * as servsices from "../../../database/src/database.mysql/database.mysql.services/services"
   
 
-export const post = async (req:Request, res:Response): Promise<void> => {   
-    console.log(req.body);
+export const post = async (req:Request, res:Response): Promise<void> => {  
+    console.log("111111111111111111111111111111111111"); 
+    console.log(req);
     const longUrl = req.body.longUrlLink;
     const email = req.body.Email;
-    console.log(longUrl);
-    console.log(email);
+    // console.log(longUrl);
+    // console.log(email);
     //cheakin if the Long URL is already in the database.
     await servsices.cheackIfLongUrlExsist(longUrl).then(isExist => {
         if(isExist){
@@ -21,7 +22,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
             console.log(longUrl);
             console.log(email);
             servsices.addNewUrlToMysql(longUrl, email).then(message => {
-            console.log("add new Url" + message);
+            console.log("add new Url " + message);
             });
             servsices.getShortUrlNumber(longUrl).then(shortNum => {
                 console.log("the num" + JSON.stringify(shortNum));

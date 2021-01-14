@@ -5,16 +5,16 @@ import axios from 'axios'
 
 
 interface IUserRequest extends express.Request {
-    Email: any
+    auth: any
 }
   
 export const post = async (req:IUserRequest, res:Response): Promise<void> => {
-   console.log("here!!!");
    const newUser = {
     Email : req.body.Email,
     longUrlLink : req.body.LongURL,
 }
 console.log(newUser);
+console.log("after!!!");
 
 await axios.post('http://localhost:8070/api/url', newUser).then((ans) => {
     console.log(ans.data);
@@ -39,7 +39,7 @@ export const authenticateToken = (req:IUserRequest, res:Response, next:any):void
             if(err){
                 return res.status(403).send("Forbidden");
             }else{
-                req.Email = userEmail;// adding to the request the user email for future actions from the DB
+                req.auth = userEmail;// adding to the request the user email for future actions from the DB
                 next();
                 }
             })

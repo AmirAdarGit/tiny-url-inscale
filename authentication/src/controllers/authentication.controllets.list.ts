@@ -22,6 +22,7 @@ export const get = async (req:IUserRequest, res:Response): Promise<void> => {
 };
 
 export const authenticateToken = (req:IUserRequest, res:Response, next:any):void => {
+    console.log("here1");
     const authHeader = req.headers['authorization'].split(" ");
     const token = authHeader && authHeader[1]; //if the auth header is there... take the second argument.
     if(token == null) {
