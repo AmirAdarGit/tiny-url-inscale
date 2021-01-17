@@ -12,7 +12,7 @@ export const post = async (req: Request, res: Response): Promise<void> => {
     console.log(newUser);
 
 
-    const sighUpUserInfoEncriptedPass = await axios.post('http://localhost:8090/api/autentication/signUp', newUser);
+    const response = await axios.post('http://localhost:8090/api/autentication/signUp', newUser);
     const addingNewUserToDB = await axios.post('http://localhost:8070/api/user', sighUpUserInfoEncriptedPass.data)
     console.log("success");
     res.send("success to add user");
