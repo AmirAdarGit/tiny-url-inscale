@@ -1,6 +1,6 @@
 const express = require('express')
 import { app } from "./app"
-const PORT = 8080;
+const PORT = 8090;
 
 app.listen(PORT, onListening);
 

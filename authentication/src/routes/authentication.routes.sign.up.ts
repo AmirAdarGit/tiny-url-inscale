@@ -8,4 +8,4 @@ var jsonParser = bodyParser.json() //for parsing the data from the http post
 
 
 router.post('/',jsonParser , sighUp.post);
-router.get('/',jsonParser ,sighUp.get); 
+// router.get('/',jsonParser ,sighUp.get); 

@@ -10,10 +10,10 @@ export const app = express();
 
 app.use(express.json());
 
-app.use('/api/signUp', sighUpRouter);
-app.use('/api/logIn', logInRouter);
-app.use('/api/list', urlList);
-app.use('/api/newLink', newUrl);
+app.use('/api/autentication/signUp', sighUpRouter);
+app.use('/api/autentication/logIn', logInRouter);
+app.use('/api/authentication/list', urlList);
+app.use('/api/authentication/newLink', newUrl);
 
 
   

@@ -1,10 +1,12 @@
-POST http://localhost:8080/api/signUp
+
+//working!
+POST http://localhost:8080/api/sighUp
 Content-Type: application/json
 
 {
-    "userEmail": "tom@gmail.com",
-    "userFullName": "tom ronen",
-    "userPassword": "tom123"
+    "userEmail": "amirddddddnew@gmail.com",
+    "userFullName": "amir ronen",
+    "userPassword": "ssaa123"
 }
 
 ###

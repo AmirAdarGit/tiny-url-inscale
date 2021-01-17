@@ -49,14 +49,18 @@ export const addNewUrlToMysql = async (url: String, userEmail:String):Promise<St
     })
 }
 
-export const addNewUserToMysql = (userEmail: String, userName: String, userPasswor: String):void =>{
-    connection.query(`INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPasswor}')`
+export const addNewUserToMysql = (userEmail: String, userName: String, userPasswor: String):Promise<boolean> =>{
+    return new Promise ((dbAns) => {
+      connection.query(`INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPasswor}')`
     ,(err:Error, rows: String) => {
-      if(err) return new Error;;
+      if(err) return err;
     
       console.log('Data received from Db:');
       console.log('New user insert to the DB');
       console.log(rows);
+
+      return dbAns(true);
+      });
     });
   }
 

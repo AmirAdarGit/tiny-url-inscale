@@ -10,7 +10,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const userEmail = req.body.userEmail;
     const userPassword = req.body.userPassword;
     console.log(userEmail);
-    await axios.get(`http://localhost:8090/api/user?Email=${userEmail}`)
+    const encodedPass =   await axios.get(`http://localhost:8090/api/user?Email=${userEmail}`)
         .then( async (encodedPass) => { //encodedPass is an promise obj
             const userPasswordJson = encodedPass.data;
             const  { UserPassword : userPasswordEncoded }  =  userPasswordJson[0] ;

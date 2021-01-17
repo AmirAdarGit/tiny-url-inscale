@@ -4,11 +4,19 @@ import * as servsices from "../../../database/src/database.mysql/database.mysql.
 
 
 export const post = async (req:Request, res:Response): Promise<void> => {
+    console.log("here");
     const userEmail = req.body.userEmail;
     const userFullName = req.body.userFullName;
     const userPassword = req.body.userPassword;
+    console.log("hereeee");
+    const dbAns = servsices.addNewUserToMysql(userEmail, userFullName, userPassword);
+    if(dbAns){
+        console.log("ok");
+    }
+    else{
+        console.log("err");
+    }
     res.send(req.body);
-    servsices.addNewUserToMysql(userEmail, userFullName, userPassword);
 };
 
 export const get = async (req:Request, res:Response): Promise<void> => {

@@ -11,5 +11,5 @@ var jsonParser = bodyParser.json() //for parsing the data from the http post
 
 router.post('/', jsonParser, urlController.post);
 router.get('/', jsonParser, urlController.get);
-router.put('/', urlController.update);
+router.put('/', jsonParser, urlController.update);
 router.delete('/', jsonParser, urlController.remove);
