@@ -11,11 +11,14 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const userEmail = req.body.userEmail;
     const userPassword = req.body.userPassword;
 
-    //
+    //http user client will get url with the user email attached and send back the 
+    //encoded password from the database.
+
     const encodedPass =  await axios.get(`http://localhost:8070/api/user?Email=${userEmail}`);
     const userPasswordJson = encodedPass.data;
     const  { UserPassword : userPasswordEncoded }  =  userPasswordJson[0];//getting the first element from the encodedPass.data array.
     try{
+        //compearing the user password with the encripted password from the sigh up.
         if(await bcrypt.compare(userPassword, userPasswordEncoded)){ //if the user pass and the encoded passwort that in the DB are match => true
             const user = {name: userEmail};
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)

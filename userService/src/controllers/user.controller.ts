@@ -1,30 +1,28 @@
 import {Request, Response} from "express"   
 
-import * as servsices from "../../../database/src/database.mysql/database.mysql.services/services"
+import * as servsices from "../../../sheardModules/database/src/database.mysql/database.mysql.services/services"
 
 
 export const post = async (req:Request, res:Response): Promise<void> => {
-    console.log("here");
-    const userEmail = req.body.userEmail;
-    const userFullName = req.body.userFullName;
-    const userPassword = req.body.userPassword;
-    console.log("hereeee");
+    const userEmail: String = req.body.credentials.Email;
+    const userPassword: String = req.body.credentials.Password;
+    const userFullName: String = req.body.userMetadata.Name;
+
     const dbAns = servsices.addNewUserToMysql(userEmail, userFullName, userPassword);
     if(dbAns){
         console.log("ok");
+        res.status(201);
     }
     else{
-        console.log("err");
+        console.log("user is already axist");
+        res.status(400);
     }
-    res.send(req.body);
 };
 
 export const get = async (req:Request, res:Response): Promise<void> => {
     const userEmail = req.query.Email;
-        await servsices.getUserPassword(`${userEmail}`).then((pass) => {
-        console.log(pass);
-        res.send(pass);
-    });
+    const encriptedPass = await servsices.getUserPassword(`${userEmail}`); 
+        res.send(encriptedPass);
 };
 
 

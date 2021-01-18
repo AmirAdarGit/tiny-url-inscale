@@ -1,16 +1,23 @@
 import { Request, Response } from "express";
 import axios from 'axios'
+import { AuthServiceHttpClient } from "../../../sheardModules/authServiseHttpClient/httpClient/client"
+import { Credentials, Token, UserMetadata} from "../../../sheardModules/interfaces/sheard.interfaces/Isheard"
 
 
 export const post = async (req: Request, res: Response): Promise<void> => {
 
-    const newUser = {
-        userEmail : req.body.userEmail,
-        userFullName : req.body.userFullName,
-        userPassword : req.body.userPassword
-        }
-    console.log(newUser);
+    const userMetadata: UserMetadata = {
+        Name: req.body.userFullName,
+        Newsletter: true
+    }
+    const credentials: Credentials = {
+        Email: req.body.Email,
+        Password: req.body.userPassword
+    }
+    const authHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient();
 
+    const sighUpRespomse = authHttpClient.SignUp(credentials, userMetadata);
+    res.status(201);
 
     const response = await axios.post('http://localhost:8090/api/autentication/signUp', newUser);
     const addingNewUserToDB = await axios.post('http://localhost:8070/api/user', sighUpUserInfoEncriptedPass.data)

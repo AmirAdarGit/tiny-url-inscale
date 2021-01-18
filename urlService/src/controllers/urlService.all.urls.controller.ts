@@ -1,7 +1,7 @@
 import {Request, Response} from "express"   
 import * as express from "express"
 
-import * as servsices from "../../../database/src/database.mysql/database.mysql.services/services"
+import * as servsices from "../../../sheardModules/database/src/database.mysql/database.mysql.services/services"
 import { couldStartTrivia } from "typescript";
   
 
