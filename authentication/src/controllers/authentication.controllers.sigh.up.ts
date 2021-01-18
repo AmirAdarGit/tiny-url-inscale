@@ -4,7 +4,6 @@ import axios from 'axios'
 import { runInNewContext } from "vm";
 
 export const post = async (req:Request, res:Response): Promise<void> => {   
-    // try {
         const userPassword = req.body.userPassword;
         const salt = await bcrypt.genSalt();
         const hashPassword = await bcrypt.hash(userPassword, salt);

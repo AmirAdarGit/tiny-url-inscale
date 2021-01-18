@@ -16,6 +16,6 @@ app.use("/api/logIn", logInRouter);
 
 
 app.use("/api/user", userRouter);
-app.use("/api/url", urlRouter);
+app.use("/api/newLink", urlRouter);
 
 

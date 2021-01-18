@@ -10,13 +10,13 @@ Content-Type: application/json
 }
 
 ###
-
+//working
 POST http://localhost:8080/api/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "yamit@gmail.com",
-    "userPassword": "yamit123"
+    "userEmail": "amir@gmail.com",
+    "userPassword": "amir123"
 }
 
 ###
@@ -24,11 +24,11 @@ Content-Type: application/json
 
 POST http://localhost:8080/api/newLink
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYW1pckBnbWFpbC5jb20iLCJpYXQiOjE2MTA5MDA4NTF9.6tSBxSqA6xopo2El7ukIo58e9LWfT5deprEmBwKbe4k
 
 {
-    "LongURL": "https://www.yamitamazingggggwebbb____anotherone.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
-    "Email": "yamit@gmail.com"
+    "LongURL": "https://www.yamitamddazingggggwebbb____anotherone.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
+    "Email": "amir@gmail.com"
 }
 
 ###

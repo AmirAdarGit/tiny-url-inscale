@@ -4,12 +4,10 @@ import * as servsices from "../../../database/src/database.mysql/database.mysql.
   
 
 export const post = async (req:Request, res:Response): Promise<void> => {  
-    console.log("111111111111111111111111111111111111"); 
-    console.log(req);
-    const longUrl = req.body.longUrlLink;
-    const email = req.body.Email;
-    // console.log(longUrl);
-    // console.log(email);
+    console.log("hereeee");
+
+    const longUrl = req.body.newLink;
+    const email = req.body.email;
     //cheakin if the Long URL is already in the database.
     await servsices.cheackIfLongUrlExsist(longUrl).then(isExist => {
         if(isExist){
