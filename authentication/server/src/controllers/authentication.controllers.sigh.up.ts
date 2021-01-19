@@ -14,6 +14,8 @@ export const post = async (req:Request, res:Response): Promise<void> => {
         Name: req.body.userFullName,
         Newsletter: true
     }
+
+
     const credentials: Credentials = {
         Email: req.body.Email,
         Password: hashPassword
