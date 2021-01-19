@@ -1,4 +1,5 @@
-import { Credentials, UserMetadata, Token } from '../sheard.interfaces/Isheard';
+import { Credentials, UserMetadata } from '../../models/common';
+import { Token } from '../../models/authenticate';
 
 export interface IAuthServiceHttpClient {
     Login(credentials: Credentials): Promise<Token>
