@@ -5,7 +5,7 @@
     "main": "server.js",
     "scripts": {
         "prod": "node ./dist/server.js",
-        "start": "tsc && node ./dist/server.js",
+        "start": "tsc && node ./dist/api/src/server.js",
         "watch": "tsc && nodemon ./dist/server.js"
     },
     "author": "",

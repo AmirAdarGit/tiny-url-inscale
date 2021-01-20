@@ -1,5 +1,4 @@
-import  {connection} from "../database.mysql.connection/connection"
-
+import { connection } from '../database.mysql.config/connection'
 
 export const cheackIfLongUrlExsist = (url: String): Promise<boolean> => {
   return new Promise((isExist) => {
@@ -49,33 +48,30 @@ export const addNewUrlToMysql = async (url: String, userEmail:String):Promise<St
     })
 }
 
-export const addNewUserToMysql = (userEmail: String, userName: String, userPasswor: String):Promise<boolean> =>{
-    return new Promise ((dbAns) => {
-      connection.query(`INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPasswor}')`
-    ,(err:Error, rows: String) => {
-      if(err) return err;
-      console.log('Data received from Db:');
-      console.log('New user insert to the DB');
-      console.log(rows);
+export const addNewUserToMysql = async (postUserQuery: String): Promise<void> => {
 
-      return dbAns(true);
-      });
-    });
+  try {
+    const request = await connection.query(postUserQuery);
+
+  } catch(ex) {
+    console.log("err")
   }
 
-  export const getUserPassword  = (email: string):Promise<String> =>{
-    return new Promise ((password) => {
-      connection.query(`SELECT UserPassword FROM Tiny_URL.Users where Email = '${email}' `
-    ,(err:Error, rows: String) => {
-      if(err) return new Error;
-    
+}
+
+
+  export const getUserPassword  = (getUserQuery: string):Promise<String> =>{
+    return new Promise ((resolve, reject) => {
+      connection.query(getUserQuery ,(err:Error, rows: String) => {
+      if(err) {
+        return reject(err);
+      }
       console.log('Data received from Db:');
       console.log('Getting the user info');
       console.log(rows);
-      return password(JSON.stringify(rows));
+      return resolve(JSON.stringify(rows));
     });
-    
-  })
+  });
 }
 
 

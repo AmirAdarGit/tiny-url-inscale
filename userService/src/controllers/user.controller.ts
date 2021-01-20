@@ -1,23 +1,27 @@
 import {Request, Response} from "express"   
-
-import * as servsices from "../../../sheardModules/database/src/database.mysql/database.mysql.services/services"
+import { parsePostQueryToString, parseGetQueryToString } from "../databaseUserQuery/queries"
+import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
 
 
 export const post = async (req:Request, res:Response): Promise<void> => {
-    const userEmail: String = req.body.credentials.Email;
-    const userPassword: String = req.body.credentials.Password;
-    const userFullName: String = req.body.userMetadata.Name;
+    
+    const userEmail: String = req.body.Email;
+    const userPassword: String = req.body.Password;
+    const userFullName: String = req.body.Name;
 
-    const dbAns = servsices.addNewUserToMysql(userEmail, userFullName, userPassword);
-    if(dbAns){
-        console.log("ok");
-        res.status(201);
-    }
-    else{
-        console.log("user is already axist");
-        res.status(400);
-    }
+    const postQuery = parsePostQueryToString(userEmail, userFullName, userPassword);
+    try {
+        const response = await servsices.addNewUserToMysql(postQuery);
+        res.status(200).send();
+        return;        
+        
+    } catch (ex) {
+        res.status(500).send();
+    }    
 };
+
+
+
 
 export const get = async (req:Request, res:Response): Promise<void> => {
     const userEmail = req.query.Email;

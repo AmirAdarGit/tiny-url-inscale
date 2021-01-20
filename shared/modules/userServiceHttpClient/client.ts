@@ -1,7 +1,7 @@
 import { IUserServiceHttpClient } from "../../interfaces/user/IUserServiceHttpClient"
 import { Credentials, UserMetadata } from "../../models/common";
 import { User } from "../../models/user";
-import { HttpClient } from "../httpClient/httpClient";
+import { HttpClient } from "../httpClient/src/HttpClient";
 
 export class UserServiceHttpClient implements IUserServiceHttpClient {
 
