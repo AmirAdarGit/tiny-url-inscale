@@ -18,6 +18,7 @@ jobs:
       id: build-image 
       run: |
         sh install_dependencies.sh 
+        cd api
         tsc
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.api .
@@ -34,8 +35,8 @@ jobs:
       - name: Build, tag, and push image to Docker Hub
         id: build-image
         run: |
-          cd userService
           sh install_dependencies.sh 
+          cd userService
           tsc
           docker login --username=amiradar --password=amiradar123
           docker build -t amiradar/tiny-url.user-service .
@@ -53,16 +54,30 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
-        cd urlService
         sh install_dependencies.sh 
+        cd urlService
         tsc
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.url-service .
         docker push amiradar/tiny-url.url-service
 
+  build-authentication:
+    name: build-authentication
+    runs-on: ubuntu-latest
 
-  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
 
+    - name: Build, tag, and push image to Docker Hub
+      id: build-image
+      run: |
+        sh install_dependencies.sh 
+        cd authentication
+        tsc
+        docker login --username=amiradar --password=amiradar123
+        docker build -t amiradar/tiny-url.url-service .
+        docker push amiradar/tiny-url.url-service
 
   deploy:
     name: deploy
