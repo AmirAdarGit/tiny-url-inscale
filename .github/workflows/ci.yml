@@ -73,7 +73,7 @@ jobs:
       id: build-image
       run: |
         sudo ./install_dependencies.sh 
-        cd authentication
+        cd authentication/server
         tsc
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.url-service .
