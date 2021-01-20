@@ -20,8 +20,11 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
             ...credentials,
             ...userMetadata
         }
-        
-        return this.httpClient.Post<void>("http://localhost:8070/api/user", newUser)
-    }
+        try{
+            return this.httpClient.Post<void>("http://localhost:8070/api/user", newUser)
+        } catch(err){
+            console.log("err in create " + err);
+        }
+        }
 
 }

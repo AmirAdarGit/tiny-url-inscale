@@ -1,4 +1,4 @@
-import {Request, Response} from "express"   
+import {request, Request, Response} from "express"   
 import { parsePostQueryToString, parseGetQueryToString } from "../databaseUserQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
 
@@ -9,14 +9,15 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const userPassword: String = req.body.Password;
     const userFullName: String = req.body.Name;
 
-    const postQuery = parsePostQueryToString(userEmail, userFullName, userPassword);
+    const postQuery: string = parsePostQueryToString(userEmail, userFullName, userPassword);
     try {
-        const response = await servsices.addNewUserToMysql(postQuery);
-        res.status(200).send();
-        return;        
-        
+        await servsices.addNewUserToMysql(postQuery);
+        res.status(200).send();        
     } catch (ex) {
-        res.status(500).send();
+        if (ex.code === 'ER_DUP_ENTRY') {//exeptions from the query response
+            res.status(409).send();
+        }
+        else res.status(500).send(ex);
     }    
 };
 

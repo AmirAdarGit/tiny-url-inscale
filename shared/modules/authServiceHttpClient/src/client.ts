@@ -20,7 +20,11 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     }
 
     async Login(credentials: Credentials): Promise<Token> {
+        try{
         return this.httpClient.Get<Token>("http://localhost:8090/api/autentication/login", { ...credentials })
+        } catch(err){
+            console.log("error in Login " + err.response.status);
+        }
     }
 
 

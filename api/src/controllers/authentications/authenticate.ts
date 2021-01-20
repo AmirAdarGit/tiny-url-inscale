@@ -40,7 +40,13 @@ export const SignUp = async (req: Request, res: Response): Promise<void> => {
          const sighUpResponse = await authHttpClient.SignUp(credentials, userMetadata);
          res.status(200).send("user sign up...");
     } catch (ex) {
-        res.status(500).send(ex);
+        if(ex.response.status == 409){
+            res.status(409).send();
+        }
+        else{
+            res.status(500).send({ ex });
+    
+        }
     }
 
 }

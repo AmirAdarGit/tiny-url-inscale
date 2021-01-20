@@ -4,7 +4,7 @@ const PORT = 8070;
 export const server = app.listen(PORT, onListening);
 
 function onListening() {
-    console.log(`Listening on ${PORT}`);
+    console.log(`Listening on ${PORT} - UserService`);
 
   }
   

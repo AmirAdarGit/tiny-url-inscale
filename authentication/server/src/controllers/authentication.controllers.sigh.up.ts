@@ -24,9 +24,17 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 
     try {
         const response = await userHttpClient.Create(credentials, userMetadata);
-        res.status(200).send(response);
+        console.log("response from auth service")
+        res.status(200).send();
     } catch (ex) {
-        res.status(400).send();
+        console.log(ex.response.status);
+        if(ex.response.status == 409){
+            res.status(409).send();
+        }
+        else{
+        console.log("other errors..")
+        res.status(500).send();
+        }
     }
 };
 
