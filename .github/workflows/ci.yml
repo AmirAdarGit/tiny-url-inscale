@@ -17,8 +17,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image 
       run: |
-        cd api
-        npm install 
+        sh install_dependencies.sh 
         tsc
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.api .
@@ -36,7 +35,7 @@ jobs:
         id: build-image
         run: |
           cd userService
-          npm install 
+          sh install_dependencies.sh 
           tsc
           docker login --username=amiradar --password=amiradar123
           docker build -t amiradar/tiny-url.user-service .
@@ -55,7 +54,7 @@ jobs:
       id: build-image
       run: |
         cd urlService
-        npm install 
+        sh install_dependencies.sh 
         tsc
         docker login --username=amiradar --password=amiradar123
         docker build -t amiradar/tiny-url.url-service .
