@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import * as authenticate from "../controllers/authentications/authenticate";
+import * as authenticate from "../controllers/auth.controller";
 
 import * as bodyParser from 'body-parser'
 

@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+    api:
+        image: amiradar/tiny-url.api
+        ports:
+            - "3001:8080"
+    user-service:
+        image: "amiradar/tiny-url.user-service"
+    authentication:
+        image: "amiradar/tiny-url.authentication"

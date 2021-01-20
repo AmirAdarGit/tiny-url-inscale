@@ -3,7 +3,7 @@ import * as express from "express";
 // Routes
 import { router as urlRouter } from "./routes/url.routes";
 import { router as userRouter } from "./routes/user.routes";
-import { router as authentication } from "./routes/url.auth";
+import { router as authentication } from "./routes/auth.routes";
 
 
 // Create Express server

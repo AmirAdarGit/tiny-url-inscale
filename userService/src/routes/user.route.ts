@@ -9,7 +9,7 @@ var jsonParser = bodyParser.json() //for parsing the data from the http post
 
 // jsonParser.json() //for parsing the data from the http post
 
-router.post('/', jsonParser, urlController.post);
-router.get('/', jsonParser, urlController.get);
+router.post('/', jsonParser, urlController.Create);
+router.get('/', jsonParser, urlController.get); // TODO: CamelCasing
 router.put('/', jsonParser, urlController.update);
 router.delete('/', jsonParser, urlController.remove);

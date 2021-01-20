@@ -2,7 +2,8 @@ FROM node:12
 
 WORKDIR /usr/app
 
-COPY . .
+COPY dist dist
+COPY package.json package.json
 
 RUN npm install
 

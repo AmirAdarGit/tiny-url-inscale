@@ -3,7 +3,7 @@ import { parsePostQueryToString, parseGetQueryToString } from "../databaseUserQu
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
 
 
-export const post = async (req:Request, res:Response): Promise<void> => {
+export const Create = async (req:Request, res:Response): Promise<void> => {
     
     const userEmail: String = req.body.Email;
     const userPassword: String = req.body.Password;

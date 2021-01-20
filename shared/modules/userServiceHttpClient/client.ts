@@ -12,7 +12,7 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
     }
 
     async Get(email: string): Promise<User> {
-        return this.httpClient.Get<User>("http://localhost:8070/api/user", { email })
+        return this.httpClient.Get<User>("http://user-service:8080/api/user", { email })
     }
 
     async Create(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
@@ -20,11 +20,8 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
             ...credentials,
             ...userMetadata
         }
-        try{
-            return this.httpClient.Post<void>("http://localhost:8070/api/user", newUser)
-        } catch(err){
-            console.log("err in create " + err);
-        }
-        }
+        
+        return this.httpClient.Post<void>("http://user-service:8080/api/user", newUser)
+    }
 
 }

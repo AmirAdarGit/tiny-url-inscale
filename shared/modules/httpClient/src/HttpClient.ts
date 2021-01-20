@@ -13,7 +13,7 @@ export class HttpClient implements IHttpClient {
         return response.data
     }
     async Post<T>(url: string, payload: object): Promise<T> {
-        const response = await axios.post<T>(url, payload);
+        const response = await axios.post<T>(url, payload); //
         
         if (response.status != 200) {
             return new Promise((resolve, reject) => reject());

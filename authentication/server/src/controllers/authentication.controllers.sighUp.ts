@@ -2,15 +2,12 @@ import {Request, Response} from "express"
 import * as bcrypt from "bcrypt"
 import { Credentials , UserMetadata} from "../../../../shared/models/common"
 import { UserServiceHttpClient } from "../../../../shared/modules/userServiceHttpClient/client"
-import { runInNewContext } from "vm";
 
-export const post = async (req:Request, res:Response): Promise<void> => {   
-        
-    console.log(req.body);
+export const SignUp = async (req:Request, res:Response): Promise<void> => {   
     const userPassword: String = req.body.Password;
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(userPassword, salt);
-    const userHttpClient = new UserServiceHttpClient();
+    const userHttpClient = new UserServiceHttpClient(); // TODO: Initialize only once in the constructor
 
     const userMetadata: UserMetadata = {
         Name: req.body.Name,
@@ -21,19 +18,16 @@ export const post = async (req:Request, res:Response): Promise<void> => {
         Email: req.body.Email,
         Password: hashPassword
     }
-
+    
     try {
-        const response = await userHttpClient.Create(credentials, userMetadata);
-        console.log("response from auth service")
+        await userHttpClient.Create(credentials, userMetadata);
         res.status(200).send();
     } catch (ex) {
-        console.log(ex.response.status);
+        console.log(`Failed creating user, error: ${ex.response.status}`);
         if(ex.response.status == 409){
             res.status(409).send();
-        }
-        else{
-        console.log("other errors..")
-        res.status(500).send();
+        } else {
+            res.status(500).send();
         }
     }
 };
