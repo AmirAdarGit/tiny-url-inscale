@@ -12,7 +12,6 @@ export const app = express();
 // Express configuration
 
 app.use("/api/auth", authentication);
-
 app.use("/api/user", userRouter);
 app.use("/api/newLink", urlRouter);
 

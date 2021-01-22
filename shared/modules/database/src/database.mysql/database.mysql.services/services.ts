@@ -1,6 +1,8 @@
 import { ErrorRequestHandler } from 'express';
 import { MysqlError } from 'mysql';
 import { connection } from '../database.mysql.config/connection'
+import { User } from "../../../../../models/user/index"
+
 import * as util from "util"
 
 export const cheackIfLongUrlExsist = (url: String): Promise<boolean> => {
@@ -58,8 +60,8 @@ export const addNewUserToMysql = async (postUserQuery: string): Promise<void> =>
 
   }
 
-
-  export const getUserPassword  = (getUserQuery: string):Promise<String> =>{
+  
+  export const GetUserPassword  = (getUserQuery: string):Promise<string> =>{
     return new Promise ((resolve, reject) => {
       connection.query(getUserQuery ,(err:Error, rows: String) => {
       if(err) {

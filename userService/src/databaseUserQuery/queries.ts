@@ -1,9 +1,9 @@
 
 
-export const parsePostQueryToString = (userEmail: String, userName: String, userPasswor: String): string => {
+export const parsePostQueryToString = (userEmail: string, userName: string, userPasswor: string): string => {
     return `INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPasswor}')`
 }
 
-export const parseGetQueryToString = (userEmail: String): String => {
+export const parseGetQueryToString = (userEmail: string): string => {
 return `SELECT UserPassword FROM Tiny_URL.Users where Email = '${userEmail}'`
 }
