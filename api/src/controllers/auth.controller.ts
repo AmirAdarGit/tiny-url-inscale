@@ -3,14 +3,14 @@ import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpCl
 import { Credentials, UserMetadata} from "../../../shared/models/common"
 import { Token } from "../../../shared/models/authenticate/Token"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
-import { IAuthenticate } from "../interfaces/index"
+import { IHttpClient } from "../../../shared/interfaces/httpClient";
 
-export class Authenticate implements IAuthenticate {
+export class AuthController {
 
     authHttPClient: IAuthServiceHttpClient;
 
-    constractor(){
-        this.authHttPClient = new AuthServiceHttpClient()
+    constructor(httpClient: IAuthServiceHttpClient){
+        this.authHttPClient = httpClient;
     }
 
     async LogIn(req: Request, res: Response): Promise<void> {

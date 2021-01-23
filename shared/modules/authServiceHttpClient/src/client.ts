@@ -1,14 +1,14 @@
 import { IAuthServiceHttpClient } from "../../../interfaces/authenticate/IAuthServiceHttpClient"
 import { Credentials, UserMetadata } from '../../../models/common';
 import { Token } from '../../../models/authenticate';
-import { HttpClient } from "../../httpClient/src/HttpClient";
+import { IHttpClient } from "../../../interfaces/httpClient";
 
 export class AuthServiceHttpClient implements IAuthServiceHttpClient {
 
-    httpClient: HttpClient
+    httpClient: IHttpClient
 
-    constructor() {
-        this.httpClient = new HttpClient()
+    constructor(httpClient: IHttpClient) {
+        this.httpClient = httpClient
     }
 
     async SignUp(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
