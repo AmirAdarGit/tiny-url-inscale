@@ -12,10 +12,16 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     }
 
     async SignUp(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
+        console.log("Forwarding request to auth service")
+       
         const newUser = {
             ...credentials,
             ...userMetadata
         }
+
+        console.log("With new user: ", newUser)
+
+
         return this.httpClient.Post("http://authentication:8080/api/autentication/signUp", newUser)
     }
 

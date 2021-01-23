@@ -7,10 +7,10 @@ import { IHttpClient } from "../../../shared/interfaces/httpClient";
 
 export class AuthController {
 
-    authHttPClient: IAuthServiceHttpClient;
+    authHttpClient: IAuthServiceHttpClient;
 
     constructor(httpClient: IAuthServiceHttpClient){
-        this.authHttPClient = httpClient;
+        this.authHttpClient = httpClient;
     }
 
     async LogIn(req: Request, res: Response): Promise<void> {
@@ -21,7 +21,7 @@ export class AuthController {
         }
             
         try {
-            const logInResponse: Token = await this.authHttPClient.Login(credentials);
+            const logInResponse: Token = await this.authHttpClient.Login(credentials);
             console.log(`logIn successfully, resive token ${logInResponse}`);
         
             res.status(200).send(logInResponse);
@@ -35,6 +35,7 @@ export class AuthController {
     
     async SignUp(req: Request, res: Response): Promise<void> {
     
+        console.log("in signUp");
         const credentials: Credentials = {
             Email: req.body.userEmail,
             Password: req.body.userPassword
@@ -44,17 +45,17 @@ export class AuthController {
             Name: req.body.userFullName,
             Newsletter: true // TODO: take newsletter from body.
         }
+        
         try {
-             await this.authHttPClient.SignUp(credentials, userMetadata);
-             res.status(200).send();
+            console.log("Signing up using authServiceHttpClient module", userMetadata, credentials)
+            await this.authHttpClient.SignUp(credentials, userMetadata);
+            res.status(200).send();
         } catch (ex) {
             console.log(`Failed signing up, error: ${ex}`)
-            if(ex.response.status == 409){
+            if(ex.response.status == 409) {
                 res.status(409).send();
-            }
-            else{
+            } else {
                 res.status(500).send({ ex });
-            
             }
         }
     

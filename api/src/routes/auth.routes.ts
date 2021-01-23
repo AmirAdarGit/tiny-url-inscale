@@ -13,7 +13,6 @@ const httpClient = new HttpClient()
 const authServiceHttpClient = new AuthServiceHttpClient(httpClient);
 const authenticate: AuthController = new AuthController(authServiceHttpClient); 
 
+
 router.post("/login", jsonParser, authenticate.LogIn);
-router.post("/signup", jsonParser, authenticate.SignUp);
-
-
+router.post("/signup", jsonParser, (req, res) => authenticate.SignUp(req, res));
