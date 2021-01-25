@@ -1,6 +1,4 @@
 import { Router } from "express";
-import * as signUpController from "../controllers/user.controller"
-import * as logInController from "../controllers/user.controller"
 import { UserServiceHttpClient } from "../../../../shared/modules/userServiceHttpClient/client"
 import * as bodyParser from 'body-parser'
 import { HttpClient } from "../../../../shared/modules/httpClient/src/HttpClient";
