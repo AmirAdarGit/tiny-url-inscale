@@ -3,10 +3,9 @@ import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpCl
 import { Credentials, UserMetadata} from "../../../shared/models/common"
 import { Token } from "../../../shared/models/authenticate/Token"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
-import { IHttpClient } from "../../../shared/interfaces/httpClient";
 
 export class AuthController {
-
+    
     authHttpClient: IAuthServiceHttpClient;
 
     constructor(httpClient: IAuthServiceHttpClient){
@@ -16,10 +15,11 @@ export class AuthController {
     async LogIn(req: Request, res: Response): Promise<void> {
         
         const credentials: Credentials = {
-            Email: req.body.Email,
+            Email: req.body.userEmail,
             Password: req.body.userPassword
         }
-            
+    console.log("success to get the body credentials", credentials);
+    
         try {
             const logInResponse: Token = await this.authHttpClient.Login(credentials);
             console.log(`logIn successfully, resive token ${logInResponse}`);
@@ -35,7 +35,6 @@ export class AuthController {
     
     async SignUp(req: Request, res: Response): Promise<void> {
     
-        console.log("in signUp");
         const credentials: Credentials = {
             Email: req.body.userEmail,
             Password: req.body.userPassword
@@ -47,7 +46,6 @@ export class AuthController {
         }
         
         try {
-            console.log("Signing up using authServiceHttpClient module", userMetadata, credentials)
             await this.authHttpClient.SignUp(credentials, userMetadata);
             res.status(200).send();
         } catch (ex) {

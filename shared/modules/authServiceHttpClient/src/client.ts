@@ -12,22 +12,24 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     }
 
     async SignUp(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
-        console.log("Forwarding request to auth service")
+        console.log("Forwarding request to auth service");
        
         const newUser = {
             ...credentials,
             ...userMetadata
         }
 
-        console.log("With new user: ", newUser)
-
-
+        console.log("With new user: ", newUser);
         return this.httpClient.Post("http://authentication:8080/api/autentication/signUp", newUser)
     }
 
+
+
+    
     async Login(credentials: Credentials): Promise<Token> {
         try{
-        return this.httpClient.Get<Token>("http://authentication:8080/api/autentication/login", { ...credentials })
+        console.log("Try to send to auth the credentisls ", credentials);
+        return this.httpClient.Get<Token>("http://authentication:8080/api/autentication/logIn", { ...credentials })
         } catch(err){
             console.log("error in Login " + err.response.status);
         }

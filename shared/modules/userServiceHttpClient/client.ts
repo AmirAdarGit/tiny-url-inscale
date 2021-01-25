@@ -7,8 +7,8 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
 
     httpClient: HttpClient
 
-    constructor() {
-        this.httpClient = new HttpClient()
+    constructor(httpClient: HttpClient) {
+        this.httpClient = httpClient;
     }
 
     async Get(email: string): Promise<User> {

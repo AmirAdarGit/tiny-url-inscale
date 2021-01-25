@@ -1,4 +1,4 @@
-import {request, Request, Response} from "express"   
+import { Request, Response} from "express"   
 import { parsePostQueryToString, parseGetQueryToString } from "../databaseUserQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
 import { User } from "../../../shared/models/user/index"
@@ -9,9 +9,9 @@ export const Create = async (req:Request, res:Response): Promise<void> => {
     const userPassword: string = req.body.Password;
     const userFullName: string = req.body.Name;
 
-    const postQuery: string = parsePostQueryToString(userEmail, userFullName, userPassword);
+    const postQuery: string = parsePostQueryToString(userEmail, userFullName, userPassword); //
     try {
-        await servsices.addNewUserToMysql(postQuery);
+        await servsices.addNewUserToMysql(postQuery);//send the query to mysql db 
         res.status(200).send();        
     } catch (ex) {
         if (ex.code === 'ER_DUP_ENTRY') {//exeptions from the query response
@@ -22,16 +22,20 @@ export const Create = async (req:Request, res:Response): Promise<void> => {
 };
 
 
-export const Get = async (req:Request, res:Response): Promise<User> => {
-    const userEmail: string = req.params.Email;// param instend of query because get does not have body, but params.
+export const Get = async (req:Request, res:Response): Promise<void> => {
+
+    const userEmail: string = String(req.query.email);// param instend of query because get does not have body, but params.
     const getUserPassQuery: string = parseGetQueryToString(userEmail);
 
     try{
         const userPassword = await servsices.GetUserPassword(getUserPassQuery); 
+   
         const user: User = { // generate the response user info
             Email: userEmail,
             Password: userPassword
         }
+
+        // console.log("after getting user info from db, in user servise", user);
         res.status(200).send(user);
     } catch (ex){
         return new Promise((_, reject) => {

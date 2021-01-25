@@ -55,24 +55,32 @@ export const addNewUrlToMysql = async (url: String, userEmail:String):Promise<St
 
 export const addNewUserToMysql = async (postUserQuery: string): Promise<void> => {
   
+  // the util.promisify is change the return calback function, base node colback api, 
+  // to promise base api.
   const query = util.promisify(connection.query).bind(connection);
-    return await query(postUserQuery);
+  return await query(postUserQuery);
 
   }
 
-  
-  export const GetUserPassword  = (getUserQuery: string):Promise<string> =>{
-    return new Promise ((resolve, reject) => {
-      connection.query(getUserQuery ,(err:Error, rows: String) => {
-      if(err) {
-        return reject(err);
-      }
-      console.log('Data received from Db:');
-      console.log('Getting the user info');
-      console.log(rows);
-      return resolve(JSON.stringify(rows));
-    });
-  });
+  export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
+
+    const query = util.promisify(connection.query).bind(connection);
+    
+      const row = await query(getUserQuery);
+      var resultArray = row[0].UserPassword; 
+ 
+      return resultArray;
+  //   return new Promise ((resolve, reject) => {
+  //     connection.query(getUserQuery ,(err:Error, rows: String) => {
+  //     if(err) {
+  //       return reject(err);
+  //     }
+  //     console.log('Data received from Db:');
+  //     console.log('Getting the user info');
+  //     console.log(rows);
+  //     return resolve(JSON.stringify(rows));
+  //   });
+  // });
 }
 
 

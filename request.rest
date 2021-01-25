@@ -4,20 +4,24 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "sssssddddd1fffff@gmail.com",
+    "userEmail": "5rff@gmail.com",
     "userFullName": "carmel ronen",
     "userPassword": "ssaa123"
 }
 
 ###
 //working
-POST http://localhost:8080/api/logIn
+POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "amir@gmail.com",
-    "userPassword": "amir123"
+    "userEmail": "hhhffffff@gmail.com",
+    "userPassword": "ssaa123"
 }
+
+
+
+
 
 ###
 
