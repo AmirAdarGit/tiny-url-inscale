@@ -22,11 +22,16 @@ export class AuthController {
     
         try {
             const logInResponse: Token = await this.authHttpClient.Login(credentials);
+
             console.log(`logIn successfully, resive token ${logInResponse}`);
+            console.log(`logIn successfully, resive token ${logInResponse.Value}`);
         
             res.status(200).send(logInResponse);
         
         } catch (ex) {
+            if(ex.response.status == 405){
+                res.status(405).send("Error user Email, or user Password.");
+            }
             console.log(`Faild creating token, err ${ex}`);
             res.status(500).send();
         }

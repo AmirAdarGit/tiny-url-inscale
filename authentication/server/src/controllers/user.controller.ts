@@ -6,8 +6,8 @@ import { Credentials , UserMetadata} from "../../../../shared/models/common"
 import { UserServiceHttpClient } from "../../../../shared/modules/userServiceHttpClient/client"
 import { IUserServiceHttpClient } from "../../../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from "../../../../shared/models/user/index"
+import endpoint from "../../../../shared/modules/enviromentVairble/src/endpoint.config";
 dotenv.config() //use the jwt secet key 
-import endpoint from "../../../../shared/modules/enviromentVairble/endpoint.config";
 
 export class UserController{
 
@@ -52,8 +52,8 @@ export class UserController{
             Email: String(req.query.Email),
             Password: String(req.query.Password)
         }
-
         console.log(`user neme: ${credentials.Email}, user password: ${credentials.Password}`);
+        
         try {
             const user: User = await this.userHttpClient.Get(credentials.Email);
             console.log("in auth microservice with the user encripted pass:", user);
@@ -62,28 +62,27 @@ export class UserController{
             const { Email } = user; // extract the encoded password
 
             if(await bcrypt.compare(credentials.Password, Password)){
-                console.log("in auth mocroservice, user logIn pass and encriptes pass match!");
-                console.log("the Email is:", Email);
-                console.log("access Token secret is:", endpoint.AccessTokenSecret);
                 try {
-                    const accessToken = jwt.sign(Email, endpoint.AccessTokenSecret)
-                    console.log("logIn sucsses return the Token: ", accessToken);
-                    res.status(200).send(accessToken);
+                    console.log("in auth mocroservice, user logIn pass and encriptes pass match!");
+                    console.log("the Email is:", Email);
+                    console.log("access Token secret is:", endpoint.AccessTokenSecret);
+                
+                    const Value = jwt.sign({email: Email}, endpoint.AccessTokenSecret);
+                    console.log("logIn sucsses return the Token: ", Value);
+                    res.status(200).json({accessToken : Value});
                 } catch {
+
                     console.log("Fail in create Token for the user , Email: ",Email);
                     console.log("Fail in create Token for the user Access token from env: ",process.env.ACCESS_TOKEN_SECRET);
-
-                    res.status(402).send();
-
+                    res.status(417).send("Fail creating the User Token.");//Expectation Failed
                 }
             }
             else {
                 res.status(405).send("access not allowd, change the user password and try agian");
             }
 
-            res.status(200).send(user);
         } catch (ex) {
-            console.log(`Failed creating user, error: ${ex.response.status}`);
+            console.log(`Failed geting user info from the DB, error: ${ex.response.status}`);
             if(ex.response.status == 409){
                 res.status(409).send();
             } else {
