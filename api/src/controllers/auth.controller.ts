@@ -30,10 +30,15 @@ export class AuthController {
         
         } catch (ex) {
             if(ex.response.status == 405){
-                res.status(405).send("Error user Email, or user Password.");
+                res.status(405).send("Error user Password.");
             }
-            console.log(`Faild creating token, err ${ex}`);
-            res.status(500).send();
+            if(ex.response.status == 404){
+                res.status(404).send("Error user Email, no such user.");
+            }
+            else{
+                console.log(`Faild creating token, err ${ex}`);
+                res.status(500).send();
+            }
         }
     };
     

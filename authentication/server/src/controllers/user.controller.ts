@@ -74,7 +74,7 @@ export class UserController{
 
                     console.log("Fail in create Token for the user , Email: ",Email);
                     console.log("Fail in create Token for the user Access token from env: ",process.env.ACCESS_TOKEN_SECRET);
-                    res.status(417).send("Fail creating the User Token.");//Expectation Failed
+                    res.status(417).send("Fail creating the User Token."); //Expectation Failed
                 }
             }
             else {
@@ -83,8 +83,11 @@ export class UserController{
 
         } catch (ex) {
             console.log(`Failed geting user info from the DB, error: ${ex.response.status}`);
-            if(ex.response.status == 409){
+            if(ex.response.status == 409){ //duplicate email
                 res.status(409).send();
+            } 
+            if(ex.response.status == 404){ //email not found in DB
+                res.status(404).send("Error, User email does not found");
             } else {
                 res.status(500).send();
             }

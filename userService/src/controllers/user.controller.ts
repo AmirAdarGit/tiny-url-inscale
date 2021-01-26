@@ -15,7 +15,7 @@ export const Create = async (req:Request, res:Response): Promise<void> => {
         res.status(200).send();        
     } catch (ex) {
         if (ex.code === 'ER_DUP_ENTRY') {//exeptions from the query response
-            res.status(409).send();
+            res.status(409).send("Error, user email is already exist, change User Email.");
         }
         else res.status(500).send(ex);
     }    
@@ -26,18 +26,24 @@ export const Get = async (req:Request, res:Response): Promise<void> => {
 
     const userEmail: string = String(req.query.email);// param instend of query because get does not have body, but params.
     const getUserPassQuery: string = parseGetQueryToString(userEmail);
-
     try{
-        const userPassword = await servsices.GetUserPassword(getUserPassQuery); 
-   
-        const user: User = { // generate the response user info
-            Email: userEmail,
-            Password: userPassword
+        const userPassword = await servsices.GetUserPassword(getUserPassQuery); // recive the encoded pass from the db
+        if(userPassword === "not_Such_User_On_DB"){
+            res.status(404).send("User email does not found");
         }
-
-        // console.log("after getting user info from db, in user servise", user);
-        res.status(200).send(user);
+        else{
+            console.log("In user service, userPassword for un none user Email", userPassword);
+            const user: User = { // generate the response user info
+                Email: userEmail,
+                Password: userPassword
+            }
+            res.status(200).send(user);
+        }
     } catch (ex){
+        console.log("-----------------------------------");
+        console.log("ex code: ", ex.code);
+        console.log("Fail get the user password, err:", ex);
+        console.log("-----------------------------------");
         return new Promise((_, reject) => {
             reject(ex)
         })

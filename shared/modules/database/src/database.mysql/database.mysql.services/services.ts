@@ -65,11 +65,15 @@ export const addNewUserToMysql = async (postUserQuery: string): Promise<void> =>
   export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
 
     const query = util.promisify(connection.query).bind(connection);
-    
-      const row = await query(getUserQuery);
-      var resultArray = row[0].UserPassword; 
- 
-      return resultArray;
+      try{
+        const row = await query(getUserQuery);
+          var resultArray = row[0].UserPassword; 
+          return resultArray;
+        
+      } catch{
+        console.log("------------------44444444");
+        return 'not_Such_User_On_DB';
+      }
   //   return new Promise ((resolve, reject) => {
   //     connection.query(getUserQuery ,(err:Error, rows: String) => {
   //     if(err) {
