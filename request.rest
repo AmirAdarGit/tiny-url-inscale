@@ -4,9 +4,9 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "999@gmail.com",
+    "userEmail": "111222333@gmail.com",
     "userFullName": "carmel ronen",
-    "userPassword": "999"
+    "userPassword": "111222333"
 }
 
 ###
@@ -15,24 +15,21 @@ POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "999@gmail.com",
-    "userPassword": "9499"
+    "userEmail": "111222333@gmail.com",
+    "userPassword": "111222333"
 }
-
-
-
 
 
 ###
 
-
-POST http://localhost:8080/api/newLink
+POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYW1pckBnbWFpbC5jb20iLCJpYXQiOjE2MTA5MDA4NTF9.6tSBxSqA6xopo2El7ukIo58e9LWfT5deprEmBwKbe4k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjExMTIyMjMzM0BnbWFpbC5jb20iLCJpYXQiOjE2MTE3NjM1NDB9.tc_XPhdDNGkADLg2XL6b24z6C3oH1kFS6vfWo0X2CDQ
 
 {
-    "LongURL": "https://www.yamitamddazingggggwebbb____anotherone.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
-    "Email": "amir@gmail.com"
+    "LongURL": "https://www.aaaaaaaa.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
+    "Email": "111222333@gmail.com",
+    "IsPrivate": false
 }
 
 ###

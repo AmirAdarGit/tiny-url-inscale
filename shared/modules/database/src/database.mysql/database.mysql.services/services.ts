@@ -5,20 +5,48 @@ import { User } from "../../../../../models/user/index"
 
 import * as util from "util"
 
-export const cheackIfLongUrlExsist = (url: String): Promise<boolean> => {
-  return new Promise((isExist) => {
-    connection.query(`SELECT * FROM Tiny_URL.Links where LongURL = '${url}'`
-    ,(err:Error, rows: String) => {
+export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
+
+  const query = util.promisify(connection.query).bind(connection);
+    try{
+      const row = await query(getUserQuery);
+        var resultArray = row[0].UserPassword; 
+        return resultArray;
       
-      if(JSON.stringify(rows) == "[]")
-      {
-        return isExist(false);
+    } catch{
+      return 'not_Such_User_On_DB';
+    }
+}
+
+export const cheackIfLongUrlExsist =  async (checkQuery: string): Promise<boolean> => {
+  const query = util.promisify(connection.query).bind(connection);
+    try {
+      const row = await query(checkQuery);
+      console.log("in db service, row", row);
+      if(JSON.stringify(row) == '[]'){
+        return false;
       }
       else{
-        return isExist(true);
+        return true;
       }
-    })
-  });
+    } catch (ex) {
+        return ex;
+    }
+}
+
+export const getShortUrlNumber  = async (getQuery: string):Promise<String> =>{
+  const query = util.promisify(connection.query).bind(connection);
+    try {
+      const row = await query(getQuery);
+        if(row == []) {
+          return "";
+        }
+        else {
+           return row
+        }
+  } catch (ex) {
+    return ex;
+  }
 }
 
 export const cheackIfShortUrlExsist = (id: String): Promise<boolean> => {
@@ -38,20 +66,11 @@ export const cheackIfShortUrlExsist = (id: String): Promise<boolean> => {
 }
 
 
-
-export const addNewUrlToMysql = async (url: String, userEmail:String):Promise<String> => {
-      console.log(url);
-      console.log(userEmail);
-      return new Promise ((urlNumber) => {
-      connection.query(`INSERT INTO Tiny_URL.Links (LongURL, Email) VALUES ('${url}', '${userEmail}');`
-    ,(err:Error, rows: String) => {
-      if(err) return new Error;
-      console.log('New short url insert to the DB')
-      console.log(JSON.stringify(rows));
-    });
-      return urlNumber("success!");
-    })
+export const addNewUrlToMysql = async (createQuery: string):Promise<void> => {
+  const query = util.promisify(connection.query).bind(connection);
+  return await query(createQuery);
 }
+
 
 export const addNewUserToMysql = async (postUserQuery: string): Promise<void> => {
   
@@ -62,30 +81,7 @@ export const addNewUserToMysql = async (postUserQuery: string): Promise<void> =>
 
   }
 
-  export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
 
-    const query = util.promisify(connection.query).bind(connection);
-      try{
-        const row = await query(getUserQuery);
-          var resultArray = row[0].UserPassword; 
-          return resultArray;
-        
-      } catch{
-        console.log("------------------44444444");
-        return 'not_Such_User_On_DB';
-      }
-  //   return new Promise ((resolve, reject) => {
-  //     connection.query(getUserQuery ,(err:Error, rows: String) => {
-  //     if(err) {
-  //       return reject(err);
-  //     }
-  //     console.log('Data received from Db:');
-  //     console.log('Getting the user info');
-  //     console.log(rows);
-  //     return resolve(JSON.stringify(rows));
-  //   });
-  // });
-}
 
 
 export const getAllUserUrls  = (email: any):Promise<String> =>{
@@ -116,15 +112,7 @@ export const getAllUserUrls  = (email: any):Promise<String> =>{
   });
 }
 
-export const getShortUrlNumber  = async (url: String):Promise<String> =>{
-  return new Promise((exist) => {
-    connection.query(`SELECT ShortURL FROM Tiny_URL.Links where LongURL = '${url}' `,
-  (err:Error, rows: String) => {
-    if(err) return new Error;
-    return exist(rows);
-  })
-});
-}
+
 
 
   export const removeShortUrlFromTable  = (shortUrl: String):void =>{

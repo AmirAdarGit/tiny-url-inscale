@@ -1,13 +1,12 @@
 import axios from "axios";
 import { Request, Response } from "express";
-import { runInNewContext } from "vm";
 
 
 
 export const post = async (req: Request, res: Response): Promise<void> => {
     const linkInfo = {
-    newLink : req.body.LongURL,
-    email : req.body.Email
+        newLink : req.body.LongURL,
+        email : req.body.Email
     }
     const heder = req.headers;
     const userJwtAndnewUrl = {

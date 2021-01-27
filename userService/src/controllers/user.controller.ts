@@ -40,10 +40,6 @@ export const Get = async (req:Request, res:Response): Promise<void> => {
             res.status(200).send(user);
         }
     } catch (ex){
-        console.log("-----------------------------------");
-        console.log("ex code: ", ex.code);
-        console.log("Fail get the user password, err:", ex);
-        console.log("-----------------------------------");
         return new Promise((_, reject) => {
             reject(ex)
         })

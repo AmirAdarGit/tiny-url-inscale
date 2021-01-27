@@ -6,5 +6,7 @@ services:
             - "3001:8080"
     user-service:
         image: "amiradar/tiny-url.user-service"
+    url-service:
+        image: "amiradar/tiny-url.url-service"        
     authentication:
         image: "amiradar/tiny-url.authentication"

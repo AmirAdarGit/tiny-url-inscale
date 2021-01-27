@@ -1,15 +1,19 @@
 import { Request, Response } from "express";
 import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
 import { Credentials, UserMetadata} from "../../../shared/models/common"
-import { Token } from "../../../shared/models/authenticate/Token"
+import { Token, ValidetionToken } from "../../../shared/models/authenticate/index"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
-
+import { Url } from "../../../shared/models/url/index"
+import { TokenClass, tokenToString } from "typescript";
+import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
 export class AuthController {
     
     authHttpClient: IAuthServiceHttpClient;
+    urlHttpClient: IUrlServiceHttpClient;
 
-    constructor(httpClient: IAuthServiceHttpClient){
-        this.authHttpClient = httpClient;
+    constructor(authServiceHttpClient: IAuthServiceHttpClient, urlServiceHttpClient: IUrlServiceHttpClient){
+        this.authHttpClient = authServiceHttpClient;
+        this.urlHttpClient = urlServiceHttpClient;
     }
 
     async LogIn(req: Request, res: Response): Promise<void> {
@@ -66,7 +70,52 @@ export class AuthController {
                 res.status(500).send({ ex });
             }
         }
-    
+    }
+
+    async CreateUrl (req:Request, res:Response):Promise<void> {
+
+        // first step, check if the token is valid.
+        const Usertoken: Token = {
+            Value: req.headers.authorization.split(" ")[1]
+        }
+        const validetionToken: ValidetionToken = {    
+            Token: Usertoken,
+            Email: req.body.Email,
+        }
+        console.log("success to get the user Token", validetionToken);
+
+        try{
+            const valid = await this.authHttpClient.ValidetionToken(validetionToken);
+            //second step, 
+            console.log("now sending to the url Service http post method!...");
+
+            try{
+                const url: Url = {
+                    LongUrl : req.body.LongURL,
+                    Email : req.body.Email,
+                    IsPrivate : Boolean(req.body.IsPrivate)
+                }
+                console.log(`new url : ${url}`);
+                await this.urlHttpClient.Create(url);
+                
+            } catch(ex){
+
+            }
+
+            res.status(200).send("Token verified");
+        } catch (ex){
+            if(ex.response.status == 403){
+                res.status(403).send("invalid token");
+            }
+            else{
+                res.status(500).send();
+        
+            }
+        }
+
+
+
+
     }
 
 }

@@ -1,6 +1,6 @@
 import { IAuthServiceHttpClient } from "../../../interfaces/authenticate/IAuthServiceHttpClient"
 import { Credentials, UserMetadata } from '../../../models/common';
-import { Token } from '../../../models/authenticate';
+import { Token, ValidetionToken } from '../../../models/authenticate';
 import { IHttpClient } from "../../../interfaces/httpClient";
 
 export class AuthServiceHttpClient implements IAuthServiceHttpClient {
@@ -23,9 +23,6 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         return this.httpClient.Post("http://authentication:8080/api/autentication/signUp", newUser)
     }
 
-
-
-    
     async Login(credentials: Credentials): Promise<Token> {
         try{
         console.log("Try to send to auth the credentisls ", credentials);
@@ -35,6 +32,13 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         }
     }
 
-
+    async ValidetionToken(validetionToken: ValidetionToken): Promise<void> {
+        try{
+            console.log("Try to send to auth the Token and user email for validation ", validetionToken);
+            return this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken", { ...validetionToken });
+        } catch(err){
+            console.log("error in ValidetionToken " + err);
+        }
+    }
 
 }

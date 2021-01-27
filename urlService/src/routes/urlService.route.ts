@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as urlController from "../controllers/urlService.controller"
+import * as urlController from "../controllers/url.controller"
 import * as bodyParser from 'body-parser'
 export const router = Router();
 
