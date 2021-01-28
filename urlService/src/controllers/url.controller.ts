@@ -22,7 +22,8 @@ export const post = async (req:Request, res:Response): Promise<void> => {
                 try {
                     const shortUrl = await servsices.getShortUrlNumber(getShortUrlQuery);
                     console.log("Url-Service-Module: Short url is already generate, try: " + JSON.stringify(shortUrl));
-                    res.send(JSON.stringify(shortUrl));
+                    const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
+                    res.status(200).send(shortUrlNumer);
                 } catch(ex){
                     res.status(500).send(ex);
                 }

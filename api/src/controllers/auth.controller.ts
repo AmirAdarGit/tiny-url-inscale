@@ -95,7 +95,7 @@ export class AuthController {
                 }
                 const shortUrl = await this.urlHttpClient.Create(url);
                 console.log(`Api-Module: new url - ${shortUrl}`);   
-                res.status(200).send("Token verified, shortUrl - (number): " + shortUrl);             
+                res.status(200).send("Token verified, shortUrl - (number)/" + shortUrl);             
             } catch(ex){
                 console.log('Api-Module: Error create new Url');
                 res.status(500).send();
