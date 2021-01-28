@@ -27,9 +27,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjExMTIyMjMzM0BnbWFpbC5jb20iLCJpYXQiOjE2MTE3NjM1NDB9.tc_XPhdDNGkADLg2XL6b24z6C3oH1kFS6vfWo0X2CDQ
 
 {
-    "LongURL": "https://www.aaaaaaaa.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
+    "LongURL": "https://www.vvvvv.co.il/search?hl=en&sxsrf=ALeKk01Hm0XbmR3tC-JbBWVcs4u78DNVIA%3A1609320845871&source=hp&ei=jUnsX5_kMofmU4Ljgjg&q=amir&oq=amir&gs4dUDCAc&uact=5",
     "Email": "111222333@gmail.com",
-    "IsPrivate": false
+    "IsPrivate": true
 }
 
 ###

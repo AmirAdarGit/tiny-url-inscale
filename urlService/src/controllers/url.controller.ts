@@ -1,5 +1,5 @@
 import { Request, Response } from "express"   
-import { parseIsExistUrlQuery, parseGetUrlQuery, parseCreateUrlQuery} from "../databaseUrlQuery/queries"
+import * as query from "../databaseUrlQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
   
 
@@ -11,11 +11,11 @@ export const post = async (req:Request, res:Response): Promise<void> => {
     const isPrivate: boolean = req.body.IsPrivate
     //first, cheak if the Long URL is already in the database.
     try{
-        const IsExistUrlQuery: string = parseIsExistUrlQuery(longUrl);
+        const IsExistUrlQuery: string = query.parseIsExistUrlQuery(longUrl);
         const isExist = await servsices.cheackIfLongUrlExsist(IsExistUrlQuery);
         console.log("In url servise module, is Exist Log:", isExist);
             if(isExist){
-                const getShortUrlQuery: string = parseGetUrlQuery(longUrl);
+                const getShortUrlQuery: string = query.parseGetUrlQuery(longUrl);
                 try {
                     const shortUrl = await servsices.getShortUrlNumber(getShortUrlQuery);
                     console.log("Short url is already generate, try: " + JSON.stringify(shortUrl));
@@ -25,13 +25,14 @@ export const post = async (req:Request, res:Response): Promise<void> => {
                 }
             }
             else{
-                const postLongUrlQuery: string = parseCreateUrlQuery(longUrl, email, isPrivate);
+                const postLongUrlQuery: string = query.parseCreateUrlQuery(longUrl, email, isPrivate);
                 console.log(postLongUrlQuery);
                 try {
                     await servsices.addNewUrlToMysql(postLongUrlQuery)
                     console.log("New url is add to the db");
                     try{ 
-                        const shortUrl = await servsices.getShortUrlNumber(longUrl);
+                        const postLongUrlQuery: string = query.parseGetShortUrlQuery(longUrl);
+                        const shortUrl = await servsices.getShortUrlNumber(postLongUrlQuery);
                         console.log("Short Url: " + JSON.stringify(shortUrl));
                         res.status(200).json(shortUrl);
                     } catch(ex){
