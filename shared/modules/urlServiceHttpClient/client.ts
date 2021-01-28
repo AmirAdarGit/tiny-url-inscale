@@ -10,9 +10,9 @@ export class UrlServiceHttpClient implements IUrlServiceHttpClient {
         this.httpClient = httpClient;
     }
 
-    // async Get(shortUrl: string): Promise<User> {
-    //     return this.httpClient.Get<User>("http://url-service:8080/api/user", { email })
-    // }
+    async Get(shortUrl: number): Promise<void> {
+        return this.httpClient.Get<void>("http://url-service:8080/api/url", { shortUrl })
+    }
 
     async Create(url: Url): Promise<void> {
 

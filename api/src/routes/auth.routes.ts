@@ -8,9 +8,9 @@ import { UrlServiceHttpClient } from "../../../shared/modules/urlServiceHttpClie
 export const router = Router();
 var jsonParser = bodyParser.json() //for parsing the data from the http post
 
-const httpClient = new HttpClient()// Post, Get
-const authServiceHttpClient = new AuthServiceHttpClient(httpClient); //SignUp, LogIn (from Api) -> authentication
-const urlServiceHttpClient = new UrlServiceHttpClient(httpClient);
+const httpClient: HttpClient = new HttpClient()// Post, Get
+const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(httpClient); //SignUp, LogIn (from Api) -> authentication
+const urlServiceHttpClient: UrlServiceHttpClient = new UrlServiceHttpClient(httpClient);
 const authenticate: AuthController = new AuthController(authServiceHttpClient, urlServiceHttpClient); //SighUp LogIn
 
 

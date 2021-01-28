@@ -2,6 +2,6 @@ import { Url } from '../../models/url/index';
 
 
 export interface IUrlServiceHttpClient {
-    //Get(email: string): Promise<User>
+    Get(shortUrl: number): Promise<void>
     Create(url: Url): Promise<void>
 }

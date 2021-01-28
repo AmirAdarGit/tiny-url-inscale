@@ -17,8 +17,23 @@ export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
       return 'not_Such_User_On_DB';
     }
 }
+export const getLongUrl  = async (getUserQuery: string):Promise<string> =>{
 
-export const cheackIfLongUrlExsist =  async (checkQuery: string): Promise<boolean> => {
+  const query = util.promisify(connection.query).bind(connection);
+    try{
+      const row = await query(getUserQuery);
+        var resultArray = row[0].LongURL; 
+        return resultArray;
+      
+    } catch{
+      return 'not_Such_User_On_DB';
+    }
+}
+
+ 
+
+
+export const cheackIfUrlExsist =  async (checkQuery: string): Promise<boolean> => {
   const query = util.promisify(connection.query).bind(connection);
     try {
       const row = await query(checkQuery);
@@ -33,7 +48,9 @@ export const cheackIfLongUrlExsist =  async (checkQuery: string): Promise<boolea
     }
 }
 
-export const getShortUrlNumber  = async (getQuery: string):Promise<string> =>{
+
+
+export const getShortUrl  = async (getQuery: string):Promise<string> =>{
   const query = util.promisify(connection.query).bind(connection);
     try {
       const row = await query(getQuery);
@@ -48,21 +65,9 @@ export const getShortUrlNumber  = async (getQuery: string):Promise<string> =>{
   }
 }
 
-export const cheackIfShortUrlExsist = (id: String): Promise<boolean> => {
-  return new Promise((isExist) => {
-    connection.query(`SELECT * FROM Tiny_URL.Links where ShortURL = '${id}'`
-    ,(err:Error, rows: String) => {
-      
-      if(JSON.stringify(rows) == "[]")
-      {
-        return isExist(false);
-      }
-      else{
-        return isExist(true);
-      }
-    })
-  });
-}
+
+
+
 
 
 export const addNewUrlToMysql = async (createQuery: string):Promise<void> => {
@@ -101,15 +106,7 @@ export const getAllUserUrls  = (email: any):Promise<String> =>{
 }
 
 
-  export const getUrlInfo  = async (shortUrl: String):Promise<String> =>{
-    return new Promise((exist) => {
-      connection.query(`SELECT LongUrl FROM Tiny_URL.Links where ShortURL = '${shortUrl}' `,
-    (err:Error, rows: String) => {
-      if(err) return new Error;
-      return exist(JSON.stringify(rows));
-    })
-  });
-}
+
 
 
 

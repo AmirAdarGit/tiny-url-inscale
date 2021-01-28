@@ -1,43 +1,47 @@
 import axios from "axios";
 import { Request, Response } from "express";
+import { isThisTypeNode } from "typescript";
+import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
+import { UrlServiceHttpClient } from "../../../shared/modules/urlServiceHttpClient/client";
 
 
+export class UrlController { 
 
-export const post = async (req: Request, res: Response): Promise<void> => {
-    const linkInfo = {
-        newLink : req.body.LongURL,
-        email : req.body.Email
+    urlHttpClient: IUrlServiceHttpClient;
+
+    constructor(urlServiceHttpClient: IUrlServiceHttpClient){
+        this.urlHttpClient = urlServiceHttpClient;
     }
-    const heder = req.headers;
-    const userJwtAndnewUrl = {
-        header: req.headers,
-        body: req.body
-    }
-    try{
-    const cheakJwt = await axios.post('http://localhost:8090/api/authentication/newLink', userJwtAndnewUrl);
-    console.log(cheakJwt.data);
-    console.log(linkInfo);
-    const addNewUrl = await axios.post('http://localhost:8070/api/url', linkInfo);
-    console.log("hahaha");
-    }
-    catch{res.status(403).send("Forbidden");}
 
+    async Get(req: Request, res: Response): Promise<any> {
+        const shortUrl = parseInt(req.params.id);
+        if(isNaN(shortUrl) && shortUrl > 0){
+            res.status(404).send("Short Url invalid");
+        }
+        else{
+            try {
+                const response = await this.urlHttpClient.Get(shortUrl);
+                console.log("Api-Module: resived response from Url-Service", response);
+                //if the response statuse == 200,401,404 return respectively
+                res.send(response);
+            } catch(ex) {
+                res.status(500).send(`Api-Module: ${ex}`)
+                console.log(`Api-Module: ${ex}`);
+            }
 
+        }
+    };
 
-};
- 
-export const get = async (req: Request, res: Response): Promise<any> => {
-    res.send({user:"amiraaaaaa",
-    method:"delete"});
-    console.log("get method")
-};
+    async Post(req: Request, res: Response): Promise<void> {
+    
+    };
+    
+    
+    async Update(req: Request, res: Response): Promise<void> {
+    
+    };
 
-export const update = async (req: Request, res: Response): Promise<void> => {
-    res.send({user:"amiraaaaaa",
-    method:"delete"});
-};
-
-export const remove = async (req: Request, res: Response): Promise<void> => {
-    res.send({user:"amiraaaaaa",
-    method:"delete"});
-};
+    async Remove(req: Request, res: Response): Promise<void> {
+    
+    };
+}

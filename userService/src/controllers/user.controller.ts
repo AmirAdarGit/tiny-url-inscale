@@ -28,7 +28,7 @@ export const Get = async (req:Request, res:Response): Promise<void> => {
     const getUserPassQuery: string = parseGetQueryToString(userEmail);
     try{
         const userPassword = await servsices.GetUserPassword(getUserPassQuery); // recive the encoded pass from the db
-        if(userPassword === "not_Such_User_On_DB"){
+        if(userPassword == "not_Such_User_On_DB"){
             res.status(404).send("User email does not found");
         }
         else{
