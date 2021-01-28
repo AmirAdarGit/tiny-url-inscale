@@ -82,29 +82,27 @@ export class AuthController {
             Token: Usertoken,
             Email: req.body.Email,
         }
-        console.log("success to get the user Token", validetionToken);
+        console.log("Api-Module: success to get the user Token", validetionToken);
 
         try{
-            const valid = await this.authHttpClient.ValidetionToken(validetionToken);
-            //second step, 
-            console.log("now sending to the url Service http post method!...");
-
+            await this.authHttpClient.ValidetionToken(validetionToken);
+            //second step, send http request to Url-Service
             try{
                 const url: Url = {
                     LongUrl : req.body.LongURL,
                     Email : req.body.Email,
                     IsPrivate : Boolean(req.body.IsPrivate)
                 }
-                console.log(`new url : ${url}`);
-                await this.urlHttpClient.Create(url);
-                
+                const shortUrl = await this.urlHttpClient.Create(url);
+                console.log(`Api-Module: new url - ${shortUrl}`);   
+                res.status(200).send("Token verified, shortUrl - (number): " + shortUrl);             
             } catch(ex){
-
+                console.log('Api-Module: Error create new Url');
+                res.status(500).send();
             }
-
-            res.status(200).send("Token verified");
         } catch (ex){
             if(ex.response.status == 403){
+                console.log('Api-Module: Error token validation');
                 res.status(403).send("invalid token");
             }
             else{

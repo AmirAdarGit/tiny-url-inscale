@@ -22,7 +22,6 @@ export const cheackIfLongUrlExsist =  async (checkQuery: string): Promise<boolea
   const query = util.promisify(connection.query).bind(connection);
     try {
       const row = await query(checkQuery);
-      console.log("in db service, row", row);
       if(JSON.stringify(row) == '[]'){
         return false;
       }
@@ -34,7 +33,7 @@ export const cheackIfLongUrlExsist =  async (checkQuery: string): Promise<boolea
     }
 }
 
-export const getShortUrlNumber  = async (getQuery: string):Promise<String> =>{
+export const getShortUrlNumber  = async (getQuery: string):Promise<string> =>{
   const query = util.promisify(connection.query).bind(connection);
     try {
       const row = await query(getQuery);

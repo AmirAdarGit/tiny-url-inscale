@@ -5,36 +5,39 @@ import * as servsices from "../../../shared/modules/database/src/database.mysql/
 
 export const post = async (req:Request, res:Response): Promise<void> => {  
 
-    console.log("in url servise module, ", req.body);
+    console.log("Url-Service-Module: reqest body: , ", req.body);
     const longUrl = req.body.LongUrl;
     const email = req.body.Email;
     const isPrivate: boolean = req.body.IsPrivate
-    //first, cheak if the Long URL is already in the database.
+    //first, cheak if the Long URL is already exist in the database.
     try{
         const IsExistUrlQuery: string = query.parseIsExistUrlQuery(longUrl);
-        const isExist = await servsices.cheackIfLongUrlExsist(IsExistUrlQuery);
-        console.log("In url servise module, is Exist Log:", isExist);
+        const isExist = await servsices.cheackIfLongUrlExsist(IsExistUrlQuery); 
+        // TODO: if the Url is exist: check if it private,
+        // "yes" -> (and it is not the current user url) create new url for the user.
+        // "no"  -> return the short url that exist.  
+        console.log("Url-Service-Module: Is Url exist :", isExist); 
             if(isExist){
                 const getShortUrlQuery: string = query.parseGetUrlQuery(longUrl);
                 try {
                     const shortUrl = await servsices.getShortUrlNumber(getShortUrlQuery);
-                    console.log("Short url is already generate, try: " + JSON.stringify(shortUrl));
-                    res.status(200).json(shortUrl);
+                    console.log("Url-Service-Module: Short url is already generate, try: " + JSON.stringify(shortUrl));
+                    res.send(JSON.stringify(shortUrl));
                 } catch(ex){
                     res.status(500).send(ex);
                 }
             }
             else{
                 const postLongUrlQuery: string = query.parseCreateUrlQuery(longUrl, email, isPrivate);
-                console.log(postLongUrlQuery);
                 try {
                     await servsices.addNewUrlToMysql(postLongUrlQuery)
-                    console.log("New url is add to the db");
+                    console.log("Url-Service-Module: New Url is add to the db");
                     try{ 
                         const postLongUrlQuery: string = query.parseGetShortUrlQuery(longUrl);
                         const shortUrl = await servsices.getShortUrlNumber(postLongUrlQuery);
-                        console.log("Short Url: " + JSON.stringify(shortUrl));
-                        res.status(200).json(shortUrl);
+                        console.log("Url-Service-Module: Short Url - " + JSON.stringify(shortUrl));
+                        const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
+                        res.status(200).send(shortUrlNumer);
                     } catch(ex){
                         res.status(500).send(ex);
                     }
