@@ -4,9 +4,9 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "Tal@gmail.com",
-    "userFullName": "Tal Vasilisky",
-    "userPassword": "0548824928"
+    "userEmail": "vvv@gmail.com",
+    "userFullName": "vvv sh",
+    "userPassword": "vvv"
 }
 
 ###
@@ -15,8 +15,8 @@ POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "Tal@gmail.com",
-    "userPassword": "0548824928"
+    "userEmail": "vvv@gmail.com",
+    "userPassword": "vvv"
 }
 
 
@@ -24,18 +24,18 @@ Content-Type: application/json
 
 POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IlRhbEBnbWFpbC5jb20iLCJpYXQiOjE2MTE4NjY5OTR9.55qU8GkwXzi5bZ_gNPevmqznrWRbenJBtTGwCfY8Aak
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZ2dkBnbWFpbC5jb20iLCJpYXQiOjE2MTIwODk5NDF9.EuqeFC7kMgVXNgEHVfunrXSFO89eTttox45krCYePjw
 
 {
-    "LongURL": "https://www.gmail.tal.v.co.il/search?hl/asdsadfdaSASASFD/SDFDDDDDDDDDDDDDDDDD/FFFFFFFFFFFFFFFFFFFFFF",
-    "Email": "Tal@gmail.com",
+    "LongURL": "https://www.vvvvvcccc.tal.v.co.il/search?hl/asdsadfdaSASASFD/SDFDDDDDDDDDDDDDDDDD/FFFFFFFFFFFFFFFFFFFFFF",
+    "Email": "vvv@gmail.com",
     "IsPrivate": false
 }
 
 ###
 
 
-GET http://localhost:3001/api/url/3
+GET http://localhost:3001/api/url/14
 
 ###
 

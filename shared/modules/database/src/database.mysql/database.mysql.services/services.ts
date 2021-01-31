@@ -17,26 +17,33 @@ export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
       return 'not_Such_User_On_DB';
     }
 }
-export const getLongUrl  = async (getUserQuery: string):Promise<string> =>{
 
+export const cheackIfUrlPrivate =  async (checkQuery: string): Promise<string> => {
   const query = util.promisify(connection.query).bind(connection);
-    try{
-      const row = await query(getUserQuery);
-        var resultArray = row[0].LongURL; 
-        return resultArray;
-      
-    } catch{
-      return 'not_Such_User_On_DB';
-    }
+  try{
+    const row = await query(checkQuery);
+      var resultArray = row[0].IsPrivate; 
+      return resultArray;
+  } catch{
+    return 'not_Such_Link_On_DB';
+  }
+
+    //   if(JSON.stringify(row) == '[]'){
+    //     return '[]';
+    //   }
+    //   else{
+    //     return row;
+    //   }
+    // } catch (ex) {
+    //     return ex;
+    // }
 }
 
- 
 
-
-export const cheackIfUrlExsist =  async (checkQuery: string): Promise<boolean> => {
+export const cheackIfUrlExsist =  async (longUrl: string): Promise<boolean> => {
   const query = util.promisify(connection.query).bind(connection);
-    try {
-      const row = await query(checkQuery);
+  try{
+    const row = await query(longUrl);
       if(JSON.stringify(row) == '[]'){
         return false;
       }
@@ -46,7 +53,9 @@ export const cheackIfUrlExsist =  async (checkQuery: string): Promise<boolean> =
     } catch (ex) {
         return ex;
     }
-}
+  }
+
+
 
 
 
@@ -65,7 +74,20 @@ export const getShortUrl  = async (getQuery: string):Promise<string> =>{
   }
 }
 
-
+export const getLongUrl  = async (shortUrl: String):Promise<String> =>{
+  const query = util.promisify(connection.query).bind(connection);
+    try {
+      const row = await query(shortUrl);
+        if(row == []) {
+          return "";
+        }
+        else {
+           return row
+        }
+  } catch (ex) {
+    return ex;
+  }
+}
 
 
 

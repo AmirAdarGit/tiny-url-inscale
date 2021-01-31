@@ -16,9 +16,9 @@ export const post = async (req:Request, res:Response): Promise<void> => {
         // TODO: if the Url is exist: check if it private,
         // "yes" -> (and it is not the current user url) create new url for the user.
         // "no"  -> return the short url that exist.  
-        console.log("Url-Service-Module: Is Url exist :", isExist); 
+        console.log("Url-Service-Module: Is Url exist? :", isExist); 
             if(isExist){
-                const getShortUrlQuery: string = query.parseGetUrlQuery(longUrl);
+                const getShortUrlQuery: string = query.parseGetShortUrlQuery(longUrl);
                 try {
                     const shortUrl = await servsices.getShortUrl(getShortUrlQuery);
                     console.log("Url-Service-Module: Short url is already generate, try: " + JSON.stringify(shortUrl));
@@ -58,12 +58,18 @@ export const get = async (req:Request, res:Response): Promise<void> => {
     //check if the number is represent Long Url.
     const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
     console.log("Url-Service-Module: mySql query ", getShortUrlQuery);    
-    const isExist = await servsices.cheackIfUrlExsist(getShortUrlQuery);
-    console.log("Url-Service-Module: is exist url? ", isExist);    
+    //check if the long url is private
 
-        if(isExist){
+    const isPrivate = await servsices.cheackIfUrlPrivate(getShortUrlQuery);
+    console.log("Url-Service-Module: is private url? ", isPrivate);    
+        if(isPrivate == "not_Such_Link_On_DB"){
+            console.log("Short url does not found in the DB");
+            res.send("Url-Service-Module Error, Url not fund");
+        }
+        //public URL
+        else if(!isPrivate){
             const getLongUrlQuery: string = query.parseGetLongUrlQuery(shortUrlId);
-            console.log(getLongUrlQuery);
+            console.log("Url-Service-Module get url info",getLongUrlQuery);
             try{
                 const longUrl = await servsices.getLongUrl(getLongUrlQuery);
                 console.log("Url-Service-Module longUrl: ", longUrl);
@@ -72,9 +78,10 @@ export const get = async (req:Request, res:Response): Promise<void> => {
                 res.send(ex);
             }
         }
+        //private URL
         else{
-            console.log("Short url does not found in the DB");
-            res.send("Url-Service-Module Error, Url not fund");
+            console.log("private URL Forword to authenticate token...");
+            res.send("ok");
         }
 };
 
