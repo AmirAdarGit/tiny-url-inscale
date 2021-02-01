@@ -4,9 +4,9 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "vvv@gmail.com",
+    "userEmail": "333@gmail.com",
     "userFullName": "vvv sh",
-    "userPassword": "vvv"
+    "userPassword": "333"
 }
 
 ###
@@ -15,35 +15,42 @@ POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "vvv@gmail.com",
-    "userPassword": "vvv"
+    "userEmail": "333@gmail.com",
+    "userPassword": "333"
 }
 
 
 ###
-
+//create new short Url
 POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZ2dkBnbWFpbC5jb20iLCJpYXQiOjE2MTIwODk5NDF9.EuqeFC7kMgVXNgEHVfunrXSFO89eTttox45krCYePjw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjMzM0BnbWFpbC5jb20iLCJpYXQiOjE2MTIxODc4NjJ9.DnC_0kGBqWzvd5flFyyLuyOaPp7q_5Z-2yGGviEldWM
 
 {
-    "LongURL": "https://www.vvvvvcccc.tal.v.co.il/search?hl/asdsadfdaSASASFD/SDFDDDDDDDDDDDDDDDDD/FFFFFFFFFFFFFFFFFFFFFF",
-    "Email": "vvv@gmail.com",
-    "IsPrivate": false
+    "LongURL": "https://www.amir-private.tal.v.co.il/search?hl/asdsadfdaSASASFD/SDFDDDDDDDDDDDDDDDDD/FFFFFFFFFFFFFFFFFFFFFF",
+    "Email": "333@gmail.com",
+    "IsPrivate": true
 }
 
 ###
 
+//public url
+GET http://localhost:3001/api/url/17
 
-GET http://localhost:3001/api/url/14
+###
+
+//private url
+GET http://localhost:3001/api/url/17
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjMzM0BnbWFpbC5jb20iLCJpYXQiOjE2MTIxODc4NjJ9.DnC_0kGBqWzvd5flFyyLuyOaPp7q_5Z-2yGGviEldWM
 
 ###
 
 
 
-GET http://localhost:3001/api/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE
+# GET http://localhost:3001/api/list
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE
 
-###
+# ###
 
 

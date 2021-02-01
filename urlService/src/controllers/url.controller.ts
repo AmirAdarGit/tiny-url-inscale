@@ -1,8 +1,11 @@
 import { Request, Response } from "express"   
 import * as query from "../databaseUrlQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
-  
-
+import { HttpClient } from "../../../shared/modules/httpClient/src/HttpClient"
+import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
+import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
+import { Token } from "../../../shared/models/authenticate"
+import { request } from "http"
 export const post = async (req:Request, res:Response): Promise<void> => {  
 
     console.log("Url-Service-Module: reqest body: , ", req.body);
@@ -20,7 +23,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
             if(isExist){
                 const getShortUrlQuery: string = query.parseGetShortUrlQuery(longUrl);
                 try {
-                    const shortUrl = await servsices.getShortUrl(getShortUrlQuery);
+                    const shortUrl = await servsices.getUrl(getShortUrlQuery);
                     console.log("Url-Service-Module: Short url is already generate, try: " + JSON.stringify(shortUrl));
                     const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
                     res.status(200).send(shortUrlNumer);
@@ -36,7 +39,7 @@ export const post = async (req:Request, res:Response): Promise<void> => {
                     console.log("Url-Service-Module: New Url is add to the db");
                     try{ 
                         const postLongUrlQuery: string = query.parseGetShortUrlQuery(longUrl);
-                        const shortUrl = await servsices.getShortUrl(postLongUrlQuery);
+                        const shortUrl = await servsices.getUrl(postLongUrlQuery);
                         console.log("Url-Service-Module: Short Url - " + JSON.stringify(shortUrl));
                         const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
                         res.status(200).send(shortUrlNumer);
@@ -53,36 +56,70 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 };
 
 export const get = async (req:Request, res:Response): Promise<void> => {
-    const shortUrlId = String(req.query.shortUrl); 
-    console.log("Url-Service-Module: geting short url from Api number ", shortUrlId);    
-    //check if the number is represent Long Url.
-    const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
-    console.log("Url-Service-Module: mySql query ", getShortUrlQuery);    
-    //check if the long url is private
 
-    const isPrivate = await servsices.cheackIfUrlPrivate(getShortUrlQuery);
-    console.log("Url-Service-Module: is private url? ", isPrivate);    
-        if(isPrivate == "not_Such_Link_On_DB"){
-            console.log("Short url does not found in the DB");
-            res.send("Url-Service-Module Error, Url not fund");
+    
+    console.log("Url-Service body:", req.query);
+
+    const httpClient: HttpClient = new HttpClient()// Post, Get
+    const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(httpClient);
+
+    const shortUrlId = String(req.query.shortUrl); 
+    const token = String(req.query.Value);
+    
+    console.log("Url-Service-Module: geting short url from Api number ", shortUrlId);   
+    console.log("Url-Service-Module: geting token from Api ", token);    
+ 
+    //check if the number is represent Long Url.
+
+    const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
+    //check if the long url is private
+    try{
+        const linkInfo = await servsices.GetLinkInfo(getShortUrlQuery);
+        if(linkInfo == "not_Such_Link_On_DB"){
+            res.send("not_Such_Link_On_DB");
+            return;
         }
-        //public URL
-        else if(!isPrivate){
+        console.log("Url-Service-Module: row:  ", linkInfo);  
+        const isPrivate: boolean = linkInfo[0].IsPrivate;  
+        const userEmail: string = linkInfo[0].Email;
+        const longUrl: string = linkInfo[0].LongURL;
+        console.log("Url-Service-Module: is private url? ", isPrivate);  
+    
+    //public URL
+        if(!isPrivate){
             const getLongUrlQuery: string = query.parseGetLongUrlQuery(shortUrlId);
-            console.log("Url-Service-Module get url info",getLongUrlQuery);
-            try{
-                const longUrl = await servsices.getLongUrl(getLongUrlQuery);
+            try {
+                // const longUrl = await servsices.getUrl(getLongUrlQuery);
                 console.log("Url-Service-Module longUrl: ", longUrl);
                 res.send(longUrl);
+            } catch(ex){
+            res.send(ex);
+            }
+        }
+    //private URL
+        else{
+            if(token == 'undefined'){//means that no token attachet to the http get request.
+                res.send("Url link is not public, Token needed. \nthe Token shuld be attached to the header");
+                return;
+            }
+            try{
+                const validToken: Token = {
+                    Value: token
+                }
+                const response = await authServiceHttpClient.LinkValidetionToken(validToken);
+                const emailFromToken = String(response);
+                console.log("private URL Forword to authenticate token...", response);
+                if(userEmail == emailFromToken){
+                    res.send(longUrl);
+                }
+                res.send("Url link is not public, cannot access to " + shortUrlId);
             } catch(ex){
                 res.send(ex);
             }
         }
-        //private URL
-        else{
-            console.log("private URL Forword to authenticate token...");
-            res.send("ok");
-        }
+    } catch(err){
+        res.send(err);
+    }
 };
 
 export const remove = async (req:Request, res:Response): Promise<void> => {

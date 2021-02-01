@@ -32,13 +32,21 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         }
     }
 
-    async ValidetionToken(validetionToken: ValidetionToken): Promise<void> {
+    async UserValidetionToken(validetionToken: ValidetionToken): Promise<void> {
         try{
             console.log("Try to send to auth the Token and user email for validation ", validetionToken);
-            return this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken", { ...validetionToken });
+            return this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/user", { ...validetionToken });
         } catch(err){
             console.log("error in ValidetionToken " + err);
         }
     }
-
+    
+    async LinkValidetionToken(token: Token): Promise<void> {
+        try{
+            console.log("Try to send to auth the Token and user email for validation ", token);
+            return this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/link", { ...token });
+        } catch(err){
+            console.log("error in ValidetionToken " + err);
+        }
+    }
 }

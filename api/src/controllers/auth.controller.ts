@@ -85,7 +85,8 @@ export class AuthController {
         console.log("Api-Module: success to get the user Token", validetionToken);
 
         try{
-            await this.authHttpClient.ValidetionToken(validetionToken);
+            const response = await this.authHttpClient.UserValidetionToken(validetionToken);
+            console.log("Api-Module: response from Authenticate module - ", response)
             //second step, send http request to Url-Service
             try{
                 const url: Url = {

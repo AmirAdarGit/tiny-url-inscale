@@ -1,5 +1,5 @@
 import { ErrorRequestHandler } from 'express';
-import { MysqlError } from 'mysql';
+import * as mysql from 'mysql'
 import { connection } from '../database.mysql.config/connection'
 import { User } from "../../../../../models/user/index"
 
@@ -18,25 +18,19 @@ export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
     }
 }
 
-export const cheackIfUrlPrivate =  async (checkQuery: string): Promise<string> => {
+export const GetLinkInfo =  async (checkQuery: string): Promise<string> => {
   const query = util.promisify(connection.query).bind(connection);
   try{
     const row = await query(checkQuery);
-      var resultArray = row[0].IsPrivate; 
-      return resultArray;
-  } catch{
-    return 'not_Such_Link_On_DB';
+    if(JSON.stringify(row) == '[]'){
+      return 'not_Such_Link_On_DB';
+    }
+    else{
+      return row;  
+      }
+  } catch (ex){
+    return ex;
   }
-
-    //   if(JSON.stringify(row) == '[]'){
-    //     return '[]';
-    //   }
-    //   else{
-    //     return row;
-    //   }
-    // } catch (ex) {
-    //     return ex;
-    // }
 }
 
 
@@ -56,10 +50,7 @@ export const cheackIfUrlExsist =  async (longUrl: string): Promise<boolean> => {
   }
 
 
-
-
-
-export const getShortUrl  = async (getQuery: string):Promise<string> =>{
+export const getUrl  = async (getQuery: string):Promise<string> =>{
   const query = util.promisify(connection.query).bind(connection);
     try {
       const row = await query(getQuery);
@@ -73,22 +64,6 @@ export const getShortUrl  = async (getQuery: string):Promise<string> =>{
     return ex;
   }
 }
-
-export const getLongUrl  = async (shortUrl: String):Promise<String> =>{
-  const query = util.promisify(connection.query).bind(connection);
-    try {
-      const row = await query(shortUrl);
-        if(row == []) {
-          return "";
-        }
-        else {
-           return row
-        }
-  } catch (ex) {
-    return ex;
-  }
-}
-
 
 
 
