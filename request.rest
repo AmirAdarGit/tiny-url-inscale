@@ -21,6 +21,7 @@ Content-Type: application/json
 
 
 ###
+//working
 //create new short Url
 POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
@@ -33,13 +34,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjMzM0Bnb
 }
 
 ###
-
-//public url
+//working
+//public url 
 GET http://localhost:3001/api/url/17
 
 ###
+//working
 
-//private url
+//private url Work!
 GET http://localhost:3001/api/url/17
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjMzM0BnbWFpbC5jb20iLCJpYXQiOjE2MTIxODc4NjJ9.DnC_0kGBqWzvd5flFyyLuyOaPp7q_5Z-2yGGviEldWM
