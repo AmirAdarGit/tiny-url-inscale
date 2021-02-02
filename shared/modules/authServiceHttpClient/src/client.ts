@@ -20,13 +20,13 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         }
 
         console.log("With new user: ", newUser);
-        return this.httpClient.Post("http://authentication:8080/api/autentication/signUp", newUser)
+        return await this.httpClient.Post("http://authentication:8080/api/autentication/signUp", newUser)
     }
 
     async Login(credentials: Credentials): Promise<Token> {
         try{
         console.log("Try to send to auth the credentisls ", credentials);
-        return this.httpClient.Get<Token>("http://authentication:8080/api/autentication/logIn", { ...credentials })
+        return await this.httpClient.Get<Token>("http://authentication:8080/api/autentication/logIn", { ...credentials })
         } catch(err){
             console.log("error in Login " + err.response.status);
         }
@@ -34,8 +34,8 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
 
     async UserValidetionToken(validetionToken: ValidetionToken): Promise<void> {
         try{
-            console.log("Try to send to auth the Token and user email for validation ", validetionToken);
-            return this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/user", { ...validetionToken });
+            // console.log("Try to send to auth the Token and user email for validation ", validetionToken);
+            return await this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/user", { ...validetionToken });
         } catch(err){
             console.log("error in ValidetionToken " + err);
         }
@@ -43,8 +43,8 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     
     async LinkValidetionToken(token: Token): Promise<void> {
         try{
-            console.log("Try to send to auth the Token and user email for validation ", token);
-            return this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/link", { ...token });
+            // console.log("Try to send to auth the Token and user email for validation ", token);
+            return await this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/link", { ...token });
         } catch(err){
             console.log("error in ValidetionToken " + err);
         }

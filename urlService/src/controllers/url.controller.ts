@@ -47,9 +47,6 @@ export class UrlController {
             else{
             //Url is already created
                 try {
-                    // console.log("Url-Service-Module: url properties: ", resLinkProperties);
-                    // const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEemail);
-                    // const shortUrl = await servsices.getUrl(getShortUrlByUrlAndEmailQuery);
                     console.log("Url-Service-Module: Short url is already generate, try: " + resLinkProperties[0].ShortURL);
                     res.status(200).send(String(resLinkProperties[0].ShortURL));
                 } catch(ex){
@@ -61,15 +58,10 @@ export class UrlController {
         }
     };
     
+
     async Get(req:Request, res:Response): Promise<void> {
-    
-        console.log("Url-Service body:", req.query);
-    
-        
-    
         const shortUrlId = String(req.query.shortUrl); 
         const token = String(req.query.Value);
-        
         console.log("Url-Service-Module: geting short url from Api number ", shortUrlId);   
         console.log("Url-Service-Module: geting token from Api ", token);    
     
@@ -83,17 +75,16 @@ export class UrlController {
                 res.send("not_Such_Link_On_DB");
                 return;
             }
-            console.log("Url-Service-Module: row:  ", linkInfo);  
-            const isPrivate: boolean = linkInfo[0].IsPrivate;  
-            const userEmail: string = linkInfo[0].Email;
+            console.log("Url-Service-Module: row:  ", linkInfo); 
             const longUrl: string = linkInfo[0].LongURL;
+            const userEmail: string = linkInfo[0].Email;
+            const isPrivate: boolean = linkInfo[0].IsPrivate;  
+            
             console.log("Url-Service-Module: is private url? ", isPrivate);  
         
         //public URL
             if(!isPrivate){
-                const getLongUrlQuery: string = query.parseGetLongUrlQuery(shortUrlId);
                 try {
-                    // const longUrl = await servsices.getUrl(getLongUrlQuery);
                     console.log("Url-Service-Module longUrl: ", longUrl);
                     res.send(longUrl);
                 } catch(ex){
@@ -110,13 +101,15 @@ export class UrlController {
                     const validToken: Token = {
                         Value: token
                     }
+                    console.log("private URL forword to Authenticate Service, sending the token: ", validToken);
                     const response = await this.authHttpClient.LinkValidetionToken(validToken);
                     const emailFromToken = String(response);
-                    console.log("private URL Forword to authenticate token...", response);
                     if(userEmail == emailFromToken){
                         res.send(longUrl);
                     }
-                    res.send("Url link is not public, cannot access to " + shortUrlId);
+                    else {
+                        res.send("Url link is not public, cannot access to " + shortUrlId);
+                    }
                 } catch(ex){
                     res.send(ex);
                 }

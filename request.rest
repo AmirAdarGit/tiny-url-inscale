@@ -36,13 +36,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhYUBnb
 ###
 //working
 //public url 
-GET http://localhost:3001/api/url/25
+GET http://localhost:3001/api/url/24
 
 ###
 //working
 
 //private url Work!
-GET http://localhost:3001/api/url/25
+GET http://localhost:3001/api/url/26
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MTIyNTcyOTV9.Gn5-ivG65XEnrvHZmqb__igl50R6-ls1jdnpom-g5BQ
 

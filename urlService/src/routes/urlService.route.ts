@@ -13,7 +13,7 @@ const httpClient: HttpClient = new HttpClient();
 const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(httpClient);
 const urlController: UrlController = new UrlController(authServiceHttpClient);
 
-router.post('/', jsonParser, urlController.Post);
-router.get('/',jsonParser, urlController.Get);
+router.post('/', jsonParser,(req,res) => urlController.Post(req,res));
+router.get('/',jsonParser, (req,res) => urlController.Get(req,res));
 router.put('/',jsonParser, urlController.Update);
 router.delete('/',jsonParser, urlController.Remove);
