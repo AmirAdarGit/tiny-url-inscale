@@ -1,38 +1,41 @@
 import { Request, Response } from "express"   
 import * as query from "../databaseUrlQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
-import { HttpClient } from "../../../shared/modules/httpClient/src/HttpClient"
-import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
-import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
 import { Token } from "../../../shared/models/authenticate"
-import { request } from "http"
-export const post = async (req:Request, res:Response): Promise<void> => {  
+import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
+export class UrlController {
 
-    console.log("Url-Service-Module: reqest body: , ", req.body);
-    const longUrl = req.body.LongUrl;
-    const email = String(req.body.Email);
-    const isPrivate: boolean = req.body.IsPrivate
-    //first, cheak if the Long URL is already exist in the database.
-    try{
-        const IsExistUrlQuery: string = query.parseIsExistLongUrlQuery(longUrl);
-        const linkInfo = await servsices.getLinkInfo(IsExistUrlQuery); 
-        // TODO: if the Url is exist: check if it private,
-        // "yes" -> (and it is not the current user url) create new url for the user.
-        // "no"  -> return the short url that exist.  
- 
-        //new Link OR private exist link but not mine (the current user how ask for the service).
-            if(linkInfo == 'not_Such_Link_On_DB' || (((linkInfo[0].Email) =! email) && Boolean(linkInfo[0].IsPrivate)))
-            {
-                const postLongUrlQuery: string = query.parseCreateUrlQuery(longUrl, email, isPrivate);
-                console.log("Url-Service-Module ", postLongUrlQuery);
+    authHttpClient: IAuthServiceHttpClient;
+
+    constructor(urlServiceHttpClient: IAuthServiceHttpClient){
+        this.authHttpClient = urlServiceHttpClient;
+    }
+
+    async Post(req:Request, res:Response): Promise<void> {  
+    
+        console.log("Url-Service-Module: reqest body: , ", req.body);
+        const reqLongUrl: string = req.body.LongUrl;
+        const reqEemail: string = req.body.Email;
+        const reqIsPrivate: boolean = req.body.IsPrivate
+        try{
+            //cheak if the URL is already exist in the database.
+            const urlPropertiesQuery: string = query.parseGetUrlPropertiesQuery(reqLongUrl);
+            const resLinkProperties = await servsices.getLinkInfo(urlPropertiesQuery); 
+            
+            //if  new Link -OR- private exist link -AND- not mine (the current user how ask for the service).
+            //- the link is public, dont create.
+            //- the link is mine (private but the current user already created by the current user), dont create.
+                
+            if(resLinkProperties == 'not_Such_Link_On_DB' || ((resLinkProperties[0].IsPrivate) && ((resLinkProperties[0].Email) =! reqEemail))){
                 try {
-                    await servsices.addNewUrlToMysql(postLongUrlQuery)
-                    console.log("Url-Service-Module: New Url is add to the db");
+                    const createUrlQuery: string = query.parseCreateUrlQuery(reqLongUrl, reqEemail, reqIsPrivate);
+                    await servsices.addNewUrlToMysql(createUrlQuery)
+                    console.log("Url-Service-Module: New Url has been added to the db");
                     try{ 
-                        const parseGetShortUrlQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(longUrl, email);
-                        const shortUrl = await servsices.getUrl(parseGetShortUrlQuery);
+                        // resive the new short Url wich just created above, reqEmail require because duplicate private links.
+                        const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEemail);
+                        const shortUrl = await servsices.getUrl(getShortUrlByUrlAndEmailQuery);
                         console.log("Url-Service-Module: Short Url - " + shortUrl[0].ShortURL);
-                        // const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
                         res.status(200).send(String(shortUrl[0].ShortURL));
                     } catch(ex){
                         res.status(500).send(ex);
@@ -41,101 +44,98 @@ export const post = async (req:Request, res:Response): Promise<void> => {
                     res.status(500).send(ex)
                 }    
             }
-            else
-            {
+            else{
+            //Url is already created
                 try {
-                    const parseGetShortUrlQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(longUrl, email);
-                    const shortUrl = await servsices.getUrl(parseGetShortUrlQuery);
-
-                    console.log("Url-Service-Module ~~~~~~~~~~~~~~~~~", shortUrl);
-                    console.log("Url-Service-Module: Short url is already generate, try: " + shortUrl[0].ShortURL);
-                    // const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
-                    res.status(200).send(String(shortUrl[0].ShortURL));
+                    // console.log("Url-Service-Module: url properties: ", resLinkProperties);
+                    // const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEemail);
+                    // const shortUrl = await servsices.getUrl(getShortUrlByUrlAndEmailQuery);
+                    console.log("Url-Service-Module: Short url is already generate, try: " + resLinkProperties[0].ShortURL);
+                    res.status(200).send(String(resLinkProperties[0].ShortURL));
                 } catch(ex){
                     res.status(500).send(ex);
                 }
             }
-    } catch (ex){
-        res.status(500).send(ex)
-    }
-};
-
-export const get = async (req:Request, res:Response): Promise<void> => {
-
-    console.log("Url-Service body:", req.query);
-
-    const httpClient: HttpClient = new HttpClient()// Post, Get
-    const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(httpClient);
-
-    const shortUrlId = String(req.query.shortUrl); 
-    const token = String(req.query.Value);
-    
-    console.log("Url-Service-Module: geting short url from Api number ", shortUrlId);   
-    console.log("Url-Service-Module: geting token from Api ", token);    
- 
-    //check if the number is represent Long Url.
-
-    const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
-    //check if the long url is private
-    try{
-        const linkInfo = await servsices.getLinkInfo(getShortUrlQuery);
-        if(linkInfo == "not_Such_Link_On_DB"){
-            res.send("not_Such_Link_On_DB");
-            return;
+        } catch (ex){
+            res.status(500).send(ex)
         }
-        console.log("Url-Service-Module: row:  ", linkInfo);  
-        const isPrivate: boolean = linkInfo[0].IsPrivate;  
-        const userEmail: string = linkInfo[0].Email;
-        const longUrl: string = linkInfo[0].LongURL;
-        console.log("Url-Service-Module: is private url? ", isPrivate);  
+    };
     
-    //public URL
-        if(!isPrivate){
-            const getLongUrlQuery: string = query.parseGetLongUrlQuery(shortUrlId);
-            try {
-                // const longUrl = await servsices.getUrl(getLongUrlQuery);
-                console.log("Url-Service-Module longUrl: ", longUrl);
-                res.send(longUrl);
-            } catch(ex){
-            res.send(ex);
-            }
-        }
-    //private URL
-        else{
-            if(token == 'undefined'){//means that no token attachet to the http get request.
-                res.send("Url link is not public, Token needed. \nthe Token shuld be attached to the header");
+    async Get(req:Request, res:Response): Promise<void> {
+    
+        console.log("Url-Service body:", req.query);
+    
+        
+    
+        const shortUrlId = String(req.query.shortUrl); 
+        const token = String(req.query.Value);
+        
+        console.log("Url-Service-Module: geting short url from Api number ", shortUrlId);   
+        console.log("Url-Service-Module: geting token from Api ", token);    
+    
+        //check if the number is represent Long Url.
+    
+        const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
+        //check if the long url is private
+        try{
+            const linkInfo = await servsices.getLinkInfo(getShortUrlQuery);
+            if(linkInfo == "not_Such_Link_On_DB"){
+                res.send("not_Such_Link_On_DB");
                 return;
             }
-            try{
-                const validToken: Token = {
-                    Value: token
-                }
-                const response = await authServiceHttpClient.LinkValidetionToken(validToken);
-                const emailFromToken = String(response);
-                console.log("private URL Forword to authenticate token...", response);
-                if(userEmail == emailFromToken){
+            console.log("Url-Service-Module: row:  ", linkInfo);  
+            const isPrivate: boolean = linkInfo[0].IsPrivate;  
+            const userEmail: string = linkInfo[0].Email;
+            const longUrl: string = linkInfo[0].LongURL;
+            console.log("Url-Service-Module: is private url? ", isPrivate);  
+        
+        //public URL
+            if(!isPrivate){
+                const getLongUrlQuery: string = query.parseGetLongUrlQuery(shortUrlId);
+                try {
+                    // const longUrl = await servsices.getUrl(getLongUrlQuery);
+                    console.log("Url-Service-Module longUrl: ", longUrl);
                     res.send(longUrl);
-                }
-                res.send("Url link is not public, cannot access to " + shortUrlId);
-            } catch(ex){
+                } catch(ex){
                 res.send(ex);
+                }
             }
+        //private URL
+            else{
+                if(token == 'undefined'){//means that no token attachet to the http get request.
+                    res.send("Url link is not public, Token needed. \nthe Token shuld be attached to the header");
+                    return;
+                }
+                try{
+                    const validToken: Token = {
+                        Value: token
+                    }
+                    const response = await this.authHttpClient.LinkValidetionToken(validToken);
+                    const emailFromToken = String(response);
+                    console.log("private URL Forword to authenticate token...", response);
+                    if(userEmail == emailFromToken){
+                        res.send(longUrl);
+                    }
+                    res.send("Url link is not public, cannot access to " + shortUrlId);
+                } catch(ex){
+                    res.send(ex);
+                }
+            }
+        } catch(err){
+            res.send(err);
         }
-    } catch(err){
-        res.send(err);
-    }
-};
+    };
+    
+    async Remove(req:Request, res:Response): Promise<void> {
+        const shotrUtl = req.query.ShortURL;
+        console.log(shotrUtl); 
+        servsices.removeShortUrlFromTable(`${shotrUtl}`);
+        res.send("the user " + shotrUtl + " has been removed");
+    };
+    
+    async Update(req:Request, res:Response): Promise<void> {
+        res.send({user:"amiraaaaaa",
+        method:"put"});
+    };
 
-export const remove = async (req:Request, res:Response): Promise<void> => {
-    const shotrUtl = req.query.ShortURL;
-    console.log(shotrUtl); 
-    servsices.removeShortUrlFromTable(`${shotrUtl}`);
-    res.send("the user " + shotrUtl + " has been removed");
-};
-
-
-export const update = async (req:Request, res:Response): Promise<void> => {
-    res.send({user:"amiraaaaaa",
-    method:"put"});
-};
-
+}

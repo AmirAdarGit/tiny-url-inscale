@@ -1,5 +1,4 @@
-
-export const parseIsExistLongUrlQuery = (url: string): string => {
+export const parseGetUrlPropertiesQuery = (url: string): string => {
     return `SELECT * FROM Tiny_URL.Links where LongURL = '${url}'`
 }
 
