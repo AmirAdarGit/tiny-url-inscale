@@ -18,7 +18,7 @@ export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
     }
 }
 
-export const GetLinkInfo =  async (checkQuery: string): Promise<string> => {
+export const getLinkInfo =  async (checkQuery: string): Promise<string> => {
   const query = util.promisify(connection.query).bind(connection);
   try{
     const row = await query(checkQuery);

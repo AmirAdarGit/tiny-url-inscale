@@ -10,45 +10,50 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 
     console.log("Url-Service-Module: reqest body: , ", req.body);
     const longUrl = req.body.LongUrl;
-    const email = req.body.Email;
+    const email = String(req.body.Email);
     const isPrivate: boolean = req.body.IsPrivate
     //first, cheak if the Long URL is already exist in the database.
     try{
         const IsExistUrlQuery: string = query.parseIsExistLongUrlQuery(longUrl);
-        const isExist = await servsices.cheackIfUrlExsist(IsExistUrlQuery); 
+        const linkInfo = await servsices.getLinkInfo(IsExistUrlQuery); 
         // TODO: if the Url is exist: check if it private,
         // "yes" -> (and it is not the current user url) create new url for the user.
         // "no"  -> return the short url that exist.  
-        console.log("Url-Service-Module: Is Url exist? :", isExist); 
-            if(isExist){
-                const getShortUrlQuery: string = query.parseGetShortUrlQuery(longUrl);
-                try {
-                    const shortUrl = await servsices.getUrl(getShortUrlQuery);
-                    console.log("Url-Service-Module: Short url is already generate, try: " + JSON.stringify(shortUrl));
-                    const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
-                    res.status(200).send(shortUrlNumer);
-                } catch(ex){
-                    res.status(500).send(ex);
-                }
-            }
-            else{
+ 
+        //new Link OR private exist link but not mine (the current user how ask for the service).
+            if(linkInfo == 'not_Such_Link_On_DB' || (((linkInfo[0].Email) =! email) && Boolean(linkInfo[0].IsPrivate)))
+            {
                 const postLongUrlQuery: string = query.parseCreateUrlQuery(longUrl, email, isPrivate);
                 console.log("Url-Service-Module ", postLongUrlQuery);
                 try {
                     await servsices.addNewUrlToMysql(postLongUrlQuery)
                     console.log("Url-Service-Module: New Url is add to the db");
                     try{ 
-                        const postLongUrlQuery: string = query.parseGetShortUrlQuery(longUrl);
-                        const shortUrl = await servsices.getUrl(postLongUrlQuery);
-                        console.log("Url-Service-Module: Short Url - " + JSON.stringify(shortUrl));
-                        const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
-                        res.status(200).send(shortUrlNumer);
+                        const parseGetShortUrlQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(longUrl, email);
+                        const shortUrl = await servsices.getUrl(parseGetShortUrlQuery);
+                        console.log("Url-Service-Module: Short Url - " + shortUrl[0].ShortURL);
+                        // const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
+                        res.status(200).send(String(shortUrl[0].ShortURL));
                     } catch(ex){
                         res.status(500).send(ex);
                     }
                 } catch(ex){
                     res.status(500).send(ex)
                 }    
+            }
+            else
+            {
+                try {
+                    const parseGetShortUrlQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(longUrl, email);
+                    const shortUrl = await servsices.getUrl(parseGetShortUrlQuery);
+
+                    console.log("Url-Service-Module ~~~~~~~~~~~~~~~~~", shortUrl);
+                    console.log("Url-Service-Module: Short url is already generate, try: " + shortUrl[0].ShortURL);
+                    // const shortUrlNumer = JSON.stringify(shortUrl).slice(13,-2);//[{"ShortURL":[the number]}]
+                    res.status(200).send(String(shortUrl[0].ShortURL));
+                } catch(ex){
+                    res.status(500).send(ex);
+                }
             }
     } catch (ex){
         res.status(500).send(ex)
@@ -57,7 +62,6 @@ export const post = async (req:Request, res:Response): Promise<void> => {
 
 export const get = async (req:Request, res:Response): Promise<void> => {
 
-    
     console.log("Url-Service body:", req.query);
 
     const httpClient: HttpClient = new HttpClient()// Post, Get
@@ -74,7 +78,7 @@ export const get = async (req:Request, res:Response): Promise<void> => {
     const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
     //check if the long url is private
     try{
-        const linkInfo = await servsices.GetLinkInfo(getShortUrlQuery);
+        const linkInfo = await servsices.getLinkInfo(getShortUrlQuery);
         if(linkInfo == "not_Such_Link_On_DB"){
             res.send("not_Such_Link_On_DB");
             return;

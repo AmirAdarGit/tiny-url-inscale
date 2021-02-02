@@ -4,9 +4,9 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "333@gmail.com",
+    "userEmail": "000@gmail.com",
     "userFullName": "vvv sh",
-    "userPassword": "333"
+    "userPassword": "000"
 }
 
 ###
@@ -15,8 +15,8 @@ POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "333@gmail.com",
-    "userPassword": "333"
+    "userEmail": "aaa@gmail.com",
+    "userPassword": "aaa"
 }
 
 
@@ -25,26 +25,26 @@ Content-Type: application/json
 //create new short Url
 POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjMzM0BnbWFpbC5jb20iLCJpYXQiOjE2MTIxODc4NjJ9.DnC_0kGBqWzvd5flFyyLuyOaPp7q_5Z-2yGGviEldWM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MTIyNTcyOTV9.Gn5-ivG65XEnrvHZmqb__igl50R6-ls1jdnpom-g5BQ
 
 {
-    "LongURL": "https://www.amir-private.tal.v.co.il/search?hl/asdsadfdaSASASFD/SDFDDDDDDDDDDDDDDDDD/FFFFFFFFFFFFFFFFFFFFFF",
-    "Email": "333@gmail.com",
+    "LongURL": "https://stackoverflowaa.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
+    "Email": "aaa@gmail.com",
     "IsPrivate": true
 }
 
 ###
 //working
 //public url 
-GET http://localhost:3001/api/url/17
+GET http://localhost:3001/api/url/25
 
 ###
 //working
 
 //private url Work!
-GET http://localhost:3001/api/url/17
+GET http://localhost:3001/api/url/25
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjMzM0BnbWFpbC5jb20iLCJpYXQiOjE2MTIxODc4NjJ9.DnC_0kGBqWzvd5flFyyLuyOaPp7q_5Z-2yGGviEldWM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MTIyNTcyOTV9.Gn5-ivG65XEnrvHZmqb__igl50R6-ls1jdnpom-g5BQ
 
 ###
 
