@@ -32,7 +32,6 @@ export const Get = async (req:Request, res:Response): Promise<void> => {
             res.status(404).send("User email does not found");
         }
         else{
-            console.log("In user service, userPassword for un none user Email", userPassword);
             const user: User = { // generate the response user info
                 Email: userEmail,
                 Password: userPassword

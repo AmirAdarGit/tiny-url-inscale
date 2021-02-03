@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
 import { Credentials, UserMetadata} from "../../../shared/models/common"
 import { Token, ValidetionToken } from "../../../shared/models/authenticate/index"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
 import { Url } from "../../../shared/models/url/index"
-import { TokenClass, tokenToString } from "typescript";
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
+
 export class AuthController {
-    
+
     authHttpClient: IAuthServiceHttpClient;
     urlHttpClient: IUrlServiceHttpClient;
 
@@ -22,16 +21,11 @@ export class AuthController {
             Email: req.body.userEmail,
             Password: req.body.userPassword
         }
-    console.log("success to get the body credentials", credentials);
-    
+        console.log("success to get the body credentials", credentials);
         try {
             const logInResponse: Token = await this.authHttpClient.Login(credentials);
-
-            console.log(`logIn successfully, resive token ${logInResponse}`);
             console.log(`logIn successfully, resive token ${logInResponse.Value}`);
-        
-            res.status(200).send(logInResponse);
-        
+            res.status(200).send(logInResponse);//return the Token to the user -> in future save it in the browser cookies.
         } catch (ex) {
             if(ex.response.status == 405){
                 res.status(405).send("Error user Password.");
@@ -63,9 +57,9 @@ export class AuthController {
             await this.authHttpClient.SignUp(credentials, userMetadata);
             res.status(200).send();
         } catch (ex) {
-            console.log(`Failed signing up, error: ${ex}`)
+            console.log(`Failed signing up : ${ex}`)
             if(ex.response.status == 409) {
-                res.status(409).send();
+                res.status(409).send("User already exist, try another User Email.");
             } else {
                 res.status(500).send({ ex });
             }
@@ -73,19 +67,12 @@ export class AuthController {
     }
 
     async CreateUrl (req:Request, res:Response):Promise<void> {
-
-        // first step, check if the token is valid.
         const Usertoken: Token = {
             Value: req.headers.authorization.split(" ")[1]
         }
-        const validetionToken: ValidetionToken = {    
-            Token: Usertoken,
-            Email: req.body.Email,
-        }
-        console.log("Api-Module: success to get the user Token", validetionToken);
-
+        const reqEmail: string = req.body.Email   
         try{
-            const response = await this.authHttpClient.UserValidetionToken(validetionToken);
+            const response = await this.authHttpClient.UserValidetionToken(reqEmail, { ...Usertoken });
             console.log("Api-Module: response from Authenticate module - ", response)
             //second step, send http request to Url-Service
             try{

@@ -1,54 +1,47 @@
 
-//working!
+//SignUp - working!
 POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "000@gmail.com",
+    "userEmail": "d@gmail.com",
     "userFullName": "vvv sh",
-    "userPassword": "000"
+    "userPassword": "d"
 }
 
 ###
-//working
+//LogIn - working
 POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "aaa@gmail.com",
-    "userPassword": "aaa"
+    "userEmail": "ff@gmail.com",
+    "userPassword": "ff"
 }
 
-
 ###
-//working
-//create new short Url
+//Create new short Url - working
 POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MTIyNTcyOTV9.Gn5-ivG65XEnrvHZmqb__igl50R6-ls1jdnpom-g5BQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRAZ21haWwuY29tIiwiaWF0IjoxNjEyMzcxMjMxfQ.3Qk392ZEDYRkTpkyzhXOwVfro_JRrG3Cc8tSHAd2nUk
 
 {
-    "LongURL": "https://stackoverflowasssssssa.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
-    "Email": "aaa@gmail.com",
-    "IsPrivate": true
+    "LongURL": "https://amirsdddddeeexxxddxxdddvvddffggffddddds333ggggffsss-web-public.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
+    "Email": "d@gmail.com",
+    "IsPrivate": false
 }
 
 ###
-//working
-//public url 
-GET http://localhost:3001/api/url/24
+//Get public url - working 
+GET http://localhost:3001/api/url/44
 
 ###
-//working
-
-//private url Work!
-GET http://localhost:3001/api/url/26
+//Get private url, with token - Working
+GET http://localhost:3001/api/url/43
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MTIyNTcyOTV9.Gn5-ivG65XEnrvHZmqb__igl50R6-ls1jdnpom-g5BQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZmQGdtYWlsLmNvbSIsImlhdCI6MTYxMjM3MTQxMn0.8db9_INyDwaGWLaRX-wj1SC-jdOnKZzplhW3rTK7BZI
 
 ###
-
-
 
 # GET http://localhost:3001/api/list
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE

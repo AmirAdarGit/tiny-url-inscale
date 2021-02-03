@@ -1,13 +1,14 @@
+import endpoint from "../../../../shared/environmentVirables/src/endpoint.confige";
+import * as dotenv from 'dotenv'
+dotenv.config() //use the jwt secet key 
 import {Request, Response} from "express"   
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
-import * as dotenv from 'dotenv'
 import { Credentials , UserMetadata} from "../../../../shared/models/common"
 import { UserServiceHttpClient } from "../../../../shared/modules/userServiceHttpClient/client"
 import { IUserServiceHttpClient } from "../../../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from "../../../../shared/models/user/index"
-import endpoint from "../../../../shared/modules/enviromentVairble/src/endpoint.config";
-dotenv.config() //use the jwt secet key 
+import { Token } from "../../../../shared/models/authenticate/Token"
 
 export class UserController{
 
@@ -56,24 +57,28 @@ export class UserController{
         
         try {
             const user: User = await this.userHttpClient.Get(credentials.Email);
-            console.log("in auth microservice with the user encripted pass:", user);
+            console.log("Authenticate-Service-Module: user properties for validation user password, ", user);
 
             const { Password } = user; // extract the encoded password
             const { Email } = user; // extract the encoded password
 
-            if(await bcrypt.compare(credentials.Password, Password)){
+            //compare the user request password, with the encoded password wich generate in user singUp.
+            if(await bcrypt.compare(credentials.Password, Password)){ 
                 try {
-                    console.log("in auth mocroservice, user logIn pass and encriptes pass match!");
-                    console.log("the Email is:", Email);
-                    console.log("access Token secret is:", endpoint.AccessTokenSecret);
-                
-                    const Value = jwt.sign({email: Email}, endpoint.AccessTokenSecret);
-                    console.log("logIn sucsses return the Token: ", Value);
-                    res.status(200).json({accessToken : Value});
+                    console.log("Authenticate-Service-Module: Log in success, Forward generate new user Token");
+                    console.log(endpoint.AccessTokenSecret);
+                    const value = jwt.sign({email: Email}, endpoint.AccessTokenSecret );//create the Token with user email inside.
+                    console.log("logIn sucsses return the Token: ", value);
+                    
+                    const token: Token = {
+                        Value: value 
+                    }
+                    
+                    res.status(200).send(token);
                 } catch {
 
                     console.log("Fail in create Token for the user , Email: ",Email);
-                    console.log("Fail in create Token for the user Access token from env: ",process.env.ACCESS_TOKEN_SECRET);
+                    console.log("Fail in create Token for the user Access token from env: ", endpoint.AccessTokenSecret );
                     res.status(417).send("Fail creating the User Token."); //Expectation Failed
                 }
             }
