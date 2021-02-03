@@ -82,7 +82,7 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    needs: [build-api, build-user-service, build-authentication]
+    needs: [build-api, build-user-service, build-authentication, build-url-service]
 
     steps:
     - name: call deploy server
