@@ -20,7 +20,7 @@ export class UrlController {
         try{
             //cheak if the URL is already exist in the database.
             const urlPropertiesQuery: string = query.parseGetUrlPropertiesQuery(reqLongUrl);
-            const resLinkProperties = await servsices.getLinkInfo(urlPropertiesQuery); 
+            const resLinkProperties: any = await servsices.getLinkInfo(urlPropertiesQuery); 
             
             //if  new Link -OR- private exist link -AND- not mine (the current user how ask for the service).
             //- the link is public, dont create.
@@ -34,7 +34,7 @@ export class UrlController {
                     try{ 
                         // resive the new short Url wich just created above, reqEmail require because duplicate private links.
                         const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEemail);
-                        const shortUrl = await servsices.getUrl(getShortUrlByUrlAndEmailQuery);
+                        const shortUrl:any = await servsices.getUrl(getShortUrlByUrlAndEmailQuery);
                         console.log("Url-Service-Module: Short Url - " + shortUrl[0].ShortURL);
                         res.status(200).send(String(shortUrl[0].ShortURL));
                     } catch(ex){
@@ -70,7 +70,7 @@ export class UrlController {
         const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
         //check if the long url is private
         try{
-            const linkInfo = await servsices.getLinkInfo(getShortUrlQuery);
+            const linkInfo:any = await servsices.getLinkInfo(getShortUrlQuery);
             if(linkInfo == "not_Such_Link_On_DB"){
                 res.send("not_Such_Link_On_DB");
                 return;
