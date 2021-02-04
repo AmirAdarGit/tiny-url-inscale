@@ -34,20 +34,20 @@ export const getLinkInfo =  async (checkQuery: string): Promise<string> => {
 }
 
 
-export const cheackIfUrlExsist =  async (longUrl: string): Promise<boolean> => {
-  const query = util.promisify(connection.query).bind(connection);
-  try{
-    const row = await query(longUrl);
-      if(JSON.stringify(row) == '[]'){
-        return false;
-      }
-      else{
-        return true;
-      }
-    } catch (ex) {
-        return ex;
-    }
-  }
+// export const cheackIfUrlExsist =  async (longUrl: string): Promise<boolean> => {
+//   const query = util.promisify(connection.query).bind(connection);
+//   try{
+//     const row = await query(longUrl);
+//       if(JSON.stringify(row) == '[]'){
+//         return false;
+//       }
+//       else{
+//         return true;
+//       }
+//     } catch (ex) {
+//         return ex;
+//     }
+//   }
 
 
 export const getUrl  = async (getQuery: string):Promise<string> =>{

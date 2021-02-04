@@ -37,9 +37,13 @@ export class UrlController {
         else{
             try {
                 const response = await this.urlHttpClient.Get(shortUrl, { ...userToken });
+                if(String(response) == '403'){
+                    res.status(403).send("Token invalid")
+                }
+                else{
                 console.log("Api-Module: resived response from Url-Service", response);
-                //if the response statuse == 200,401,404 return respectively
                 res.send(response);
+                }
             } catch(ex) {
                 res.status(500).send(`Api-Module: ${ex}`)
                 console.log(`Api-Module: ${ex}`);

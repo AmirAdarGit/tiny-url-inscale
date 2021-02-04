@@ -79,22 +79,22 @@ export class UserController{
 
                     console.log("Fail in create Token for the user , Email: ",Email);
                     console.log("Fail in create Token for the user Access token from env: ", endpoint.AccessTokenSecret );
-                    res.status(417).send("Fail creating the User Token."); //Expectation Failed
+                    res.send(417); //Fail creating the User Token.
                 }
             }
             else {
-                res.status(405).send("access not allowd, change the user password and try agian");
+                res.send("405");
             }
 
         } catch (ex) {
             console.log(`Failed geting user info from the DB, error: ${ex.response.status}`);
             if(ex.response.status == 409){ //duplicate email
-                res.status(409).send();
+                res.send("409");
             } 
             if(ex.response.status == 404){ //email not found in DB
-                res.status(404).send("Error, User email does not found");
+                res.send("404");
             } else {
-                res.status(500).send();
+                res.send("500");
             }
         }
     };

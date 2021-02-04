@@ -4,6 +4,8 @@ import { Token, ValidetionToken } from "../../../shared/models/authenticate/inde
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
 import { Url } from "../../../shared/models/url/index"
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
+import { runInNewContext } from "vm";
+import { readBuilderProgram } from "typescript";
 
 export class AuthController {
 
@@ -24,19 +26,19 @@ export class AuthController {
         console.log("success to get the body credentials", credentials);
         try {
             const logInResponse: Token = await this.authHttpClient.Login(credentials);
-            console.log(`logIn successfully, resive token ${logInResponse.Value}`);
-            res.status(200).send(logInResponse);//return the Token to the user -> in future save it in the browser cookies.
-        } catch (ex) {
-            if(ex.response.status == 405){
-                res.status(405).send("Error user Password.");
+            if(String(logInResponse) == '405'){
+                res.status(405).send("error Password"); 
             }
-            if(ex.response.status == 404){
-                res.status(404).send("Error user Email, no such user.");
+            if(String(logInResponse) == '404'){
+                res.status(404).send("error Email"); 
             }
             else{
+            console.log(`logIn successfully, resive token ${logInResponse.Value}`);
+            res.status(200).send(logInResponse);//return the Token to the user -> in future save it in the browser cookies.
+            }
+        } catch (ex) {
                 console.log(`Faild creating token, err ${ex}`);
                 res.status(500).send();
-            }
         }
     };
     
@@ -73,20 +75,29 @@ export class AuthController {
         const reqEmail: string = req.body.Email   
         try{
             const response = await this.authHttpClient.UserValidetionToken(reqEmail, { ...Usertoken });
-            console.log("Api-Module: response from Authenticate module - ", response)
-            //second step, send http request to Url-Service
-            try{
-                const url: Url = {
-                    LongUrl : req.body.LongURL,
-                    Email : req.body.Email,
-                    IsPrivate : Boolean(req.body.IsPrivate)
+            console.log("response:", response);
+            if(String(response) == 'Token error'){
+                res.status(403).send('Token error')
+            }
+            else if(String(response) == 'Email error'){
+                res.status(403).send('Email error')
+            }
+            else{
+                console.log("Api-Module: response from Authenticate module - ", response)
+                //second step, send http request to Url-Service
+                try{
+                    const url: Url = {
+                        LongUrl : req.body.LongURL,
+                        Email : req.body.Email,
+                        IsPrivate : Boolean(req.body.IsPrivate)
+                    }
+                    const shortUrl = await this.urlHttpClient.Create(url);
+                    console.log(`Api-Module: new url - ${shortUrl}`);   
+                    res.status(200).send("Token verified, shortUrl - (number)/" + shortUrl);             
+                } catch(ex){
+                    console.log('Api-Module: Error create new Url');
+                    res.status(500).send();
                 }
-                const shortUrl = await this.urlHttpClient.Create(url);
-                console.log(`Api-Module: new url - ${shortUrl}`);   
-                res.status(200).send("Token verified, shortUrl - (number)/" + shortUrl);             
-            } catch(ex){
-                console.log('Api-Module: Error create new Url');
-                res.status(500).send();
             }
         } catch (ex){
             if(ex.response.status == 403){

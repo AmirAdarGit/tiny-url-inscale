@@ -4,9 +4,9 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "d@gmail.com",
+    "userEmail": "ss@gmail.com",
     "userFullName": "vvv sh",
-    "userPassword": "d"
+    "userPassword": "ss"
 }
 
 ###
@@ -23,11 +23,11 @@ Content-Type: application/json
 //Create new short Url - working
 POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRAZ21haWwuY29tIiwiaWF0IjoxNjEyMzcxMjMxfQ.3Qk392ZEDYRkTpkyzhXOwVfro_JRrG3Cc8tSHAd2nUk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZmQGdtYWlsLmNvbSIsImlhdCI6MTYxMjQ0NzQwNn0.77pMRsAtYghRwjYroTzJfsxRqyyeG-0sJiPfpkHPLSo
 
 {
-    "LongURL": "https://amirsdddddeeexxxddxxdddvvddffggffddddds333ggggffsss-web-public.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
-    "Email": "d@gmail.com",
+    "LongURL": "https://amirsdddddsssseeexxxddxxdddvvddffggffddddds333ggggffsss-web-public.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
+    "Email": "ff@gmail.com",
     "IsPrivate": false
 }
 
@@ -37,9 +37,9 @@ GET http://localhost:3001/api/url/44
 
 ###
 //Get private url, with token - Working
-GET http://localhost:3001/api/url/43
+GET http://localhost:3001/api/url/31
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZmQGdtYWlsLmNvbSIsImlhdCI6MTYxMjM3MTQxMn0.8db9_INyDwaGWLaRX-wj1SC-jdOnKZzplhW3rTK7BZI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZmQGdtYWlsLmNvbSIsImlhdCI6MTYxMjQ0NzQwNn0.77pMRsAtYghRwjYroTzJfsxRqyyeG-0sJiPfpkHPLSo
 
 ###
 

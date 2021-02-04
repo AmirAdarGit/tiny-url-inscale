@@ -104,7 +104,10 @@ export class UrlController {
                     console.log("private URL forword to Authenticate Service, sending the token: ", validToken);
                     const response = await this.authHttpClient.LinkValidetionToken(validToken);
                     const emailFromToken = String(response);
-                    if(userEmail == emailFromToken){
+                    if(emailFromToken == '403'){
+                        res.send("403");
+                    }
+                    else if(userEmail == emailFromToken){
                         res.send(longUrl);
                     }
                     else {
