@@ -61,6 +61,27 @@ jobs:
         docker build -t amiradar/tiny-url.url-service .
         docker push amiradar/tiny-url.url-service
 
+  build-email-producer:
+    name: build-email-producer
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build, tag, and push image to Docker Hub
+      id: build-image
+      run: |
+        sudo ./install_dependencies.sh 
+        cd emailProducer
+        tsc
+        docker login --username=amiradar --password=amiradar123
+        docker build -t amiradar/tiny-url.email-producer .
+        docker push amiradar/tiny-url.email-producer
+
+
+
+
   build-authentication:
     name: build-authentication
     runs-on: ubuntu-latest

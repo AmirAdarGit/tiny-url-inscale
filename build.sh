@@ -16,3 +16,8 @@ docker build -t amiradar/tiny-url.user-service .
 cd ../authentication/server
 tsc
 docker build -t amiradar/tiny-url.authentication .
+
+
+cd ../emailProducer
+tsc
+docker build -t amiradar/tiny-url.email-producer .

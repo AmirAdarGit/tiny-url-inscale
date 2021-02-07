@@ -57,6 +57,7 @@ export class AuthController {
         
         try {
             await this.authHttpClient.SignUp(credentials, userMetadata);
+            
             res.status(200).send();
         } catch (ex) {
             console.log(`Failed signing up : ${ex}`)

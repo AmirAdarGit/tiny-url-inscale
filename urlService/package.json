@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
+    "@types/mysql": "github:types/mysql",
     "@types/request": "^2.48.5",
     "@types/shortid": "0.0.29",
     "@types/valid-url": "^1.0.3"

@@ -4,9 +4,21 @@ services:
         image: "amiradar/tiny-url.api"
         ports:
             - "3001:8080"
+            
     user-service:
+        environment:
+        - AWS_ACCESS_KEY_ID=AKIAJ4HFL26V2NM3LYJA
+        - AWS_SECRET_ACCESS_KEY=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
         image: "amiradar/tiny-url.user-service"
+        
     url-service:
-        image: "amiradar/tiny-url.url-service"        
+        image: "amiradar/tiny-url.url-service"
+
     authentication:
         image: "amiradar/tiny-url.authentication"
+
+    email-producer:
+        environment:
+        - AWS_ACCESS_KEY_ID=AKIAJ4HFL26V2NM3LYJA
+        - AWS_SECRET_ACCESS_KEY=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
+        image: "amiradar/tiny-url.email-producer"        

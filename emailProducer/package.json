@@ -1,0 +1,21 @@
+{
+  "name": "urlService",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "prod": "node ./dist/produce.js",
+    "start": "tsc && node ./dist/produce.js",
+    "watch": "nodemon ./dist/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.839.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.25",
+    "@types/valid-url": "^1.0.3"
+  }
+}

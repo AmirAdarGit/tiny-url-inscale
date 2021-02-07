@@ -2,7 +2,7 @@ import { Request, Response} from "express"
 import { parsePostQueryToString, parseGetQueryToString } from "../databaseUserQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
 import { User } from "../../../shared/models/user/index"
-
+import { sendUserEmail } from '../consume.email.sqs/consume';
 export const Create = async (req:Request, res:Response): Promise<void> => {
     
     const userEmail: string = req.body.Email;
@@ -12,6 +12,7 @@ export const Create = async (req:Request, res:Response): Promise<void> => {
     const postQuery: string = parsePostQueryToString(userEmail, userFullName, userPassword); //
     try {
         await servsices.addNewUserToMysql(postQuery);//send the query to mysql db 
+        await sendUserEmail(userEmail);
         res.status(200).send();        
     } catch (ex) {
         if (ex.code === 'ER_DUP_ENTRY') {//exeptions from the query response

@@ -2,6 +2,7 @@ import { ErrorRequestHandler } from 'express';
 import * as mysql from 'mysql'
 import { connection } from '../database.mysql.config/connection'
 import { User } from "../../../../../models/user/index"
+import {createConnection, QueryError, RowDataPacket} from 'mysql';
 
 import * as util from "util"
 
@@ -13,7 +14,8 @@ export const GetUserPassword  = async (getUserQuery: string):Promise<string> =>{
         var resultArray = row[0].UserPassword; 
         return resultArray;
       
-    } catch{
+    } catch (ex){
+      
       return 'not_Such_User_On_DB';
     }
 }
