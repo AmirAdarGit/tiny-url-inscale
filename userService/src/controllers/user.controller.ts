@@ -2,7 +2,7 @@ import { Request, Response} from "express"
 import { parsePostQueryToString, parseGetQueryToString } from "../databaseUserQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
 import { User } from "../../../shared/models/user/index"
-import { sendUserEmail } from '../consume.email.sqs/consume';
+import { sendUserEmail } from '../produce.email.sqs/produce';
 export const Create = async (req:Request, res:Response): Promise<void> => {
     
     const userEmail: string = req.body.Email;

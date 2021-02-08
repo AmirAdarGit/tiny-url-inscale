@@ -18,6 +18,6 @@ tsc
 docker build -t amiradar/tiny-url.authentication .
 
 
-cd ../emailProducer
+cd ../emailConsume
 tsc
-docker build -t amiradar/tiny-url.email-producer .
+docker build -t amiradar/tiny-url.email-consume .

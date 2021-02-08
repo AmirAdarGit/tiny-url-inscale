@@ -61,8 +61,8 @@ jobs:
         docker build -t amiradar/tiny-url.url-service .
         docker push amiradar/tiny-url.url-service
 
-  build-email-producer:
-    name: build-email-producer
+  build-email-consume:
+    name: build-email-consume
     runs-on: ubuntu-latest
 
     steps:
@@ -73,11 +73,11 @@ jobs:
       id: build-image
       run: |
         sudo ./install_dependencies.sh 
-        cd emailProducer
+        cd emailConsume
         tsc
         docker login --username=amiradar --password=amiradar123
-        docker build -t amiradar/tiny-url.email-producer .
-        docker push amiradar/tiny-url.email-producer
+        docker build -t amiradar/tiny-url.email-consume .
+        docker push amiradar/tiny-url.email-consume
 
 
 
@@ -103,7 +103,7 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    needs: [build-api, build-user-service, build-authentication, build-url-service]
+    needs: [build-api, build-user-service, build-authentication, build-url-service, build-email-consume]
 
     steps:
     - name: call deploy server

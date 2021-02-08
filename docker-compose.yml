@@ -17,8 +17,8 @@ services:
     authentication:
         image: "amiradar/tiny-url.authentication"
 
-    email-producer:
+    email-consume:
         environment:
         - AWS_ACCESS_KEY_ID=AKIAJ4HFL26V2NM3LYJA
         - AWS_SECRET_ACCESS_KEY=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
-        image: "amiradar/tiny-url.email-producer"        
+        image: "amiradar/tiny-url.email-consume"        
