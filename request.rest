@@ -15,8 +15,8 @@ POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "ff@gmail.com",
-    "userPassword": "ff"
+    "userEmail": "amiradar12345@gmail.com",
+    "userPassword": "amir123"
 }
 
 ###
@@ -26,14 +26,14 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZmQGdtYWlsLmNvbSIsImlhdCI6MTYxMjQ0NzQwNn0.77pMRsAtYghRwjYroTzJfsxRqyyeG-0sJiPfpkHPLSo
 
 {
-    "LongURL": "https://amirsdddddsssseeexxxddxxdddvvddffggffddddds333ggggffsss-web-public.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
+    "LongURL": "https://amirsdddddsasdfafasfsafssseeexxxddxxdddvvddffggffddddds333ggggffsss-web-public.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
     "Email": "ff@gmail.com",
     "IsPrivate": false
 }
 
 ###
 //Get public url - working 
-GET http://localhost:3001/api/url/44
+GET http://localhost:3001/api/url/51
 
 ###
 //Get private url, with token - Working

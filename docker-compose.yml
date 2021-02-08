@@ -1,24 +1,23 @@
 version: "3.9"
 services:
     api:
+        env_file: ./api/api.env
         image: "amiradar/tiny-url.api"
         ports:
             - "3001:8080"
             
     user-service:
-        environment:
-        - AWS_ACCESS_KEY_ID=AKIAJ4HFL26V2NM3LYJA
-        - AWS_SECRET_ACCESS_KEY=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
+        env_file: ./userService/userService.env
         image: "amiradar/tiny-url.user-service"
         
     url-service:
+        env_file: ./urlService/urlService.env
         image: "amiradar/tiny-url.url-service"
 
     authentication:
+        env_file: ./authentication/server/auth.env
         image: "amiradar/tiny-url.authentication"
 
     email-consume:
-        environment:
-        - AWS_ACCESS_KEY_ID=AKIAJ4HFL26V2NM3LYJA
-        - AWS_SECRET_ACCESS_KEY=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
+        env_file: ./emailConsume/emailConsume.env
         image: "amiradar/tiny-url.email-consume"        

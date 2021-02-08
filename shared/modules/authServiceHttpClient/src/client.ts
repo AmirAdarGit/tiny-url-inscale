@@ -20,13 +20,14 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         }
 
         console.log("With new user: ", newUser);
-        return await this.httpClient.Post("http://authentication:8080/api/autentication/signUp", newUser)
+        return await this.httpClient.Post(process.env.AUTH_SIGNUP_PATH, newUser)//process use - api.env, urlService.env
     }
+
 
     async Login(credentials: Credentials): Promise<Token> {
         try{
         console.log("Try to send to auth the credentisls ", credentials);
-        return await this.httpClient.Get<Token>("http://authentication:8080/api/autentication/logIn", { ...credentials })
+        return await this.httpClient.Get<Token>(process.env.AUTH_LOGIN_PATH, { ...credentials })//process use - api.env, urlService.env
         } catch(err){
             console.log("error in Login " + err.response.status);
         }
@@ -35,7 +36,7 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     async UserValidetionToken(email: string, token: Token): Promise<void> {
         try{
             // console.log("Try to send to auth the Token and user email for validation ", validetionToken);
-            return await this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/user", { email, ...token });
+            return await this.httpClient.Get<void>(process.env.AUTH_VALID_TOKEN_USER_PATH, { email, ...token });//process use - api.env, urlService.env
         } catch(err){
             console.log("error in ValidetionToken " + err);
         }
@@ -44,7 +45,7 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     async LinkValidetionToken(token: Token): Promise<void> {
         try{
             // console.log("Try to send to auth the Token and user email for validation ", token);
-            return await this.httpClient.Get<void>("http://authentication:8080/api/autentication/validationToken/link", { ...token });
+            return await this.httpClient.Get<void>(process.env.AUTH_VALID_TOKEN_LINK_PATH, { ...token });//process use - api.env, urlService.env
         } catch(err){
             console.log("error in ValidetionToken " + err);
         }

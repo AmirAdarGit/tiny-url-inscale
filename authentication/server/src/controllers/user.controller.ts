@@ -1,4 +1,3 @@
-import endpoint from "../../../../shared/environmentVirables/src/endpoint.confige";
 import * as dotenv from 'dotenv'
 dotenv.config() //use the jwt secet key 
 import {Request, Response} from "express"   
@@ -66,8 +65,8 @@ export class UserController{
             if(await bcrypt.compare(credentials.Password, Password)){ 
                 try {
                     console.log("Authenticate-Service-Module: Log in success, Forward generate new user Token");
-                    console.log(endpoint.AccessTokenSecret);
-                    const value = jwt.sign({email: Email}, endpoint.AccessTokenSecret );//create the Token with user email inside.
+                    console.log(process.env.ACCESS_TOKEN_SECRET);
+                    const value = jwt.sign({email: Email}, process.env.ACCESS_TOKEN_SECRET );//create the Token with user email inside.
                     console.log("logIn sucsses return the Token: ", value);
                     
                     const token: Token = {
@@ -78,7 +77,7 @@ export class UserController{
                 } catch {
 
                     console.log("Fail in create Token for the user , Email: ",Email);
-                    console.log("Fail in create Token for the user Access token from env: ", endpoint.AccessTokenSecret );
+                    console.log("Fail in create Token for the user Access token from env: ", process.env.ACCESS_TOKEN_SECRET );
                     res.send(417); //Fail creating the User Token.
                 }
             }

@@ -7,7 +7,7 @@ export const sendUserEmail = async function (userEmail: string) {
     console.log("User-Service, send the Email to SQS");
     const params = {
         MessageBody: userEmail,
-        QueueUrl: "https://sqs.eu-central-1.amazonaws.com/204375983547/email"
+        QueueUrl: process.env.AWS_SQS_URL
     }
     await sqs.sendMessage(params, function(err: Error, data){
         if(err){

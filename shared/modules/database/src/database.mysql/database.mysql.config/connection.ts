@@ -4,10 +4,10 @@ import {createConnection, QueryError, RowDataPacket} from 'mysql';
 //await?
 
 var db_config = {
-  host: 'aws-tinyurl.cppbeuypt4xk.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: 'amirA123',
-  database: 'Tiny_URL'
+  host: process.env.DB_CONFIGE_HOST,
+  user: process.env.DB_CONFIGE_USER,
+  password: process.env.DB_CONFIGE_PASSWORD,
+  database: process.env.DB_CONFIGE_DATABASE
 };
 
 export var connection: any; //what type?

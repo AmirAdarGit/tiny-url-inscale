@@ -4,7 +4,7 @@ import { Consumer } from 'sqs-consumer'
 
 
 const app = Consumer.create({
-  queueUrl: 'https://sqs.eu-central-1.amazonaws.com/204375983547/email',
+  queueUrl: process.env.AWS_SQS_URL,
   handleMessage: async (message: any) => {
     console.log(message.Body); 
     await sendEmail(message.Body)  
@@ -26,13 +26,13 @@ async function sendEmail(userEmail: string): Promise<void>{
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'tiny.url.in.scaile@gmail.com',
-      pass: 'amiradar12345'
+      user: process.env.MANAGE_EMAIL_USERNAME,
+      pass: process.env.MANAGE_EMAIL_PASSWORD
     }
   });
   
   var mailOptions = {
-    from: 'tiny.url.in.scaile@gmail.com',
+    from: process.env.MANAGE_EMAIL_USERNAME,
     to: userEmail,
     subject: 'Welcome To Tiny Url App',
   

@@ -1,6 +1,5 @@
 import {Request, Response} from "express"   
 import * as jwt from "jsonwebtoken"
-import endpoint from "../../../../shared/environmentVirables/src/endpoint.confige";
 import * as dotenv from 'dotenv'
 dotenv.config() //use the jwt secet key 
 
@@ -10,7 +9,7 @@ dotenv.config() //use the jwt secet key
         const Email: string = String(req.query.email);
         const token: string = String(req.query.Value);
 
-        jwt.verify(token, endpoint.AccessTokenSecret , (err, userEmail: any) => {// verify the user token with his one email
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET , (err, userEmail: any) => {// verify the user token with his one email
             if(err){
                 res.send("Token error");
             }else{
@@ -28,7 +27,7 @@ dotenv.config() //use the jwt secet key
         const token: string = String(req.query.Value);
         console.log("Authentication-Module - token:", token);
         try{
-            await jwt.verify(token, endpoint.AccessTokenSecret, (err, userEmail:any) => {// verify the user token with his one email
+            await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userEmail:any) => {// verify the user token with his one email
                 if(err) {
                 console.log("Authentication-Module - err:", err);
                 res.send("403");
