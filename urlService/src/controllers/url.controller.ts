@@ -4,6 +4,7 @@ import * as servsices from "../../../shared/modules/database/src/database.mysql/
 import {createConnection, QueryError, RowDataPacket} from 'mysql';
 import { Token } from "../../../shared/models/authenticate"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
+import { sendEmailWithShortUrl } from "../produce.url.sqs/produce"
 export class UrlController {
 
     authHttpClient: IAuthServiceHttpClient;
@@ -16,7 +17,7 @@ export class UrlController {
     
         console.log("Url-Service-Module: reqest body: , ", req.body);
         const reqLongUrl: string = req.body.LongUrl;
-        const reqEemail: string = req.body.Email;
+        const reqEmail: string = req.body.Email;
         const reqIsPrivate: boolean = req.body.IsPrivate
         try{
             //cheak if the URL is already exist in the database.
@@ -27,16 +28,19 @@ export class UrlController {
             //- the link is public, dont create.
             //- the link is mine (private but the current user already created by the current user), dont create.
                 
-            if(resLinkProperties == 'not_Such_Link_On_DB' || ((resLinkProperties[0].IsPrivate) && ((resLinkProperties[0].Email) =! reqEemail))){
+            if(resLinkProperties == 'not_Such_Link_On_DB' || ((resLinkProperties[0].IsPrivate) && ((resLinkProperties[0].Email) =! reqEmail))){
                 try {
-                    const createUrlQuery: string = query.parseCreateUrlQuery(reqLongUrl, reqEemail, reqIsPrivate);
+                    const createUrlQuery: string = query.parseCreateUrlQuery(reqLongUrl, reqEmail, reqIsPrivate);
                     await servsices.addNewUrlToMysql(createUrlQuery)
+                    
                     console.log("Url-Service-Module: New Url has been added to the db");
                     try{ 
                         // resive the new short Url wich just created above, reqEmail require because duplicate private links.
-                        const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEemail);
+                        const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEmail);
                         const shortUrl:any = await servsices.getUrl(getShortUrlByUrlAndEmailQuery);
                         console.log("Url-Service-Module: Short Url - " + shortUrl[0].ShortURL);
+                        await sendEmailWithShortUrl(reqEmail ,String(shortUrl[0].ShortURL), String(reqLongUrl));
+
                         res.status(200).send(String(shortUrl[0].ShortURL));
                     } catch(ex){
                         res.status(500).send(ex);

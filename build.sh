@@ -2,11 +2,9 @@ cd api
 tsc
 docker build -t amiradar/tiny-url.api .
 
-
 cd ../urlService
 tsc
 docker build -t amiradar/tiny-url.url-service .
-
 
 cd ../userService
 tsc

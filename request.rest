@@ -4,9 +4,9 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "amiradar12345@gmail.com",
-    "userFullName": "amir adar",
-    "userPassword": "amir123"
+    "userEmail": "vasilisky@gmail.com",
+    "userFullName": "Tal V",
+    "userPassword": "talV"
 }
 
 ###
@@ -15,31 +15,31 @@ POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "amiradar12345@gmail.com",
-    "userPassword": "amir123"
+    "userEmail": "vasilisky@gmail.com",
+    "userPassword": "talV"
 }
 
 ###
 //Create new short Url - working
 POST http://localhost:3001/api/auth/createUrl
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZmQGdtYWlsLmNvbSIsImlhdCI6MTYxMjQ0NzQwNn0.77pMRsAtYghRwjYroTzJfsxRqyyeG-0sJiPfpkHPLSo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc
 
 {
-    "LongURL": "https://amirsdddddsasdfafasfsafssseeexxxddxxdddvvddffggffddddds333ggggffsss-web-public.com/questions/42766446/how-to-handle-error-er-dup-entry-duplicate-entry-in-nodejs",
-    "Email": "ff@gmail.com",
-    "IsPrivate": false
+    "LongURL": "https://www.tal-king-22222243315aaffrd111/search?q=%D7%A9%D7%90%D7%99%D7%9C%D7%AA%D7%94+%D7%91%D7%A8%D7%91%D7%99%D7%9D+%D7%AA%D7%A8%D7%92%D7%95%D7%9D&rlz=1C1SQJL_enUS782US782&oq=%D7%A9%D7%90%D7%99%D7%9C%D7%AA%D7%94+%D7%91%D7%A8%D7%91%D7%99%D7%9D+%D7%AA%D7%A8%D7%92%D7%95%D7%9D&aqs=chrome..69i57.10279j1j1&sourceid=chrome&ie=UTF-8",
+    "Email": "vasilisky@gmail.com",
+    "IsPrivate": true
 }
 
 ###
 //Get public url - working 
-GET http://localhost:3001/api/url/51
+GET http://localhost:3001/api/url/53
 
 ###
 //Get private url, with token - Working
-GET http://localhost:3001/api/url/31
+GET http://localhost:3001/api/url/52
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZmQGdtYWlsLmNvbSIsImlhdCI6MTYxMjQ0NzQwNn0.77pMRsAtYghRwjYroTzJfsxRqyyeG-0sJiPfpkHPLSo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtaXJhZGFyMTIzNDVAZ21haWwuY29tIiwiaWF0IjoxNjEyODY5NDU1fQ.lO9pbTPzcLXAClXT5vS0t8SfdTDXbc96KjLK3PfHy8I
 
 ###
 

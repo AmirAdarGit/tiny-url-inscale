@@ -1,11 +1,6 @@
-import axios from "axios";
 import { Request, Response } from "express";
-import { isThisTypeNode } from "typescript";
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
-import { UrlServiceHttpClient } from "../../../shared/modules/urlServiceHttpClient/client";
 import { Token } from "../../../shared/models/authenticate/index"
-import { userInfo } from "os";
-
 
 export class UrlController { 
 

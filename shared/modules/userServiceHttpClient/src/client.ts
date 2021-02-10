@@ -1,7 +1,7 @@
-import { IUserServiceHttpClient } from "../../interfaces/user/IUserServiceHttpClient"
-import { Credentials, UserMetadata } from "../../models/common";
-import { User } from "../../models/user";
-import { HttpClient } from "../httpClient/src/HttpClient";
+import { IUserServiceHttpClient } from "../../../interfaces/user/IUserServiceHttpClient"
+import { Credentials, UserMetadata } from "../../../models/common";
+import { User } from "../../../models/user";
+import { HttpClient } from "../../httpClient/src/HttpClient";
 
 export class UserServiceHttpClient implements IUserServiceHttpClient {
 
@@ -12,7 +12,7 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
     }
 
     async Get(email: string): Promise<User> {
-        return this.httpClient.Get<User>("http://user-service:8080/api/user", { email })
+        return this.httpClient.Get<User>(process.env.USER_SERVICE_PATH, { email })
     }
 
     async Create(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
@@ -21,7 +21,7 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
             ...userMetadata
         }
         
-        return this.httpClient.Post<void>("http://user-service:8080/api/user", newUser)
+        return this.httpClient.Post<void>(process.env.USER_SERVICE_PATH, newUser)
     }
 
 }

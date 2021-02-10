@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "prod": "node ./dist/consume.js",
+    "prod": "node ./dist/consume.js & node ./dist/consume.url.js",
     "start": "tsc && node ./dist/consume.js",
     "watch": "nodemon ./dist/server.ts"
   },

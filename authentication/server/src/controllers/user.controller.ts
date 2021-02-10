@@ -4,7 +4,6 @@ import {Request, Response} from "express"
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
 import { Credentials , UserMetadata} from "../../../../shared/models/common"
-import { UserServiceHttpClient } from "../../../../shared/modules/userServiceHttpClient/client"
 import { IUserServiceHttpClient } from "../../../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from "../../../../shared/models/user/index"
 import { Token } from "../../../../shared/models/authenticate/Token"
