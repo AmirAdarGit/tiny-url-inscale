@@ -4,8 +4,6 @@ import { Token, ValidetionToken } from "../../../shared/models/authenticate/inde
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
 import { Url } from "../../../shared/models/url/index"
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
-import { runInNewContext } from "vm";
-import { readBuilderProgram } from "typescript";
 
 export class AuthController {
 
@@ -57,7 +55,7 @@ export class AuthController {
         
         try {
             await this.authHttpClient.SignUp(credentials, userMetadata);
-            
+            console.log("Api module - statuse 200 ")
             res.status(200).send();
         } catch (ex) {
             console.log(`Failed signing up : ${ex}`)
@@ -68,7 +66,7 @@ export class AuthController {
             }
         }
     }
-
+ 
     async CreateUrl (req:Request, res:Response):Promise<void> {
         const Usertoken: Token = {
             Value: req.headers.authorization.split(" ")[1]

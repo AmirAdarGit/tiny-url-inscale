@@ -1,7 +1,7 @@
 import {Request, Response} from "express"   
 import * as jwt from "jsonwebtoken"
-import * as dotenv from 'dotenv'
-dotenv.config() //use the jwt secet key 
+//import * as dotenv from 'dotenv'
+//dotenv.config() //use the jwt secet key 
 
     export const UserValidetionToken = async (req: Request, res: Response): Promise<void> => {
 

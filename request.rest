@@ -4,7 +4,7 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "userEmail": "vasilisky@gmail.com",
+    "userEmail": "orBcffkjjzzdddgdddoosssszzzddddjrrlsfvvcc@gmail.com",
     "userFullName": "Tal V",
     "userPassword": "talV"
 }

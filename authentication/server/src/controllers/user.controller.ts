@@ -30,9 +30,10 @@ export class UserController{
             Email: req.body.Email,
             Password: hashPassword
         }
-
+        console.log("Authenticate module - Forwording request to User Servise ")
         try {
             await this.userHttpClient.Create(credentials, userMetadata);
+            console.log("Authenticate module - respons 200 ")
             res.status(200).send();
         } catch (ex) {
             console.log(`Failed creating user, error: ${ex.response.status}`);

@@ -6,5 +6,4 @@ export interface IAuthServiceHttpClient {
     SignUp(credentials: Credentials, userMetadata: UserMetadata): Promise<void>
     UserValidetionToken(email: string, token: Token): Promise<void>
     LinkValidetionToken(token: Token): Promise<void>
-
 }

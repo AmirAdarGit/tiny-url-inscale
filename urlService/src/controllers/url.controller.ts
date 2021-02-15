@@ -1,19 +1,21 @@
 import { Request, Response } from "express"   
 import * as query from "../databaseUrlQuery/queries"
 import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
-import {createConnection, QueryError, RowDataPacket} from 'mysql';
+import * as mysql from 'mysql'
 import { Token } from "../../../shared/models/authenticate"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
 import { sendEmailWithShortUrl } from "../produce.url.sqs/produce"
+import { Idatabase } from "../../../shared/interfaces/database/Idatabase" 
 export class UrlController {
 
     authHttpClient: IAuthServiceHttpClient;
-
-    constructor(urlServiceHttpClient: IAuthServiceHttpClient){
+    database: Idatabase;
+    constructor(urlServiceHttpClient: IAuthServiceHttpClient, database: Idatabase){
         this.authHttpClient = urlServiceHttpClient;
+        this.database = database;
     }
 
-    async Post(req:Request, res:Response): Promise<void> {  
+    async Create(req:Request, res:Response): Promise<void> {  
     
         console.log("Url-Service-Module: reqest body: , ", req.body);
         const reqLongUrl: string = req.body.LongUrl;
@@ -22,25 +24,25 @@ export class UrlController {
         try{
             //cheak if the URL is already exist in the database.
             const urlPropertiesQuery: string = query.parseGetUrlPropertiesQuery(reqLongUrl);
-            const resLinkProperties: any = await servsices.getLinkInfo(urlPropertiesQuery); 
-            
+            const resLinkProperties: mysql.RowDataPacket = await this.database.Execute<mysql.RowDataPacket>(urlPropertiesQuery); 
+
             //if  new Link -OR- private exist link -AND- not mine (the current user how ask for the service).
             //- the link is public, dont create.
             //- the link is mine (private but the current user already created by the current user), dont create.
                 
-            if(resLinkProperties == 'not_Such_Link_On_DB' || ((resLinkProperties[0].IsPrivate) && ((resLinkProperties[0].Email) =! reqEmail))){
+            // TO DO: check resLinkProperties[0] == '' 
+            if(resLinkProperties[0] == '' || ((resLinkProperties[0].IsPrivate) && ((resLinkProperties[0].Email) =! reqEmail))){
                 try {
                     const createUrlQuery: string = query.parseCreateUrlQuery(reqLongUrl, reqEmail, reqIsPrivate);
-                    await servsices.addNewUrlToMysql(createUrlQuery)
-                    
+                    await this.database.Execute(createUrlQuery);
                     console.log("Url-Service-Module: New Url has been added to the db");
                     try{ 
                         // resive the new short Url wich just created above, reqEmail require because duplicate private links.
                         const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEmail);
-                        const shortUrl:any = await servsices.getUrl(getShortUrlByUrlAndEmailQuery);
+                        const shortUrl: mysql.RowDataPacket = await this.database.Execute(getShortUrlByUrlAndEmailQuery);
                         console.log("Url-Service-Module: Short Url - " + shortUrl[0].ShortURL);
+                        //sqs consumer
                         await sendEmailWithShortUrl(reqEmail ,String(shortUrl[0].ShortURL), String(reqLongUrl));
-
                         res.status(200).send(String(shortUrl[0].ShortURL));
                     } catch(ex){
                         res.status(500).send(ex);
@@ -64,19 +66,18 @@ export class UrlController {
     };
     
 
-    async Get(req:Request, res:Response): Promise<void> {
+    async Read(req:Request, res:Response): Promise<void> {
         const shortUrlId = String(req.query.shortUrl); 
         const token = String(req.query.Value);
         console.log("Url-Service-Module: geting short url from Api number ", shortUrlId);   
         console.log("Url-Service-Module: geting token from Api ", token);    
     
         //check if the number is represent Long Url.
-    
-        const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
         //check if the long url is private
         try{
-            const linkInfo:any = await servsices.getLinkInfo(getShortUrlQuery);
-            if(linkInfo == "not_Such_Link_On_DB"){
+            const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
+            const linkInfo: mysql.RowDataPacket = await this.database.Execute(getShortUrlQuery);
+            if(linkInfo[0] == ''){
                 res.send("not_Such_Link_On_DB");
                 return;
             }
@@ -127,16 +128,16 @@ export class UrlController {
         }
     };
     
-    async Remove(req:Request, res:Response): Promise<void> {
-        const shotrUtl = req.query.ShortURL;
-        console.log(shotrUtl); 
-        servsices.removeShortUrlFromTable(`${shotrUtl}`);
-        res.send("the user " + shotrUtl + " has been removed");
-    };
+    // async Remove(req:Request, res:Response): Promise<void> {
+    //     const shotrUtl = req.query.ShortURL;
+    //     console.log(shotrUtl); 
+    //     servsices.removeShortUrlFromTable(`${shotrUtl}`);
+    //     res.send("the user " + shotrUtl + " has been removed");
+    // };
     
-    async Update(req:Request, res:Response): Promise<void> {
-        res.send({user:"amiraaaaaa",
-        method:"put"});
-    };
+    // async Update(req:Request, res:Response): Promise<void> {
+    //     res.send({user:"amiraaaaaa",
+    //     method:"put"});
+    // };
 
 }
