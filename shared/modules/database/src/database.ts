@@ -51,7 +51,7 @@ export class Database implements Idatabase{
       console.log("Database module, Execute method");
         const query = util.promisify(this.connection.query).bind(this.connection);
         try{
-          await query(dbQuery, function(err: mysql.QueryError, results: any){
+          return await query(dbQuery, function(err: mysql.QueryError, results: any){
             if(err){
                 return err;
             }
@@ -60,7 +60,9 @@ export class Database implements Idatabase{
                   console.log("Database module, Execute method - results: ",results);
                   return results;
                 }
-            })
+            
+              })
+            
         } catch (ex){
           return ex;  
         }
