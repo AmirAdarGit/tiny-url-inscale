@@ -5,7 +5,7 @@ import { sendUserEmail } from '../produce.email.sqs/produce';
 import { Idatabase } from '../../../shared/interfaces/database/Idatabase' 
 import * as mysql from 'mysql'
 
-export class UserController{
+export class UserController {
 
     database: Idatabase;
     constructor(database: Idatabase){
