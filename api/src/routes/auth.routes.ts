@@ -13,7 +13,6 @@ const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(h
 const urlServiceHttpClient: UrlServiceHttpClient = new UrlServiceHttpClient(httpClient);
 const authenticate: AuthController = new AuthController(authServiceHttpClient, urlServiceHttpClient); //SighUp LogIn
 
-
 router.post("/signUp", jsonParser, (req, res) => authenticate.SignUp(req, res));
 router.post("/logIn", jsonParser, (req, res) => authenticate.LogIn(req, res));
 router.post("/createUrl", jsonParser, (req, res) => authenticate.CreateUrl(req, res));

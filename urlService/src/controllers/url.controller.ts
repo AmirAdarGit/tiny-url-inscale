@@ -1,15 +1,16 @@
 import { Request, Response } from "express"   
-import * as query from "../databaseUrlQuery/queries"
-import * as servsices from "../../../shared/modules/database/src/database.mysql/database.mysql.services/services"
-import * as mysql from 'mysql'
 import { Token } from "../../../shared/models/authenticate"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
 import { sendEmailWithShortUrl } from "../produce.url.sqs/produce"
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase" 
+import * as query from "../databaseUrlQuery/queries"
+import * as mysql from 'mysql'
+
 export class UrlController {
 
     authHttpClient: IAuthServiceHttpClient;
     database: Idatabase;
+    
     constructor(urlServiceHttpClient: IAuthServiceHttpClient, database: Idatabase){
         this.authHttpClient = urlServiceHttpClient;
         this.database = database;
@@ -21,7 +22,7 @@ export class UrlController {
         const reqLongUrl: string = req.body.LongUrl;
         const reqEmail: string = req.body.Email;
         const reqIsPrivate: boolean = req.body.IsPrivate
-        try{
+        try {
             //cheak if the URL is already exist in the database.
             const urlPropertiesQuery: string = query.parseGetUrlPropertiesQuery(reqLongUrl);
             const resLinkProperties: mysql.RowDataPacket = await this.database.Execute<mysql.RowDataPacket>(urlPropertiesQuery); 
@@ -31,12 +32,12 @@ export class UrlController {
             //- the link is mine (private but the current user already created by the current user), dont create.
                 
             // TO DO: check resLinkProperties[0] == '' 
-            if(resLinkProperties[0] == '' || ((resLinkProperties[0].IsPrivate) && ((resLinkProperties[0].Email) =! reqEmail))){
+            if (resLinkProperties[0] == '' || ((resLinkProperties[0].IsPrivate) && ((resLinkProperties[0].Email) =! reqEmail))) {
                 try {
                     const createUrlQuery: string = query.parseCreateUrlQuery(reqLongUrl, reqEmail, reqIsPrivate);
                     await this.database.Execute(createUrlQuery);
                     console.log("Url-Service-Module: New Url has been added to the db");
-                    try{ 
+                    try { 
                         // resive the new short Url wich just created above, reqEmail require because duplicate private links.
                         const getShortUrlByUrlAndEmailQuery: string = query.parseGetShortUrlByUrlAndEmailQuery(reqLongUrl, reqEmail);
                         const shortUrl: mysql.RowDataPacket = await this.database.Execute(getShortUrlByUrlAndEmailQuery);
@@ -44,14 +45,16 @@ export class UrlController {
                         //sqs consumer
                         await sendEmailWithShortUrl(reqEmail ,String(shortUrl[0].ShortURL), String(reqLongUrl));
                         res.status(200).send(String(shortUrl[0].ShortURL));
-                    } catch(ex){
+                    } catch (ex){
+                        console.log(`Url-Servise-Module: Error, ${ex}`)
                         res.status(500).send(ex);
                     }
-                } catch(ex){
+                } catch(ex) {
+                    console.log(`Url-Servise-Module: Error, ${ex}`)
                     res.status(500).send(ex)
                 }    
             }
-            else{
+            else {
             //Url is already created
                 try {
                     console.log("Url-Service-Module: Short url is already generate, try: " + resLinkProperties[0].ShortURL);
@@ -60,7 +63,8 @@ export class UrlController {
                     res.status(500).send(ex);
                 }
             }
-        } catch (ex){
+        } catch (ex) {
+            console.log(`Url-Servise-Module: Error, ${ex}`)
             res.status(500).send(ex)
         }
     };
@@ -74,70 +78,59 @@ export class UrlController {
     
         //check if the number is represent Long Url.
         //check if the long url is private
-        try{
+        try {
             const getShortUrlQuery: string = query.cheackIfShortUrlExsist(shortUrlId);
             const linkInfo: mysql.RowDataPacket = await this.database.Execute(getShortUrlQuery);
-            if(linkInfo[0] == ''){
-                res.send("not_Such_Link_On_DB");
+            if (linkInfo[0] == '') {
+                res.send("not_Such_ Link_On_DB");
                 return;
             }
             console.log("Url-Service-Module: row:  ", linkInfo); 
             const longUrl: string = linkInfo[0].LongURL;
             const userEmail: string = linkInfo[0].Email;
             const isPrivate: boolean = linkInfo[0].IsPrivate;  
-            
             console.log("Url-Service-Module: is private url? ", isPrivate);  
         
         //public URL
-            if(!isPrivate){
+            if (!isPrivate) {
                 try {
                     console.log("Url-Service-Module longUrl: ", longUrl);
                     res.send(longUrl);
-                } catch(ex){
-                res.send(ex);
+                } catch(ex) {
+                    res.send(ex);
+                    console.log(`Url-Servise-Module: Error, ${ex}`)
                 }
             }
         //private URL
-            else{
-                if(token == 'undefined'){//means that no token attachet to the http get request.
+            else {
+                if (token == 'undefined') {//means that no token attachet to the http get request.
                     res.send("Url link is not public, Token needed. \nthe Token shuld be attached to the header");
                     return;
                 }
-                try{
+                try {
                     const validToken: Token = {
                         Value: token
                     }
                     console.log("private URL forword to Authenticate Service, sending the token: ", validToken);
                     const response = await this.authHttpClient.LinkValidetionToken(validToken);
                     const emailFromToken = String(response);
-                    if(emailFromToken == '403'){
+                    if (emailFromToken == '403') {
                         res.send("403");
                     }
-                    else if(userEmail == emailFromToken){
+                    else if (userEmail == emailFromToken) {
                         res.send(longUrl);
                     }
                     else {
                         res.send("Url link is not public, cannot access to " + shortUrlId);
                     }
-                } catch(ex){
+                } catch(ex) {
+                    console.log(`Url-Servise-Module: Error, ${ex}`)
                     res.send(ex);
                 }
             }
-        } catch(err){
-            res.send(err);
+        } catch(ex) {
+            console.log(`Url-Servise-Module: Error, ${ex}`)
+            res.send(ex);
         }
     };
-    
-    // async Remove(req:Request, res:Response): Promise<void> {
-    //     const shotrUtl = req.query.ShortURL;
-    //     console.log(shotrUtl); 
-    //     servsices.removeShortUrlFromTable(`${shotrUtl}`);
-    //     res.send("the user " + shotrUtl + " has been removed");
-    // };
-    
-    // async Update(req:Request, res:Response): Promise<void> {
-    //     res.send({user:"amiraaaaaa",
-    //     method:"put"});
-    // };
-
 }

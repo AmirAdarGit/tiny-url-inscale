@@ -4,8 +4,6 @@ const PORT = 8080;
 
 app.listen(PORT, onListening);
 
-
 function onListening() {
     console.log(`Listening on ${PORT} - Authenticate`);
-
-  }
+}

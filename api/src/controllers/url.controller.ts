@@ -13,8 +13,8 @@ export class UrlController {
     async Get(req: Request, res: Response): Promise<any> {
 
         var userToken: Token;
-        if(req.headers.authorization == undefined){
-            console.log("Api-Module: no token touch to the header");
+        if (req.headers.authorization == undefined) {
+            console.log("Api-Module: no token attached to the header.");
             userToken = {
                 Value: undefined
             }
@@ -26,38 +26,23 @@ export class UrlController {
         }  
         console.log("Api-Module: user token: ", userToken);
         const shortUrl = parseInt(req.params.id);
-        if(isNaN(shortUrl) && shortUrl > 0){
+        if (isNaN(shortUrl) && shortUrl > 0) {
             res.status(404).send("Short Url invalid");
         }
-        else{
+        else {
             try {
                 const response = await this.urlHttpClient.Get(shortUrl, { ...userToken });
-                if(String(response) == '403'){
+                if (String(response) == '403') {
                     res.status(403).send("Token invalid")
                 }
-                else{
+                else {
                 console.log("Api-Module: resived response from Url-Service", response);
                 res.send(response);
                 }
-            } catch(ex) {
+            } catch (ex) {
                 res.status(500).send(`Api-Module: ${ex}`)
-                console.log(`Api-Module: ${ex}`);
+                    console.log(`Api-Module: Fail to get url: ${ex}`);
             }
-        
         }
-        
-    };
-
-    async Post(req: Request, res: Response): Promise<void> {
-    
-    };
-    
-    
-    async Update(req: Request, res: Response): Promise<void> {
-    
-    };
-
-    async Remove(req: Request, res: Response): Promise<void> {
-    
     };
 }

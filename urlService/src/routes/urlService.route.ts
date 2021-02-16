@@ -7,8 +7,6 @@ import { Idatabase } from "../../../shared/interfaces/database/Idatabase";
 import { Database } from "../../../shared/modules/database/src/database";
 export const router = Router();
 
-
-
 var jsonParser = bodyParser.json() //for parsing the data from the http post
 
 const database: Database = new Database(process.env.DB_CONFIGE_HOST, process.env.DB_CONFIGE_USER, process.env.DB_CONFIGE_PASSWORD, process.env.DB_CONFIGE_DATABASE);
@@ -18,5 +16,3 @@ const urlController: UrlController = new UrlController(authServiceHttpClient, da
 
 router.post('/', jsonParser,(req,res) => urlController.Create(req,res));
 router.get('/',jsonParser, (req,res) => urlController.Read(req,res));
-// router.put('/',jsonParser, urlController.Update);
-// router.delete('/',jsonParser, urlController.Remove);

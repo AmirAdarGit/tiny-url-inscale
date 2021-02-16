@@ -11,5 +11,3 @@ const userController: UserController = new UserController(database);
 
 router.post('/', jsonParser,(req,res) => userController.Create(req,res));
 router.get('/', jsonParser,(req,res) => userController.Read(req,res)); 
-// router.put('/', jsonParser, userController.update);
-// router.delete('/', jsonParser, userController.remove);

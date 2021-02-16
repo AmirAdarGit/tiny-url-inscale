@@ -4,7 +4,7 @@ import { Consumer } from 'sqs-consumer'
 
 
 const app = Consumer.create({
-  queueUrl: process.env.AWS_SQS_URL,
+  queueUrl: process.env.AWS_SQS_SIGN_UP_URL,
   handleMessage: async (message: any) => {
     console.log(message.Body); 
     await sendEmail(message.Body)  

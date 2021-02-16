@@ -4,8 +4,6 @@ import { User } from "../../../shared/models/user/index"
 import { sendUserEmail } from '../produce.email.sqs/produce';
 import { Idatabase } from '../../../shared/interfaces/database/Idatabase' 
 import * as mysql from 'mysql'
-import { MySqlParameters } from "aws-sdk/clients/quicksight";
-
 
 export class UserController{
 
@@ -21,7 +19,7 @@ export class UserController{
         const userFullName: string = req.body.Name;
 
         try {
-            console.log("User Service module - Forwording adding new user to mySql DB. ")
+            console.log("User Service module - Forwording adding new user to mySql DB. ");
             const insertQuery: string = parseInsertQueryToString(userEmail, userFullName, userPassword); 
             const response: mysql.OkPacket = await this.database.Execute<mysql.OkPacket>(insertQuery);//send the query to mysql db 
             console.log("User Service module - db response ", response);
@@ -33,49 +31,32 @@ export class UserController{
             if (ex.code === 'ER_DUP_ENTRY') {//exeptions from the query response
                 res.status(409).send("Error, user email is already exist, change User Email.");
             }
-            else res.status(500).send(ex);
+            else {
+                res.status(500).send(ex);
+            }
         }    
     };
-
 
     async Read(req:Request, res:Response): Promise<void> {
 
         const userEmail: string = String(req.query.email);// param instend of query because get does not have body, but params.
         const getUserPassQuery: string = parseGetQueryToString(userEmail);
-        try{
+        try {
             const userPassword: mysql.RowDataPacket = await this.database.Execute<mysql.RowDataPacket>(getUserPassQuery); // recive the encoded pass from the db
-            if(userPassword[0] == ''){
+            if(userPassword[0] == '') {
                 res.status(404).send("User email does not found");
             }
-            else{
+            else {
                 const user: User = { // generate the response user info
                     Email: userEmail,
                     Password: userPassword[0].UserPassword
                 }
                 res.status(200).send(user);
             }
-        } catch (ex){
+        } catch (ex) {
             return new Promise((_, reject) => {
                 reject(ex)
             })
         }
     };
-
-
-// export const remove = async (req:Request, res:Response): Promise<void> => {
-//     const userEmail = req.query.Email;
-//     console.log(userEmail); // console the undefined
-//     servsices.removeUesrFromUsersTable(`${userEmail}`);
-//     res.send("the user " + userEmail + " has been removed");
-// };
-
-
-
-// export const update = async (req:Request, res:Response): Promise<void> => {
-//     res.send({user:"amiraaaaaa",
-//     method:"put"});
-// };
-
-
-
 }

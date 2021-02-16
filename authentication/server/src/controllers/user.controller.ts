@@ -1,12 +1,10 @@
-import * as dotenv from 'dotenv'
-dotenv.config() //use the jwt secet key 
 import {Request, Response} from "express"   
-import * as bcrypt from "bcrypt"
-import * as jwt from 'jsonwebtoken' 
 import { Credentials , UserMetadata} from "../../../../shared/models/common"
 import { IUserServiceHttpClient } from "../../../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from "../../../../shared/models/user/index"
 import { Token } from "../../../../shared/models/authenticate/Token"
+import * as bcrypt from "bcrypt"
+import * as jwt from 'jsonwebtoken' 
 
 export class UserController{
 
@@ -37,14 +35,13 @@ export class UserController{
             res.status(200).send();
         } catch (ex) {
             console.log(`Failed creating user, error: ${ex.response.status}`);
-            if(ex.response.status == 409){
+            if (ex.response.status == 409) {
                 res.status(409).send();
             } else {
                 res.status(500).send();
             }
         }
     };
-
 
     async LogIn (req:Request, res:Response): Promise<void> {
 
@@ -56,41 +53,36 @@ export class UserController{
         
         try {
             const user: User = await this.userHttpClient.Get(credentials.Email);
-            console.log("Authenticate-Service-Module: user properties for validation user password, ", user);
 
             const { Password } = user; // extract the encoded password
             const { Email } = user; // extract the encoded password
 
             //compare the user request password, with the encoded password wich generate in user singUp.
-            if(await bcrypt.compare(credentials.Password, Password)){ 
+            if (await bcrypt.compare(credentials.Password, Password)) { 
                 try {
-                    console.log("Authenticate-Service-Module: Log in success, Forward generate new user Token");
-                    console.log(process.env.ACCESS_TOKEN_SECRET);
+                    console.log("Authenticate-Module: Log in success, Forward generate new user Token");
                     const value = jwt.sign({email: Email}, process.env.ACCESS_TOKEN_SECRET );//create the Token with user email inside.
-                    console.log("logIn sucsses return the Token: ", value);
+                    console.log("Authenticate-Module: LogIn sucsses return the Token: ", value);
                     
                     const token: Token = {
                         Value: value 
                     }
-                    
                     res.status(200).send(token);
                 } catch {
-
-                    console.log("Fail in create Token for the user , Email: ",Email);
-                    console.log("Fail in create Token for the user Access token from env: ", process.env.ACCESS_TOKEN_SECRET );
+                    console.log("Authenticate-Module: Fail in create Token for the user , Email: ", Email);
+                    console.log("Authenticate-Module: Fail in create Token for the user Access token from env: ", process.env.ACCESS_TOKEN_SECRET );
                     res.send(417); //Fail creating the User Token.
                 }
             }
             else {
                 res.send("405");
             }
-
         } catch (ex) {
             console.log(`Failed geting user info from the DB, error: ${ex.response.status}`);
-            if(ex.response.status == 409){ //duplicate email
+            if (ex.response.status == 409) { //duplicate email
                 res.send("409");
             } 
-            if(ex.response.status == 404){ //email not found in DB
+            if (ex.response.status == 404) { //email not found in DB
                 res.send("404");
             } else {
                 res.send("500");

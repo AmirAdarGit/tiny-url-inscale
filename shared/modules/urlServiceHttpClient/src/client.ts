@@ -12,12 +12,10 @@ export class UrlServiceHttpClient implements IUrlServiceHttpClient {
     }
 
     async Get(shortUrl: number, token: Token): Promise<void> {
-        
         return this.httpClient.Get<void>(process.env.URL_SERVICE_PATH, { shortUrl, ...token })
     }
 
     async Create(url: Url): Promise<void> {
         return this.httpClient.Post<void>(process.env.URL_SERVICE_PATH, url)
     }
-
 }

@@ -20,8 +20,6 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
             ...credentials,
             ...userMetadata
         }
-        
         return this.httpClient.Post<void>(process.env.USER_SERVICE_PATH, newUser)
     }
-
 }

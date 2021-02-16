@@ -8,11 +8,15 @@ export const deploy = async (req:Request, res:Response): Promise<any> => {
 
     console.log("running deploy script");
 
-    await exec(cmd, (err, stdout, stderr) => {
-        console.log(`stdout: ${JSON.stringify(stdout)}`);
-        console.log(`stderr: ${JSON.stringify(stderr)}`);
-      });
-
-
-    return res.send("Running deploy script!").status(200);
+    try {
+        await exec(cmd, (err, stdout, stderr) => {
+            console.log(`stdout: ${JSON.stringify(stdout)}`);
+            console.log(`stderr: ${JSON.stringify(stderr)}`);
+        });
+        return res.send("Running deploy script!").status(200);
+    } catch (ex) {
+        return new Promise ((_,reject) => {
+            reject(ex);
+        })
+    }
 };
