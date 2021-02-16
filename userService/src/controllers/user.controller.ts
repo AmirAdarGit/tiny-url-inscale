@@ -8,7 +8,7 @@ import * as mysql from 'mysql'
 export class UserController {
 
     database: Idatabase;
-    constructor(database: Idatabase){
+    constructor(database: Idatabase) {
         this.database = database;
     }
 
