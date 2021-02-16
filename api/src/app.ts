@@ -1,6 +1,6 @@
 import * as express from "express";
-import { router as urlRouter } from "./routes/url.routes";
-import { router as authentication } from "./routes/auth.routes";
+import { router as urlRouter } from "./url/routes";
+import { router as authentication } from "./auth/routes";
 
 // Create Express server
 export const app = express();

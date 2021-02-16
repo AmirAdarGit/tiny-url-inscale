@@ -1,18 +1,17 @@
 import { Request, Response } from "express";
 import { Credentials, UserMetadata} from "../../../shared/models/common"
 import { Token } from "../../../shared/models/authenticate/index"
-import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient";
 import { Url } from "../../../shared/models/url/index"
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
+import { AuthService } from "./service";
+
 
 export class AuthController {
 
-    authHttpClient: IAuthServiceHttpClient;
-    urlHttpClient: IUrlServiceHttpClient;
+    authService: AuthService;
 
-    constructor(authServiceHttpClient: IAuthServiceHttpClient, urlServiceHttpClient: IUrlServiceHttpClient){
-        this.authHttpClient = authServiceHttpClient;
-        this.urlHttpClient = urlServiceHttpClient;
+    constructor(authService: AuthService){
+        this.authService = authService;
     }
 
     async LogIn(req: Request, res: Response): Promise<void> {
@@ -24,7 +23,7 @@ export class AuthController {
 
         try {
             console.log("Api-Module: success to get the body credentials", credentials);
-            const logInResponse: Token = await this.authHttpClient.Login(credentials);
+            const logInResponse: Token = await this.authService.LogIn(credentials);
             if (String(logInResponse) == '405') {
                 res.status(405).send("error Password"); 
             } 
@@ -54,7 +53,7 @@ export class AuthController {
         }
         
         try {
-            await this.authHttpClient.SignUp(credentials, userMetadata);
+            await this.authService.SignUp(userMetadata, credentials);
             console.log("Api-Module: statuse 200 ")
             res.status(200).send();
         } catch (ex) {

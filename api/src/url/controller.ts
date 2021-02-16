@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
 import { Token } from "../../../shared/models/authenticate/index"
+import { UrlService } from "./service";
 
 export class UrlController { 
 
-    urlHttpClient: IUrlServiceHttpClient;
+    urlService: UrlService;
 
-    constructor(urlServiceHttpClient: IUrlServiceHttpClient){
-        this.urlHttpClient = urlServiceHttpClient;
+    constructor(urlService: UrlService){
+        this.urlService = urlService;
     }
 
     async Get(req: Request, res: Response): Promise<any> {
@@ -24,12 +25,12 @@ export class UrlController {
             }
         }  
         console.log("Api-Module: user token: ", userToken);
-        const shortUrl = parseInt(req.params.id);
+        const shortUrl: number = parseInt(req.params.id);
         if (isNaN(shortUrl) && shortUrl > 0) {
             res.status(404).send("Short Url invalid");
         } else {
             try {
-                const response = await this.urlHttpClient.Get(shortUrl, { ...userToken });
+                const response = await this.urlService.Get(shortUrl, { ...userToken });
                 if (String(response) == '403') {
                     res.status(403).send("Token invalid")
                 } else {
