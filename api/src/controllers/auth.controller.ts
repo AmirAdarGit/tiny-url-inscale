@@ -27,11 +27,10 @@ export class AuthController {
             const logInResponse: Token = await this.authHttpClient.Login(credentials);
             if (String(logInResponse) == '405') {
                 res.status(405).send("error Password"); 
-            }
+            } 
             if (String(logInResponse) == '404') {
                 res.status(404).send("error Email"); 
-            }
-            else {
+            } else {
                 console.log(`Api-Module: logIn successfully, resive token ${logInResponse.Value}`);
                 res.status(200).send(logInResponse);//return the Token to the user -> in future save it in the browser cookies.
             }
@@ -81,11 +80,9 @@ export class AuthController {
             console.log("Api-Module: response from Authenticate module validation token:", response);
             if (String(response) == 'Token error') {
                 res.status(403).send('Token error')
-            }
-            else if (String(response) == 'Email error') {
+            } else if (String(response) == 'Email error') {
                 res.status(403).send('Email error')
-            }
-            else {
+            } else {
                 //second step, send http request to Url-Service
                 try {
                     const url: Url = {
@@ -105,8 +102,7 @@ export class AuthController {
             if (ex.response.status == 403) {
                 console.log(`Api-Module: Failed create new short url: ${ex}`)
                 res.status(403).send("invalid token");
-            }
-            else {
+            } else {
                 res.status(500).send();
             }
         }

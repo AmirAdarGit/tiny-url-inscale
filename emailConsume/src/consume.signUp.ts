@@ -4,18 +4,18 @@ import { Consumer } from 'sqs-consumer'
 
 
 const app = Consumer.create({
-  queueUrl: process.env.AWS_SQS_SIGN_UP_URL,
-  handleMessage: async (message: any) => {
-    console.log(message.Body); 
-    await sendEmail(message.Body)  
-  }
+    queueUrl: process.env.AWS_SQS_SIGN_UP_URL,
+    handleMessage: async (message: any) => {
+        console.log(message.Body); 
+        await sendEmail(message.Body)  
+    }
 })
 app.on('error', (err: Error) => {
-  console.error(err.message);
+    console.error(err.message);
 });
 
 app.on('processing_error', (err: Error) => {
-  console.error(err.message);
+    console.error(err.message);
 });
 
 app.start();
@@ -23,33 +23,33 @@ app.start();
 
 
 async function sendEmail(userEmail: string): Promise<void>{
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.MANAGE_EMAIL_USERNAME,
-      pass: process.env.MANAGE_EMAIL_PASSWORD
-    }
-  });
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MANAGE_EMAIL_USERNAME,
+        pass: process.env.MANAGE_EMAIL_PASSWORD
+      }
+    });
   
-  var mailOptions = {
-    from: process.env.MANAGE_EMAIL_USERNAME,
-    to: userEmail,
-    subject: 'Welcome To Tiny Url App',
+    var mailOptions = {
+      from: process.env.MANAGE_EMAIL_USERNAME,
+      to: userEmail,
+      subject: 'Welcome To Tiny Url App',
+    
+      html:  `<h1>Hey ${userEmail.substring(0, userEmail.lastIndexOf("@"))}</h1>
+      <p>Thanks for signing up to the "Tiny url in scale" app.<br>
+      Now you can generate a short url from any given url.<br>
+      For additional updates and features you will receive an email alert.<br>
+      Have fun :).</p>`
+    };
   
-    html:  `<h1>Hey ${userEmail.substring(0, userEmail.lastIndexOf("@"))}</h1>
-    <p>Thanks for signing up to the "Tiny url in scale" app.<br>
-    Now you can generate a short url from any given url.<br>
-    For additional updates and features you will receive an email alert.<br>
-    Have fun :).</p>`
-  };
-  
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
 }
 
 

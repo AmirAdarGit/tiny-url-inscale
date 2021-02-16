@@ -30,8 +30,7 @@ export class UserController{
         } catch (ex) {
             if (ex.code === 'ER_DUP_ENTRY') {//exeptions from the query response
                 res.status(409).send("Error, user email is already exist, change User Email.");
-            }
-            else {
+            } else {
                 res.status(500).send(ex);
             }
         }    
@@ -45,8 +44,7 @@ export class UserController{
             const userPassword: mysql.RowDataPacket = await this.database.Execute<mysql.RowDataPacket>(getUserPassQuery); // recive the encoded pass from the db
             if(userPassword[0] == '') {
                 res.status(404).send("User email does not found");
-            }
-            else {
+            } else {
                 const user: User = { // generate the response user info
                     Email: userEmail,
                     Password: userPassword[0].UserPassword

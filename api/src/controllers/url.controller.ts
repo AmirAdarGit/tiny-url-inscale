@@ -18,8 +18,7 @@ export class UrlController {
             userToken = {
                 Value: undefined
             }
-        }
-        else {
+        } else {
             userToken = {
                 Value: req.headers.authorization.split(" ")[1]
             }
@@ -28,20 +27,18 @@ export class UrlController {
         const shortUrl = parseInt(req.params.id);
         if (isNaN(shortUrl) && shortUrl > 0) {
             res.status(404).send("Short Url invalid");
-        }
-        else {
+        } else {
             try {
                 const response = await this.urlHttpClient.Get(shortUrl, { ...userToken });
                 if (String(response) == '403') {
                     res.status(403).send("Token invalid")
-                }
-                else {
-                console.log("Api-Module: resived response from Url-Service", response);
-                res.send(response);
+                } else {
+                    console.log("Api-Module: resived response from Url-Service", response);
+                    res.send(response);
                 }
             } catch (ex) {
                 res.status(500).send(`Api-Module: ${ex}`)
-                    console.log(`Api-Module: Fail to get url: ${ex}`);
+                console.log(`Api-Module: Fail to get url: ${ex}`);
             }
         }
     };

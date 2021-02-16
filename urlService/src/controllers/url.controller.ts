@@ -53,8 +53,7 @@ export class UrlController {
                     console.log(`Url-Servise-Module: Error, ${ex}`)
                     res.status(500).send(ex)
                 }    
-            }
-            else {
+            } else {
             //Url is already created
                 try {
                     console.log("Url-Service-Module: Short url is already generate, try: " + resLinkProperties[0].ShortURL);
@@ -100,9 +99,8 @@ export class UrlController {
                     res.send(ex);
                     console.log(`Url-Servise-Module: Error, ${ex}`)
                 }
-            }
         //private URL
-            else {
+            } else {
                 if (token == 'undefined') {//means that no token attachet to the http get request.
                     res.send("Url link is not public, Token needed. \nthe Token shuld be attached to the header");
                     return;
@@ -116,11 +114,9 @@ export class UrlController {
                     const emailFromToken = String(response);
                     if (emailFromToken == '403') {
                         res.send("403");
-                    }
-                    else if (userEmail == emailFromToken) {
+                    } else if (userEmail == emailFromToken) {
                         res.send(longUrl);
-                    }
-                    else {
+                    } else {
                         res.send("Url link is not public, cannot access to " + shortUrlId);
                     }
                 } catch(ex) {

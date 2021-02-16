@@ -73,8 +73,7 @@ export class UserController{
                     console.log("Authenticate-Module: Fail in create Token for the user Access token from env: ", process.env.ACCESS_TOKEN_SECRET );
                     res.send(417); //Fail creating the User Token.
                 }
-            }
-            else {
+            } else {
                 res.send("405");
             }
         } catch (ex) {
