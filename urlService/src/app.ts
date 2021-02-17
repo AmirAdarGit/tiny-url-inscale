@@ -1,6 +1,6 @@
 import * as express from "express"
 
-import { router as urlRouter} from './routes/urlService.route'
+import { router as urlRouter} from './urlService/urlService.route'
 
 export const app = express();
 

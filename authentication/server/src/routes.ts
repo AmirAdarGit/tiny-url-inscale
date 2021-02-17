@@ -12,5 +12,6 @@ const httpClient = new HttpClient()// Post, Get
 const userServiceHttpClient = new UserServiceHttpClient(httpClient); //SignUp, LogIn
 const userController = new UserController(userServiceHttpClient);
 
-router.post('/',jsonParser , (req, res) => userController.SignUp(req, res));
-router.get('/',jsonParser ,(req, res) => userController.LogIn(req, res)); 
+router.post('/signup',jsonParser , (req, res) => userController.SignUp(req, res));
+router.get('/login',jsonParser ,(req, res) => userController.LogIn(req, res)); 
+// todo: add authenticate endpoint

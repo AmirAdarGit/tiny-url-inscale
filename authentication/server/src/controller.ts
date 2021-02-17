@@ -6,7 +6,7 @@ import { Token } from "../../../../shared/models/authenticate/Token"
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
 
-export class UserController{
+export class AuthController {
 
     userHttpClient: IUserServiceHttpClient;
 
