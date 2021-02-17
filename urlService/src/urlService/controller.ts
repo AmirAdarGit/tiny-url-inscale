@@ -1,8 +1,6 @@
 import { Request, Response } from "express"   
 import { Token } from "../../../shared/models/authenticate"
-import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
-import { sendEmailWithShortUrl } from "../produce.url.sqs/produce"
-import { Idatabase } from "../../../shared/interfaces/database/Idatabase" 
+import { UrlProducer } from "../produce.url.sqs/produce"
 import { UrlService } from "./service"
 import * as query from "../databaseUrlQuery/queries"
 import * as mysql from 'mysql'
@@ -10,9 +8,11 @@ import * as mysql from 'mysql'
 export class UrlController{
 
     urlService: UrlService;
-    
-    constructor(urlService: UrlService){
+    urlProducer: UrlProducer;
+
+    constructor(urlService: UrlService, urlProducer: UrlProducer){
         this.urlService = urlService;
+        this.urlProducer = urlProducer;
     }
 
     async Post(req:Request, res:Response): Promise<void> {  
@@ -42,7 +42,7 @@ export class UrlController{
                         const shortUrl: mysql.RowDataPacket = await this.urlService.Execute<mysql.RowDataPacket>(getShortUrlByUrlAndEmailQuery);
                         console.log("Url-Service-Module: Short Url - " + shortUrl[0].ShortURL);
                         //sqs consumer
-                        await sendEmailWithShortUrl(reqEmail ,String(shortUrl[0].ShortURL), String(reqLongUrl));
+                        await this.urlProducer.ProduceShortUrl(reqEmail ,String(shortUrl[0].ShortURL), String(reqLongUrl));
                         res.status(200).send(String(shortUrl[0].ShortURL));
                     } catch (ex){
                         console.log(`Url-Servise-Module: Error, ${ex}`)

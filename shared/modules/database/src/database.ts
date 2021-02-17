@@ -55,7 +55,7 @@ export class Database implements Idatabase{
                     if (err) {
                         return err;
                     } else {
-                        console.log("Database module, Execute method - results yype: ", typeof(results));
+                        console.log("Database module, Execute method - results type: ", typeof(results));
                         console.log("Database module, Execute method - results: ", results);
                         return results;
                     }

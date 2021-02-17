@@ -1,19 +1,18 @@
 import { Request, Response } from "express"   
 import { Token } from "../../../shared/models/authenticate"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
-import { sendEmailWithShortUrl } from "../produce.url.sqs/produce"
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase" 
 import * as query from "../databaseUrlQuery/queries"
 import * as mysql from 'mysql'
-import { Database } from "aws-sdk/clients/cloudwatchevents"
+import { Database } from "../../../shared/modules/database/src/database"
 import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
 
 
 export class UrlService {
-    database: Idatabase;
+    database: Database;
     authHttpClient: AuthServiceHttpClient;
 
-    constructor(database: Idatabase, authHttpClient: AuthServiceHttpClient){
+    constructor(database: Database, authHttpClient: AuthServiceHttpClient){
         this.database = database;
         this.authHttpClient = authHttpClient;
     }
@@ -26,5 +25,7 @@ export class UrlService {
         return await this.authHttpClient.LinkValidetionToken(validToken);
     }
 
-                
+    async ProduceShortUrl(reqEmail: string , shortUrl: string, longUrl: string): Promise<void>{
+        return await this.ProduceShortUrl(reqEmail, shortUrl, longUrl);
+    }         
 }
