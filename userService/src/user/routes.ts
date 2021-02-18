@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserController } from "./user.controller"
+import { UserController } from "./controller"
 import * as bodyParser from 'body-parser'
 export const router = Router();
 import { Database } from "../../../shared/modules/database/src/database";

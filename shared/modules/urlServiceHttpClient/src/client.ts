@@ -11,8 +11,8 @@ export class UrlServiceHttpClient implements IUrlServiceHttpClient {
         this.httpClient = httpClient;
     }
 
-    async Get(shortUrl: number, token: Token): Promise<void> {
-        return this.httpClient.Get<void>(process.env.URL_SERVICE_PATH, { shortUrl, ...token })
+    async Get(shortUrl: number, token: Token): Promise<Url> {
+        return this.httpClient.Get<Url>(process.env.URL_SERVICE_PATH, { shortUrl, ...token })
     }
 
     async Create(url: Url): Promise<void> {

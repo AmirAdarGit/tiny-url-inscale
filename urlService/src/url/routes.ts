@@ -13,9 +13,9 @@ var jsonParser = bodyParser.json() //for parsing the data from the http post
 const database: Database = new Database(process.env.DB_CONFIGE_HOST, process.env.DB_CONFIGE_USER, process.env.DB_CONFIGE_PASSWORD, process.env.DB_CONFIGE_DATABASE);
 const httpClient: HttpClient = new HttpClient();
 const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(httpClient);
-const urlService: UrlService = new UrlService (database, authServiceHttpClient);
 const urlProducer: UrlProducer = new UrlProducer();
-const urlController: UrlController = new UrlController(urlService, urlProducer);
+const urlService: UrlService = new UrlService (database, authServiceHttpClient, urlProducer);
+const urlController: UrlController = new UrlController(urlService);
 
 router.post('/', jsonParser,(req,res) => urlController.Post(req,res));
 router.get('/',jsonParser, (req,res) => urlController.Get(req,res));

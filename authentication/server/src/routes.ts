@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { UserServiceHttpClient } from "../../../../shared/modules/userServiceHttpClient/client"
+import { UserServiceHttpClient } from "../../../shared/modules/userServiceHttpClient/src/client"
 import * as bodyParser from 'body-parser'
-import { HttpClient } from "../../../../shared/modules/httpClient/src/HttpClient";
-import { UserController } from "../controllers/user.controller";
+import { HttpClient } from "../../../shared/modules/httpClient/src/HttpClient";
+import { AuthController } from "./controller";
+import { AuthService } from "./service";
 export const router = Router();
 
 
@@ -10,8 +11,11 @@ var jsonParser = bodyParser.json() //for parsing the data from the http post
 
 const httpClient = new HttpClient()// Post, Get 
 const userServiceHttpClient = new UserServiceHttpClient(httpClient); //SignUp, LogIn
-const userController = new UserController(userServiceHttpClient);
+const authService: AuthService = new AuthService(userServiceHttpClient)
+const authController = new AuthController(authService);
 
-router.post('/signup',jsonParser , (req, res) => userController.SignUp(req, res));
-router.get('/login',jsonParser ,(req, res) => userController.LogIn(req, res)); 
+router.post('/signup', jsonParser, authController.signUp);
+router.get('/login', jsonParser, authController.logIn); 
+router.get('/isValid', jsonParser, authController.isValid); 
+
 // todo: add authenticate endpoint

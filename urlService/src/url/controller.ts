@@ -8,11 +8,9 @@ import * as mysql from 'mysql'
 export class UrlController{
 
     urlService: UrlService;
-    urlProducer: UrlProducer;
 
-    constructor(urlService: UrlService, urlProducer: UrlProducer){
+    constructor(urlService: UrlService){
         this.urlService = urlService;
-        this.urlProducer = urlProducer;
     }
 
     async Post(req:Request, res:Response): Promise<void> {  
@@ -20,8 +18,14 @@ export class UrlController{
         console.log("Url-Service-Module: reqest body: , ", req.body);
         const reqLongUrl: string = req.body.LongUrl;
         const reqEmail: string = req.body.Email;
-        const reqIsPrivate: boolean = req.body.IsPrivate
+        const reqIsPrivate: string = String(req.body.IsPrivate)
+        const token: Token;
+        // ToDo: fatch the token from the header 
+        
         try {
+
+            const url: Url = await this.urlService.Create(token, reqLongUrl, reqEmail, reqIsPrivate); 
+
             //cheak if the URL is already exist in the database.
             const urlPropertiesQuery: string = query.parseGetUrlPropertiesQuery(reqLongUrl);
             const resLinkProperties: mysql.RowDataPacket = await this.urlService.Execute<mysql.RowDataPacket>(urlPropertiesQuery); 
@@ -42,7 +46,7 @@ export class UrlController{
                         const shortUrl: mysql.RowDataPacket = await this.urlService.Execute<mysql.RowDataPacket>(getShortUrlByUrlAndEmailQuery);
                         console.log("Url-Service-Module: Short Url - " + shortUrl[0].ShortURL);
                         //sqs consumer
-                        await this.urlProducer.ProduceShortUrl(reqEmail ,String(shortUrl[0].ShortURL), String(reqLongUrl));
+                        await this.urlService.urlProducer.ProduceShortUrl(reqEmail ,String(shortUrl[0].ShortURL), String(reqLongUrl));
                         res.status(200).send(String(shortUrl[0].ShortURL));
                     } catch (ex){
                         console.log(`Url-Servise-Module: Error, ${ex}`)

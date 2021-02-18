@@ -1,6 +1,6 @@
 import { IAuthServiceHttpClient } from "../../../interfaces/authenticate/IAuthServiceHttpClient"
 import { Credentials, UserMetadata } from '../../../models/common';
-import { Token, ValidetionToken } from '../../../models/authenticate';
+import { Token } from '../../../models/authenticate';
 import { IHttpClient } from "../../../interfaces/httpClient";
 
 export class AuthServiceHttpClient implements IAuthServiceHttpClient {

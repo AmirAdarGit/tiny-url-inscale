@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
 import { Token } from "../../../shared/models/authenticate/index"
+import { Url } from "../../../shared/models/url";
 import { UrlService } from "./service";
 
 export class UrlController { 
@@ -11,9 +12,11 @@ export class UrlController {
         this.urlService = urlService;
     }
 
-    async Get(req: Request, res: Response): Promise<any> {
+    async Get(req: Request, res: Response): Promise<Url> {
 
         var userToken: Token;
+        const shortUrl: number = parseInt(req.params.id);
+        
         if (req.headers.authorization == undefined) {
             console.log("Api-Module: no token attached to the header.");
             userToken = {
@@ -24,23 +27,16 @@ export class UrlController {
                 Value: req.headers.authorization.split(" ")[1]
             }
         }  
-        console.log("Api-Module: user token: ", userToken);
-        const shortUrl: number = parseInt(req.params.id);
-        if (isNaN(shortUrl) && shortUrl > 0) {
-            res.status(404).send("Short Url invalid");
-        } else {
-            try {
-                const response = await this.urlService.Get(shortUrl, { ...userToken });
-                if (String(response) == '403') {
-                    res.status(403).send("Token invalid")
-                } else {
-                    console.log("Api-Module: resived response from Url-Service", response);
-                    res.send(response);
-                }
-            } catch (ex) {
-                res.status(500).send(`Api-Module: ${ex}`)
-                console.log(`Api-Module: Fail to get url: ${ex}`);
-            }
+        
+        try {
+            const url: Url = await this.urlService.Get(shortUrl, { ...userToken });
+            console.log(`Api-Module: success to get the longUrl: ${url}, from the short url: ${shortUrl}`);
+            return new Promise ((res, rej) => {
+                return res(url);
+            })
+        } catch (ex) {
+            res.status(500).send(`Api-Module: ${ex}`)
+            console.log(`Api-Module: Fail to get url: ${ex}`);
         }
-    };
+    }
 }
