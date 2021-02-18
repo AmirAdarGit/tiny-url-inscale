@@ -1,4 +1,4 @@
 export interface IHttpClient {
-    Get<T>(url: string, params: object): Promise<T>
-    Post<T>(url: string, payload: object): Promise<T>
+    get<T>(url: string, params: object): Promise<T>
+    post<T>(url: string, payload: object): Promise<T>
 }

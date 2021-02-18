@@ -18,4 +18,4 @@ const urlService: UrlService = new UrlService (database, authServiceHttpClient, 
 const urlController: UrlController = new UrlController(urlService);
 
 router.post('/', jsonParser,(req,res) => urlController.Post(req,res));
-router.get('/',jsonParser, (req,res) => urlController.Get(req,res));
+// router.get('/',jsonParser, (req,res) => urlController.Get(req,res));

@@ -16,6 +16,6 @@ const authController = new AuthController(authService);
 
 router.post('/signup', jsonParser, authController.signUp);
 router.get('/login', jsonParser, authController.logIn); 
-router.get('/isValid', jsonParser, authController.isValid); 
+router.get('/authenticate', jsonParser, authController.authenticateToken); 
 
 // todo: add authenticate endpoint

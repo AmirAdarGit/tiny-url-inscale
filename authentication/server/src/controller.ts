@@ -11,9 +11,20 @@ export class AuthController {
         this.authService = authServise;
     }
 
-    async isValid(req: Request, res: Response): Promise<boolean> {
+    authenticateToken(req: Request, res: Response): void {
 
-        return
+        const token: Token = new Token(req.headers.authorization.split(" ")[1])
+        
+        try{
+            const email = this.authService.authenticate(token);
+            if (email) {
+                res.status(200).send(email);
+            } else {
+                res.status(401);
+            }
+        } catch (ex) {
+            res.status(500).send(ex)
+        }
     }
 
 

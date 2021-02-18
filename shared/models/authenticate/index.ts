@@ -1,4 +1,4 @@
 import { Token } from "./Token"
 import { ValidetionToken } from "./ValidateToken"
-
-export { Token, ValidetionToken}
+import { TokenEmailValue } from "./TokenEmailValue"
+export { Token, ValidetionToken, TokenEmailValue }

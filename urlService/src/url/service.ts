@@ -1,4 +1,4 @@
-import { Request, Response } from "express"   
+import { Request, response, Response } from "express"   
 import { Token } from "../../../shared/models/authenticate"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase" 
@@ -22,54 +22,26 @@ export class UrlService {
     }
     
 
-    async Create(token: Token, reqLongUrl: string, reqEmail: string, reqIsPrivate: string): Promise<string>{
-        /*
-            steps
-            1: is token authenticated? 
-                * false - return rejected promise
-            2: is valid url?
-                * false - return rejected promise
-            3: inert new url to mysql
-            4: is inserted?
-                * false - return rejected promise
-            5: produce url created to sqs
-            6: return url
-        */
+    async create(token: Token, longUrl: string, isPrivate: string): Promise<string> {     
+        const email = await this.authHttpClient.getEmailFromTheToken(token);
+        if (!email) { return new Promise((res, rej) => { rej("Token invalid") }); }
 
-       const urlPropertiesQuery: string = '';
-       const resLinkProperties: mysql.RowDataPacket = await this.urlService.Execute<mysql.RowDataPacket>(urlPropertiesQuery); 
+        const valid = /^(ftp|http|https):\/\/[^ "]+$/.test(longUrl);
+        if (!valid) { return new Promise((res, rej) => { rej("Token invalid") }); }
+        
+        const insertQuery: string = `INSERT INTO Tiny_URL.Links (LongURL, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate});`
+        const isInserted: boolean = await this.database.Execute<boolean>(insertQuery);
+        if (!isInserted) { return new Promise((res, rej) => { rej("Error inserting url to database") }); }
 
+        const selectQuery: string = `SELECT ShortURL FROM Tiny_URL.Links WHERE LongURL = '${longUrl}'`;
+        const shortUrl: string = await this.database.Execute<string>(selectQuery);
 
+        await this.urlProducer.ProduceShortUrl(email, shortUrl, longUrl);
 
-
-        return ""
-
+        return shortUrl;
     }
 
-    async Read(){
+    async read(){
 
-    }
-
-
-
-    private async TokenValidate(reqEmail: string, userToken: Token){
-        const response = await this.authHttpClient.UserValidetionToken(reqEmail, { ...userToken });
-        return
-
-
-    }
-
-
-
-    async Execute<T>(query: string): Promise<T>{
-            return await this.database.Execute<T>(query); 
-    }
-
-    async LinkValidetionToken(validToken: Token) {
-        return await this.authHttpClient.LinkValidetionToken(validToken);
-    }
-
-    async ProduceShortUrl(reqEmail: string , shortUrl: string, longUrl: string): Promise<void>{
-        return await this.urlProducer.ProduceShortUrl(reqEmail, shortUrl, longUrl);
     }         
 }

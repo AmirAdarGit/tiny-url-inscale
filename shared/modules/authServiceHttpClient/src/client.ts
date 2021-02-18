@@ -11,7 +11,7 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         this.httpClient = httpClient
     }
 
-    async SignUp(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
+    async signUp(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
         console.log("Forwarding request to auth service");
        
         const newUser = {
@@ -20,34 +20,42 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         }
 
         console.log("With new user: ", newUser);
-        return await this.httpClient.Post(process.env.AUTH_SIGNUP_PATH, newUser)//process use - api.env, urlService.env
+        return await this.httpClient.post(process.env.AUTH_SIGNUP_PATH, newUser)//process use - api.env, urlService.env
     }
 
 
-    async Login(credentials: Credentials): Promise<Token> {
+    async login(credentials: Credentials): Promise<Token> {
         try {
             console.log("Try to send to auth the credentisls ", credentials);
-            return await this.httpClient.Get<Token>(process.env.AUTH_LOGIN_PATH, { ...credentials })//process use - api.env, urlService.env
+            return await this.httpClient.get<Token>(process.env.AUTH_LOGIN_PATH, { ...credentials })//process use - api.env, urlService.env
         } catch(err) { 
             console.log("error in Login " + err.response.status);
         }
     }
 
-    async UserValidetionToken(email: string, token: Token): Promise<void> {
+    async getEmailFromTheToken(token: Token): Promise<string> {
+        try {
+            // console.log("Try to send to auth the Token and user email for validation ", token);
+            return await this.httpClient.get<string>(process.env.AUTH_ENDPOINT_VALID_TOKEN_LINK_PATH, { ...token });//process use - api.env, urlService.env
+        } catch(err) {
+            
+            console.log("error in ValidetionToken " + err);
+        }
+    }
+
+
+
+
+
+
+    async userValidetionToken(email: string, token: Token): Promise<void> {
         try {
             // console.log("Try to send to auth the Token and user email for validation ", validetionToken);
-            return await this.httpClient.Get<void>(process.env.AUTH_VALID_TOKEN_USER_PATH, { email, ...token });//process use - api.env, urlService.env
+            return await this.httpClient.get<void>(process.env.AUTH_VALID_TOKEN_USER_PATH, { email, ...token });//process use - api.env, urlService.env
         } catch(err) {
             console.log("error in ValidetionToken " + err);
         }
     }
     
-    async LinkValidetionToken(token: Token): Promise<void> {
-        try {
-            // console.log("Try to send to auth the Token and user email for validation ", token);
-            return await this.httpClient.Get<void>(process.env.AUTH_VALID_TOKEN_LINK_PATH, { ...token });//process use - api.env, urlService.env
-        } catch(err) {
-            console.log("error in ValidetionToken " + err);
-        }
-    }
+
 }
