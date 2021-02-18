@@ -14,12 +14,17 @@ export class AuthService {
 
     async LogIn(credentials: Credentials): Promise<Token> {
         console.log("Auth-Service: Log in flow - credentials: ", credentials);
-        return await this.authHttpClient.Login(credentials);
+        return await this.authHttpClient.login(credentials);
     };
     
     
     async SignUp(userMetadata: UserMetadata, credentials: Credentials): Promise<void> {
             console.log(`Auth-Service: Sign Up flow - credentials: ", ${credentials} , - userMetadata : ${userMetadata}`);
-            await this.authHttpClient.SignUp(credentials, userMetadata);
+            await this.authHttpClient.signUp(credentials, userMetadata);
     }
+
+
+
+
+    
 }

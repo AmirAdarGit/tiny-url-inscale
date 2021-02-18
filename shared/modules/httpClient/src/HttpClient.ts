@@ -1,5 +1,6 @@
 import { IHttpClient } from "../../../interfaces/httpClient"
 import axios from "axios"
+import { Token } from "../../../models/authenticate/Token"
 
 export class HttpClient implements IHttpClient {
 
@@ -11,11 +12,11 @@ export class HttpClient implements IHttpClient {
         }
         return response.data
     }
-    async post<T>(url: string, payload: object): Promise<T> {
-        const response = await axios.post<T>(url, payload); 
+    async post<T>(url: string, payload: object, token: Token): Promise<T> {
+        const response = await axios.post<T>(url, { payload }, { headers: { 'Authorization': `Bearer ${token}`} }); 
         if (response.status != 200) {
             return new Promise((resolve, reject) => reject());
         }
-        return response.data
+        return response.data    
     }
 }

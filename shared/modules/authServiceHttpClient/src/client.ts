@@ -44,10 +44,6 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     }
 
 
-
-
-
-
     async userValidetionToken(email: string, token: Token): Promise<void> {
         try {
             // console.log("Try to send to auth the Token and user email for validation ", validetionToken);

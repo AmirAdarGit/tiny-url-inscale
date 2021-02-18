@@ -13,7 +13,7 @@ export class UrlController{
         this.urlService = urlService;
     }
 
-    async Post(req:Request, res:Response): Promise<void> {  
+    async post(req:Request, res:Response): Promise<void> {  
     
         console.log("Url-Service-Module: reqest body: , ", req.body);
         const reqLongUrl: string = req.body.LongUrl;
