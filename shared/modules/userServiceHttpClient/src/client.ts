@@ -11,15 +11,15 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
         this.httpClient = httpClient;
     }
 
-    async Get(email: string): Promise<User> {
-        return this.httpClient.Get<User>(process.env.USER_SERVICE_PATH, { email })
+    async get(email: string): Promise<User> {
+        return this.httpClient.get<User>(process.env.USER_SERVICE_PATH, { email })
     }
 
-    async Create(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
+    async create(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
         const newUser = {
             ...credentials,
             ...userMetadata
         }
-        return this.httpClient.Post<void>(process.env.USER_SERVICE_PATH, newUser)
+        return this.httpClient.post<void>(process.env.USER_SERVICE_PATH, newUser)
     }
 }

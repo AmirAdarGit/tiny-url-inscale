@@ -35,23 +35,10 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
 
     async getEmailFromTheToken(token: Token): Promise<string> {
         try {
-            // console.log("Try to send to auth the Token and user email for validation ", token);
             return await this.httpClient.get<string>(process.env.AUTH_ENDPOINT_VALID_TOKEN_LINK_PATH, { ...token });//process use - api.env, urlService.env
         } catch(err) {
             
             console.log("error in ValidetionToken " + err);
         }
     }
-
-
-    async userValidetionToken(email: string, token: Token): Promise<void> {
-        try {
-            // console.log("Try to send to auth the Token and user email for validation ", validetionToken);
-            return await this.httpClient.get<void>(process.env.AUTH_VALID_TOKEN_USER_PATH, { email, ...token });//process use - api.env, urlService.env
-        } catch(err) {
-            console.log("error in ValidetionToken " + err);
-        }
-    }
-    
-
 }

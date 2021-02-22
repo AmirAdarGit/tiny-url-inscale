@@ -1,9 +1,10 @@
 export interface UrlInfo{
-    LongUrl: string,
-    Email: string,
-    IsPrivate: boolean
+    shortUrl: string,
+    longUrl: string,
+    email: string,
+    isPrivate: boolean
 }
 
 export interface Url{
-    LongUrl: string
+    longUrl: string
 }

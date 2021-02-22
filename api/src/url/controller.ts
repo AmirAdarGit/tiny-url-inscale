@@ -79,20 +79,16 @@ export class UrlController {
 
         var userToken: Token;
         const shortUrl: number = parseInt(req.params.id);
-        
+
         if (req.headers.authorization == undefined) {
             console.log("Api-Module: no token attached to the header.");
-            userToken = {
-                value: undefined
-            }
+            userToken = new Token ("undefined");
         } else {
-            userToken = {
-                value: req.headers.authorization.split(" ")[1]
-            }
+            userToken = new Token (req.headers.authorization.split(" ")[1]);
         }  
         
         try {
-            const url: Url = await this.urlService.get(shortUrl, { ...userToken });
+            const url: Url = await this.urlService.get(shortUrl, userToken);
             console.log(`Api-Module: success to get the longUrl: ${url}, from the short url: ${shortUrl}`);
             return new Promise ((res, rej) => {
                 return res(url);

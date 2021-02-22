@@ -13,24 +13,26 @@ export class UserController {
         this.userService = userService;
     }
 
-    async Post(req:Request, res:Response): Promise<void> {
+    // TODO: check if the data is in req.body but send in the credentionals, user metadate
+    
+    async post(req:Request, res:Response): Promise<void> {
         const userEmail: string = req.body.Email;
         const userPassword: string = req.body.Password;
         const userFullName: string = req.body.Name;
 
         try {
-            const user: User = await this.userService.Create(userEmail, userPassword, userFullName);
+            const user: User = await this.userService.create(userEmail, userPassword, userFullName);
             res.status(200).send(user);        
         } catch (ex) {
             res.status(500).send(ex);
         }    
     };
 
-    async Get(req:Request, res:Response): Promise<void> {
+    async get(req:Request, res:Response): Promise<void> {
         const userEmail: string = String(req.query.email);// param instend of query because get does not have body, but params.
        
         try {
-            const user: User = await this.userService.Read(userEmail); // recive the encoded pass from the db
+            const user: User = await this.userService.read(userEmail); // recive the encoded pass from the db
             
             if(user) {
                 res.status(200).send(user);

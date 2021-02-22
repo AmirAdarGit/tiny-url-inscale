@@ -5,5 +5,4 @@ export interface IAuthServiceHttpClient {
     login(credentials: Credentials): Promise<Token>
     signUp(credentials: Credentials, userMetadata: UserMetadata): Promise<void>
     getEmailFromTheToken(token: Token): Promise<string>
-    userValidetionToken(email: string, token: Token): Promise<void>
 }

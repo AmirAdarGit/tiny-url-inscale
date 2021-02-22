@@ -16,7 +16,31 @@ export class AuthService {
         this.userHttpClient = userServiceHttpClient;
     }
 
+    async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<void> {   
+        
+        const encryptedPass = await this.getEncryptPassword(credentials.Password);
 
+        const encriptedCredentials: Credentials = {
+            Email: credentials.Email,
+            Password: encryptedPass 
+        } 
+
+        await this.userHttpClient.create(encriptedCredentials, userMetadata);
+    };
+
+    async logIn (credentials: Credentials): Promise<Token> {
+        const user: User = await this.userHttpClient.get(credentials.Email);
+        const { password: userEncryptedPassFromDb, email: email } = user;
+        const isValidPassword = await this.comparePasswords(credentials.Password, userEncryptedPassFromDb);
+
+        if (isValidPassword) {
+            return await this.createToken(email);
+        } else {
+            return new Promise((res, rej) => {
+                rej("Password is not valid.");
+            });
+        }
+    };
 
     authenticate(token: Token): string {
 
@@ -28,31 +52,6 @@ export class AuthService {
         }
     }
 
-    async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<void> {   
-        
-        const encryptedPass = await this.getEncryptPassword(credentials.Password);
-
-        const encriptedCredentials: Credentials = {
-            Email: credentials.Email,
-            Password: encryptedPass 
-        } 
-
-        await this.userHttpClient.Create(encriptedCredentials, userMetadata);
-    };
-
-    async logIn (credentials: Credentials): Promise<Token> {
-        const user: User = await this.userHttpClient.Get(credentials.Email);
-        const { password: userEncryptedPassFromDb, email } = user;
-        const isValidPassword = await this.comparePasswords(credentials.Password, userEncryptedPassFromDb);
-
-        if (isValidPassword) {
-            return await this.createToken(email);
-        } else {
-            return new Promise((res, rej) => {
-                rej("Password is not valid.");
-            });
-        }
-    };
 
     private async comparePasswords(originalPassword: string, encryptedPassword: string): Promise<boolean> {
         return await bcrypt.compare(originalPassword, encryptedPassword);
@@ -68,7 +67,6 @@ export class AuthService {
         const value: string = jwt.sign({email: email}, process.env.ACCESS_TOKEN_SECRET );
         return new Token (value);        
     }
-
 
     private getEmail(token: Token): string {
         const decrypted = <any>jwt.verify(token.value, process.env.ACCESS_TOKEN_SECRET)

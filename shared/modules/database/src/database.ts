@@ -57,6 +57,8 @@ export class Database implements Idatabase{
                     } else {
                         console.log("Database module, Execute method - results type: ", typeof(results));
                         console.log("Database module, Execute method - results: ", results);
+                        //var resultArray = Object.values(JSON.parse(JSON.stringify(results)))
+
                         return results;
                     }
                 })
@@ -65,4 +67,8 @@ export class Database implements Idatabase{
               return ex;  
             }
     }
+
+
+    // private parser(result: any): 
+
 }

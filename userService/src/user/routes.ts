@@ -13,5 +13,5 @@ const signUpProducer: SignUpProducer = new SignUpProducer();
 const userService: UserService = new UserService(database, signUpProducer);
 const userController: UserController = new UserController(userService);
 
-router.post('/', jsonParser,(req,res) => userController.Post(req,res));
-router.get('/', jsonParser,(req,res) => userController.Get(req,res)); 
+router.post('/', jsonParser,(req,res) => userController.post(req,res));
+router.get('/', jsonParser,(req,res) => userController.get(req,res)); 

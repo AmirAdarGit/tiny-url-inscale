@@ -23,8 +23,4 @@ export class AuthService {
             await this.authHttpClient.signUp(credentials, userMetadata);
     }
 
-
-
-
-    
 }

@@ -49,7 +49,7 @@ export class AuthController {
         }
     };
 
-    async logIn (req:Request, res:Response): Promise<Token> {
+    async logIn (req:Request, res:Response): Promise<void> {
 
         const credentials: Credentials = {
             Email: String(req.query.Email),
@@ -60,11 +60,7 @@ export class AuthController {
             const token: Token = await this.authService.logIn(credentials);
             res.status(200).send(token);
         } catch (ex) {
-            return new Promise((res, rej) => {
-                rej(ex);
-            })
+            res.status(500).send(ex);
         }
-           
     }
-    
 }    

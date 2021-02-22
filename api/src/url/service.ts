@@ -13,6 +13,12 @@ export class UrlService {
         this.urlHttpClient = urlServiceHttpClient;
     }
 
+
+    async post(userToken: Token, longUrl: string, email: string, isPrivate: boolean) {
+        return await this.urlHttpClient.create(userToken, longUrl, email, isPrivate)
+    }
+
+
     async get(shortUrl: number, userToken: Token): Promise<Url> {
 
         if (!this.validate(shortUrl)) {
@@ -23,9 +29,6 @@ export class UrlService {
         return await this.urlHttpClient.get(shortUrl, { ...userToken });    
     }
 
-    async post(userToken: Token, longUrl: string, email: string, isPrivate: boolean) {
-        return await this.urlHttpClient.create(userToken, longUrl, email, isPrivate)
-    }
 
 
 

@@ -14,8 +14,11 @@ export class UserService {
     }
 
  
-    async Create(userEmail: string, userName: string, userPassword: string): Promise<User> {
+    async create(userEmail: string, userName: string, userPassword: string): Promise<User> {
         const query: string = `INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPassword}')`; 
+        
+        // TODO: parse the data data from RowDataPacker to User object.
+        
         const user: User = await this.database.Execute<User>(query); 
 
         await this.signUpProducer.SqSProduceSignUp(userEmail);
@@ -23,7 +26,7 @@ export class UserService {
         return user;
     }
 
-    async Read(userEmail: string): Promise<User> {
+    async read(userEmail: string): Promise<User> {
         const query = `SELECT UserPassword FROM Tiny_URL.Users where Email = '${userEmail}'`
         return await this.database.Execute<User>(query) ;
     }
