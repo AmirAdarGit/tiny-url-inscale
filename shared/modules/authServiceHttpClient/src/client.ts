@@ -20,25 +20,24 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
         }
 
         console.log("With new user: ", newUser);
-        return await this.httpClient.post(process.env.AUTH_SIGNUP_PATH, newUser)//process use - api.env, urlService.env
+        return await this.httpClient.post(`${process.env.AUTH_SERVIVE_HOST}/api/autentication/signUp`, newUser)//process use - api.env, urlService.env
     }
 
 
     async login(credentials: Credentials): Promise<Token> {
         try {
             console.log("Try to send to auth the credentisls ", credentials);
-            return await this.httpClient.get<Token>(process.env.AUTH_LOGIN_PATH, { ...credentials })//process use - api.env, urlService.env
+            return await this.httpClient.get<Token>(`${process.env.AUTH_SERVIVE_HOST}/api/authentication/logIn`, { ...credentials })//process use - api.env, urlService.env
         } catch(err) { 
             console.log("error in Login " + err.response.status);
         }
     }
 
-    async getEmailFromTheToken(token: Token): Promise<string> {
+    async getEmail(token: Token): Promise<string> {
         try {
-            return await this.httpClient.get<string>(process.env.AUTH_ENDPOINT_VALID_TOKEN_LINK_PATH, { ...token });//process use - api.env, urlService.env
-        } catch(err) {
-            
-            console.log("error in ValidetionToken " + err);
+            return await this.httpClient.get<string>(`${process.env.AUTH_SERVIVE_HOST}/api/authentication/validationToken`, { ...token });//process use - api.env, urlService.env
+        } catch(ex) {
+            return new Promise((req, res) => { res(ex)})
         }
     }
 }

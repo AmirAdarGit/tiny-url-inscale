@@ -17,4 +17,3 @@ const authController: AuthController = new AuthController(authService); //SighUp
 
 router.post("/signUp", jsonParser, (req, res) => authController.SignUp(req, res));
 router.post("/logIn", jsonParser, (req, res) => authController.LogIn(req, res));
-router.post("/createUrl", jsonParser, (req, res) => authController.CreateUrl(req, res));// change the logic!

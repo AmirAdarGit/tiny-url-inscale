@@ -14,6 +14,6 @@ const urlService = new UrlService(urlServiceHttpClient);
 const urlController = new UrlController(urlService);
 
 router.get("/:id", jsonParser ,(req,res) => urlController.get(req, res));
-router.post("/crarteUrl", jsonParser ,(req,res) => urlController.post(req, res));
+router.post("/createUrl", jsonParser ,(req,res) => urlController.post(req, res));
 
 

@@ -14,23 +14,17 @@ export class UserService {
     }
 
  
-    async create(userEmail: string, userName: string, userPassword: string): Promise<User> {
+    async create(userEmail: string, userName: string, userPassword: string): Promise<boolean> {
         const query: string = `INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPassword}')`; 
         
         // TODO: parse the data data from RowDataPacker to User object.
-        
-        const user: User = await this.database.Execute<User>(query); 
-
+        const isCreate: boolean = await this.database.Execute<boolean>(query); 
         await this.signUpProducer.SqSProduceSignUp(userEmail);
-
-        return user;
+        return isCreate;
     }
 
     async read(userEmail: string): Promise<User> {
-        const query = `SELECT UserPassword FROM Tiny_URL.Users where Email = '${userEmail}'`
+        const query = `SELECT * FROM Tiny_URL.Users where Email = '${userEmail}'`
         return await this.database.Execute<User>(query) ;
     }
-
-}
-
-   
+}  

@@ -1,8 +1,5 @@
 import { Request, Response} from "express"   
 import { User } from "../../../shared/models/user/index"
-import { SignUpProducer } from '../produce.email.sqs/produce';
-import { Idatabase } from '../../../shared/interfaces/database/Idatabase' 
-import * as mysql from 'mysql'
 import { UserService } from "./service";
 
 export class UserController {
@@ -21,8 +18,11 @@ export class UserController {
         const userFullName: string = req.body.Name;
 
         try {
-            const user: User = await this.userService.create(userEmail, userPassword, userFullName);
-            res.status(200).send(user);        
+            const CreateUser: boolean = await this.userService.create(userEmail, userPassword, userFullName);
+            if (CreateUser) {
+                res.status(200).send(CreateUser);
+            }
+            else { return new Promise((res, rej) => { rej("Cannot create new User") }) }
         } catch (ex) {
             res.status(500).send(ex);
         }    
@@ -32,13 +32,12 @@ export class UserController {
         const userEmail: string = String(req.query.email);// param instend of query because get does not have body, but params.
        
         try {
-            const user: User = await this.userService.read(userEmail); // recive the encoded pass from the db
+            const user: User = await this.userService.read(userEmail); 
             
             if(user) {
-                res.status(200).send(user);
-            } else {
-                res.status(404).send("User email does not found");
-            }
+                res.send(200).send(user)
+            } 
+            else { return new Promise((res, rej) => { rej("Cannot get User info") }) }
         } catch (ex) {
             res.status(500).send(ex);
         }

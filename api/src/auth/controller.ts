@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { Credentials, UserMetadata} from "../../../shared/models/common"
-import { Token } from "../../../shared/models/authenticate/index"
-import { Url } from "../../../shared/models/url/index"
-import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
+import { Token } from "../../../shared/models/authenticate"
 import { AuthService } from "./service";
 
 
@@ -22,20 +20,10 @@ export class AuthController {
         }
 
         try {
-            console.log("Api-Module: success to get the body credentials", credentials);
-            const logInResponse: Token = await this.authService.LogIn(credentials);
-            if (String(logInResponse) == '405') {
-                res.status(405).send("error Password"); 
-            } 
-            if (String(logInResponse) == '404') {
-                res.status(404).send("error Email"); 
-            } else {
-                console.log(`Api-Module: logIn successfully, resive token ${logInResponse.value}`);
-                res.status(200).send(logInResponse);//return the Token to the user -> in future save it in the browser cookies.
-            }
+            const token: Token = await this.authService.LogIn(credentials);
+            res.status(200).send(token); //return the Token to the user -> in future save it in the browser cookies.
         } catch (ex) {
-                console.log(`Api-Module: Faild creating token:  ${ex}`);
-                res.status(500).send();
+            res.status(500).send(ex);
         }
     };
     
@@ -54,15 +42,9 @@ export class AuthController {
         
         try {
             await this.authService.SignUp(userMetadata, credentials);
-            console.log("Api-Module: statuse 200 ")
-            res.status(200).send();
+            res.status(200).send(`User: ${credentials.Email} has been created.`);
         } catch (ex) {
-            console.log(`Api-Module: Failed signing up : ${ex}`)
-            if (ex.response.status == 409) {
-                res.status(409).send("User already exist, try another User Email.");
-            } else {
-                res.status(500).send({ ex });
-            }
+            res.status(500).send(ex);
         }
     }
 }

@@ -1,13 +1,9 @@
-import {Request, Response} from "express"   
-import { Credentials , UserMetadata} from '../../../shared/models/common/index'
+import { Credentials , UserMetadata} from '../../../shared/models/common'
 import { UserServiceHttpClient } from '../../../shared/modules/userServiceHttpClient/src/client'
-import { AuthServiceHttpClient } from '../../../shared/modules/authServiceHttpClient/src/client'
-
-import { User } from '../../../shared/models/user/index'
-import { Token, TokenEmailValue } from "../../../shared/models/authenticate/index"
+import { User } from '../../../shared/models/user'
+import { Token } from "../../../shared/models/authenticate"
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
-import { AuthController } from "./controller"
 
 export class AuthService {
 
@@ -16,31 +12,27 @@ export class AuthService {
         this.userHttpClient = userServiceHttpClient;
     }
 
-    async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<void> {   
-        
-        const encryptedPass = await this.getEncryptPassword(credentials.Password);
+    async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {   
 
-        const encriptedCredentials: Credentials = {
+        const encryptedPass = await this.getEncryptPassword(credentials.Password);
+        const encryptedCredentials: Credentials = {
             Email: credentials.Email,
             Password: encryptedPass 
         } 
+        return await this.userHttpClient.create(encryptedCredentials, userMetadata);
+    }
 
-        await this.userHttpClient.create(encriptedCredentials, userMetadata);
-    };
+    async logIn (credentials: Credentials): Promise<Token> { 
 
-    async logIn (credentials: Credentials): Promise<Token> {
         const user: User = await this.userHttpClient.get(credentials.Email);
         const { password: userEncryptedPassFromDb, email: email } = user;
         const isValidPassword = await this.comparePasswords(credentials.Password, userEncryptedPassFromDb);
 
-        if (isValidPassword) {
-            return await this.createToken(email);
-        } else {
-            return new Promise((res, rej) => {
-                rej("Password is not valid.");
-            });
-        }
-    };
+        if (isValidPassword) { return await this.createToken(email); } 
+        return new Promise((res, rej) => {
+            rej("Password is not valid.");
+        })
+    }
 
     authenticate(token: Token): string {
 
@@ -51,7 +43,6 @@ export class AuthService {
             return '';
         }
     }
-
 
     private async comparePasswords(originalPassword: string, encryptedPassword: string): Promise<boolean> {
         return await bcrypt.compare(originalPassword, encryptedPassword);
@@ -74,8 +65,4 @@ export class AuthService {
             return String(decrypted['email'])
         } else return '';
     }
-
-
 }    
-
-

@@ -1,6 +1,7 @@
 import { Request, Response } from "express"   
 import { Token } from "../../../shared/models/authenticate"
 import { UrlService } from "./service"
+import { tokenUtils } from "../../../shared/jwtToken/tokenUtils"
 
 export class UrlController{
 
@@ -12,20 +13,23 @@ export class UrlController{
 
     async post(req:Request, res:Response): Promise<void> {  
     
-        console.log("Url-Service-Module: reqest body: , ", req.body);
         const reqLongUrl: string = req.body.LongUrl;
         const reqIsPrivate: string = String(req.body.IsPrivate)
-        const token: Token = new Token(req.headers.authorization.split(" ")[1])
+
+        const token: string = tokenUtils.getToken(req.headers.authorization)
+        const userToken: Token = new Token(token)
         // ToDo: fatch the token from the header 
         
         try {
-            const url: String = await this.urlService.create(token, reqLongUrl, reqIsPrivate); 
-            res.status(200).send(url);
-        } catch (ex) {
-            res.send(ex);
+            const Shorturl: string = await this.urlService.create(userToken, reqLongUrl, reqIsPrivate); 
+            if (Shorturl) {
+                res.status(200).send(Shorturl)
         }
-    };
-
+            else { return new Promise((res, rej) => { rej(`Cannot create new short Url from ${reqLongUrl}`)})}
+        } catch (ex) {
+            res.status(500).send(ex);
+        }
+    }
 
     async get(req:Request, res:Response): Promise<void> {
 
@@ -33,13 +37,13 @@ export class UrlController{
         const token: Token = req.body.token;
        
         try {
-        const longUrl: string = await this.urlService.read(shortUrl, token);
-        res.status(200).send(longUrl);
+            const longUrl: string = await this.urlService.read(shortUrl, token);
+            if (longUrl) {
+                res.status(200).send(longUrl) 
+            }
+            else { return new Promise ((res, rej) => { rej(`Cannot get the url of ${shortUrl}`)})}
         } catch (ex) {
-            res.send(ex);
+            res.status(500).send(ex);
         }
     }
-
-
-
 }
