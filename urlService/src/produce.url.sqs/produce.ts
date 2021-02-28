@@ -17,12 +17,12 @@ export class UrlProducer {
             MessageBody: String(`${email} ${shortUrl} ${longUrl}`),
             QueueUrl: this.queueUrl
         }
-            await this.sqs.sendMessage(params, function(err: Error, data:any){
-                if (err) {
-                    return new Promise((req, rej) => { rej(err)})
-                } else {
-                    console.log("Success", data.MessageId);
-                }
-            })
+        await this.sqs.sendMessage(params, function(err: Error, data:any){
+            if (err) {
+                return new Promise((req, rej) => { rej(err)})
+            } else {
+                console.log("Success", data.MessageId);
+            }
+        })
     }
 }

@@ -18,15 +18,15 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
             ...credentials,
             ...userMetadata
         }
-        return await this.httpClient.post(`${process.env.AUTH_SERVICE_HOST}${api}${authentication}${signUp}`, newUser)
+        return await this.httpClient.post(`${process.env.AUTH_SERVICE_HOST}/${api}/${authentication}/${signUp}`, newUser)
     }
 
 
     async login(credentials: Credentials): Promise<Token> {
-            return await this.httpClient.get<Token>(`${process.env.AUTH_SERVICE_HOST}${api}${authentication}${logIn}`, { ...credentials })
+            return await this.httpClient.get<Token>(`${process.env.AUTH_SERVICE_HOST}/${api}/${authentication}/${logIn}`, { ...credentials })
     }
 
     async getEmail(token: Token): Promise<string> {
-            return await this.httpClient.get<string>(`${process.env.AUTH_SERVICE_HOST}${api}${authentication}${authenticateToken}`, { ...token });
+            return await this.httpClient.get<string>(`${process.env.AUTH_SERVICE_HOST}/${api}/${authentication}/${authenticateToken}`, { ...token });
     }
 }

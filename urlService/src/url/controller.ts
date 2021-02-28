@@ -24,8 +24,8 @@ export class UrlController{
             } else {
                 res.status(403).send("Forbidden, cannot create new Url");
             }
-    } catch (ex) {
-            res.status(500).send(ex);
+        } catch (ex) {
+                res.status(500).send(ex);
         }
     }
 
@@ -40,7 +40,7 @@ export class UrlController{
                 res.status(200).send(longUrl);
             }
             else {            
-                res.status(403).send("Forbidden, cannot get Url");
+                res.status(404).send("Forbidden, cannot get Url");
             }
         } catch (ex) {
             res.status(500).send(ex);

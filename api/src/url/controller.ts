@@ -34,7 +34,7 @@ export class UrlController {
         const token: Token = tokenUtils.getToken(req.headers.authorization)
 
         if (!shortUrl){
-            res.status(404).send("Not Found, Short url is necessary in the params: id, for the 'get url' service.");
+            res.status(400).send("Not Found, Short url is necessary in the params: id, for the 'get url' service.");
             return;
         }
         try {

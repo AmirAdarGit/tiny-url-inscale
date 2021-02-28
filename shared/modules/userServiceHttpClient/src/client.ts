@@ -13,7 +13,7 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
     }
 
     async get(email: string): Promise<User> {
-        return await this.httpClient.get<User>(`${process.env.USER_SERVICE_PATH}${api}${user}`, { email })
+        return await this.httpClient.get<User>(`${process.env.USER_SERVICE_PATH}/${api}/${user}`, { email })
     }
 
     async create(credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {
@@ -21,6 +21,6 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
             ...credentials,
             ...userMetadata
         }
-        return await this.httpClient.post<boolean>(`${process.env.USER_SERVICE_PATH}${api}${user}`, newUser)
+        return await this.httpClient.post<boolean>(`${process.env.USER_SERVICE_PATH}/${api}/${user}`, newUser)
     }
 }

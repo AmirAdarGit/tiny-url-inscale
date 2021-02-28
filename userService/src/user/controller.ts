@@ -21,8 +21,7 @@ export class UserController {
             const CreateUser: boolean = await this.userService.create(userEmail, userPassword, userFullName);
             if (CreateUser) {
                 res.status(200).send(CreateUser);
-            }
-            else { res.status(404).send("Forbidden, cannot create new User") }
+            } else { res.status(404).send("Forbidden, cannot create new User") }
         } catch (ex) {
             res.status(500).send(ex);
         }    
@@ -35,8 +34,7 @@ export class UserController {
             const user: User = await this.userService.read(userEmail); 
             if(user) {
                 res.send(200).send(user)
-            } 
-            else { res.status(404).send("Forbidden, cannot get User properties") }
+            } else { res.status(404).send("Forbidden, cannot get User properties") }
         } catch (ex) {
             res.status(500).send(ex);
         }

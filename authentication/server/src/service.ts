@@ -25,9 +25,8 @@ export class AuthService {
             password: encryptedPass 
         } 
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
-        if (isSignUp) {
-            await this.signUpProducer.SqSProduceSignUp(credentials.email); // only if the sighUp flow is working send to sqs the email.
-        }
+        if (!isSignUp) return isSignUp;    
+        await this.signUpProducer.SqSProduceSignUp(credentials.email); // only if the sighUp flow is working send to sqs the email.   
         return isSignUp;
     }
 
