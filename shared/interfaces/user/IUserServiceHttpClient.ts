@@ -3,6 +3,6 @@ import { User } from '../../models/user';
 
 
 export interface IUserServiceHttpClient {
-    Get(email: string): Promise<User>
-    Create(credentials: Credentials, userMetadata: UserMetadata): Promise<void>
+    get(email: string): Promise<User>
+    create(credentials: Credentials, userMetadata: UserMetadata): Promise<boolean>
 }

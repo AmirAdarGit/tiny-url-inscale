@@ -1,35 +1,28 @@
 import  * as AWS  from "aws-sdk"
 
-AWS.config.update({region: 'eu-centeral-1'})
-var sqs = new AWS.SQS({ apiVersion: '2012-11-05'})
+export class UrlProducer {
 
-export const sendEmailWithShortUrl = async function(email: string, shortUrl: string, longUrl: string) {
-    console.log("User-Service, send the Email to SQS");
-    const params = {
-        // MessageAttributes: {
-        //     "Short": {
-        //         DataType: "String",
-        //         StringValue: shortUrl
-        //     },
-        //     "Long": {
-        //         DataType: "String",
-        //         StringValue: longUrl
-        //     }
-        // },
-        MessageBody: String(email + " " + shortUrl + " " + longUrl),
-        QueueUrl: 'https://sqs.eu-central-1.amazonaws.com/204375983547/Short-and-Long-Url'
+    sqs: AWS.SQS;
+    queueUrl: string;
+
+    constructor(region: string, queueUrl: string){
+        AWS.config.update({region: region})
+        this.sqs = new AWS.SQS({ apiVersion: '2012-11-05'})
+        this.queueUrl = queueUrl;
     }
-    try {
-        await sqs.sendMessage(params, function(err: Error, data:any){
+
+    async ProduceShortUrl(email: string, shortUrl: string, longUrl: string) {
+        console.log("User-Service, send the Email to SQS");
+        const params = {
+            MessageBody: String(`${email} ${shortUrl} ${longUrl}`),
+            QueueUrl: this.queueUrl
+        }
+        await this.sqs.sendMessage(params, function(err: Error, data:any){
             if (err) {
-                console.log("Error", err);
+                return new Promise((req, rej) => { rej(err)})
             } else {
                 console.log("Success", data.MessageId);
             }
         })
-    } catch (ex) {
-        console.log(`Url-Service-Produce: Error: ${ex}`);
     }
 }
-
-

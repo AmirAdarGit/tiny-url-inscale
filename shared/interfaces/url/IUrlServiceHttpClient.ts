@@ -1,8 +1,8 @@
 import { Token } from '../../models/authenticate';
-import { Url } from '../../models/url/index';
+import { Url } from '../../models/url';
 
 
 export interface IUrlServiceHttpClient {
-    Get(shortUrl: number, token: Token): Promise<void>
-    Create(url: Url): Promise<void>
+    get(shortUrl: number, token: Token): Promise<string>
+    create(userToken: Token, url: Url): Promise<string>
 }

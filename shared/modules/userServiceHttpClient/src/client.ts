@@ -1,25 +1,26 @@
 import { IUserServiceHttpClient } from "../../../interfaces/user/IUserServiceHttpClient"
+import { IHttpClient } from "../../../interfaces/httpClient"
 import { Credentials, UserMetadata } from "../../../models/common";
 import { User } from "../../../models/user";
-import { HttpClient } from "../../httpClient/src/HttpClient";
+import { api, user } from "../../../const"
 
 export class UserServiceHttpClient implements IUserServiceHttpClient {
 
-    httpClient: HttpClient
+    httpClient: IHttpClient;
 
-    constructor(httpClient: HttpClient) {
+    constructor(httpClient: IHttpClient) {
         this.httpClient = httpClient;
     }
 
-    async Get(email: string): Promise<User> {
-        return this.httpClient.Get<User>(process.env.USER_SERVICE_PATH, { email })
+    async get(email: string): Promise<User> {
+        return await this.httpClient.get<User>(`${process.env.USER_SERVICE_PATH}/${api}/${user}`, { email })
     }
 
-    async Create(credentials: Credentials, userMetadata: UserMetadata): Promise<void> {
+    async create(credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {
         const newUser = {
             ...credentials,
             ...userMetadata
         }
-        return this.httpClient.Post<void>(process.env.USER_SERVICE_PATH, newUser)
+        return await this.httpClient.post<boolean>(`${process.env.USER_SERVICE_PATH}/${api}/${user}`, newUser)
     }
 }

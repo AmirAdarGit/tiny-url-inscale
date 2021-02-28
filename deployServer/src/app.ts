@@ -3,4 +3,4 @@ import { router } from './routes/deploy.route'
  
 export const app = express();
 
-app.use('/',router)
+app.use('/', router)

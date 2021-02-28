@@ -1,4 +1,6 @@
+import { Token } from "../../../shared/models/authenticate/Token"
+
 export interface IHttpClient {
-    Get<T>(url: string, params: object): Promise<T>
-    Post<T>(url: string, payload: object): Promise<T>
+    get<T>(url: string, params: object, token?: Token): Promise<T>
+    post<T>(url: string, payload: object, token?: Token): Promise<T>
 }

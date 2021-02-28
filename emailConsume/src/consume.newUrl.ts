@@ -3,7 +3,7 @@ import * as nodemailer  from 'nodemailer'
 import { Consumer } from 'sqs-consumer' 
 
 
-const app = Consumer.create({
+const newUrlConsumer = Consumer.create({
     queueUrl: process.env.AWS_SQS_NEW_SHORT_URL,
     //attributeNames : ['All'] ,
     //messageAttributeNames : ['Name'],
@@ -14,15 +14,15 @@ const app = Consumer.create({
         await sendEmail(arg[0], arg[1], arg[2]);  
     }, 
 })
-app.on('error', (err: Error) => {
+newUrlConsumer.on('error', (err: Error) => {
     console.error(err.message);
 });
 
-app.on('processing_error', (err: Error) => {
+newUrlConsumer.on('processing_error', (err: Error) => {
     console.error(err.message);
 });
 
-app.start();
+newUrlConsumer.start();
 
 async function sendEmail(userEmail: string, shortUrl: string, longUrl:string): Promise<void>{
     var transporter = nodemailer.createTransport({

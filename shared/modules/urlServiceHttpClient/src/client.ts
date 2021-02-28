@@ -1,21 +1,22 @@
 import { IUrlServiceHttpClient } from "../../../interfaces/url/IUrlServiceHttpClient"
-import { HttpClient } from "../../httpClient/src/HttpClient";
-import { Url } from "../../../models/url/index"
+import { IHttpClient } from "../../../interfaces/httpClient/IHttpClient";
 import { Token } from "../../../models/authenticate";
+import { api, url } from "../../../const"
+import { Url } from "../../../models/url";
 
 export class UrlServiceHttpClient implements IUrlServiceHttpClient {
 
-    httpClient: HttpClient
+    httpClient: IHttpClient
 
-    constructor(httpClient: HttpClient) {
+    constructor(httpClient: IHttpClient) {
         this.httpClient = httpClient;
     }
 
-    async Get(shortUrl: number, token: Token): Promise<void> {
-        return this.httpClient.Get<void>(process.env.URL_SERVICE_PATH, { shortUrl, ...token })
+    async get(shortUrl: number, token: Token): Promise<string> {
+        return this.httpClient.get<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { shortUrl, ...token })
     }
 
-    async Create(url: Url): Promise<void> {
-        return this.httpClient.Post<void>(process.env.URL_SERVICE_PATH, url)
+    async create(userToken: Token, url: Url): Promise<string> {
+        return this.httpClient.post<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { url }, userToken)
     }
 }

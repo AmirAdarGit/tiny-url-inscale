@@ -3,22 +3,22 @@ import * as nodemailer  from 'nodemailer'
 import { Consumer } from 'sqs-consumer' 
 
 
-const app = Consumer.create({
+const signUpConsumer = Consumer.create({
     queueUrl: process.env.AWS_SQS_SIGN_UP_URL,
     handleMessage: async (message: any) => {
         console.log(message.Body); 
         await sendEmail(message.Body)  
     }
 })
-app.on('error', (err: Error) => {
+signUpConsumer.on('error', (err: Error) => {
     console.error(err.message);
 });
 
-app.on('processing_error', (err: Error) => {
+signUpConsumer.on('processing_error', (err: Error) => {
     console.error(err.message);
 });
 
-app.start();
+signUpConsumer.start();
 
 
 
@@ -37,7 +37,7 @@ async function sendEmail(userEmail: string): Promise<void>{
       subject: 'Welcome To Tiny Url App',
     
       html:  `<h1>Hey ${userEmail.substring(0, userEmail.lastIndexOf("@"))}</h1>
-      <p>Thanks for signing up to the "Tiny url in scale" app.<br>
+      <p>Thanks for signing up to the "Tiny url in scale" application.<br>
       Now you can generate a short url from any given url.<br>
       For additional updates and features you will receive an email alert.<br>
       Have fun :).</p>`

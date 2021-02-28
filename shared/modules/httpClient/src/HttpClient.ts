@@ -1,21 +1,30 @@
 import { IHttpClient } from "../../../interfaces/httpClient"
 import axios from "axios"
+import { Token } from "../../../models/authenticate/Token"
 
 export class HttpClient implements IHttpClient {
 
-    async Get<T>(url: string, params: object): Promise<T> {
+    async get<T>(url: string, params: object, token?: Token): Promise<T> {
         console.log("in httpClient, params: ", params);
-        const response = await axios.get<T>(url, { params: { ...params }});
+        
+        const config = {
+            headers : { 'Authorization': `Bearer ${token}`},
+            params : { params }
+        }
+        const response = await axios.get<T>(url, config);
         if (response.status != 200) {
             return new Promise((resolve, reject) => reject());
         }
-        return response.data
+        return response.data;
     }
-    async Post<T>(url: string, payload: object): Promise<T> {
-        const response = await axios.post<T>(url, payload); 
+    async post<T>(url: string, payload: object, token?: Token): Promise<T> {
+        const config = {
+            headers : { 'Authorization': `Bearer ${token}`},
+        }
+        const response = await axios.post<T>(url, { payload }, config); 
         if (response.status != 200) {
             return new Promise((resolve, reject) => reject());
         }
-        return response.data
+        return response.data;    
     }
 }
