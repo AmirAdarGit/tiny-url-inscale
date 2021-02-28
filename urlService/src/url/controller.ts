@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { Token } from "../../../shared/models/authenticate"
 import { UrlService } from "./service"
 import { tokenUtils } from "../../../shared/jwtToken/tokenUtils"
+import { Url } from "../../../shared/models/url";
 
 export class UrlController{
 
@@ -13,12 +14,11 @@ export class UrlController{
 
     async post(req:Request, res:Response): Promise<void> {  
     
-        const reqLongUrl: string = req.body.LongUrl;
-        const reqIsPrivate: string = String(req.body.IsPrivate);
+        const url: Url = req.body.url;
         const token: Token = tokenUtils.getToken(req.headers.authorization);
         
         try {
-            const Shorturl: string = await this.urlService.create(token, reqLongUrl, reqIsPrivate); 
+            const Shorturl: string = await this.urlService.create(token, url.longUrl, url.isPrivate); 
             if (Shorturl) {
                 res.status(200).send(Shorturl);
             } else {

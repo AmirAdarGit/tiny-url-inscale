@@ -1,9 +1,8 @@
 import { Token } from "../../../shared/models/authenticate"
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
-import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
 import { UrlProducer } from "../produce.url.sqs/produce"
-import { UrlInfo } from "../../../shared/models/url/index"
+import { Url } from "../../../shared/models/url/index"
 
 export class UrlService {
     private database: Idatabase;
@@ -16,7 +15,7 @@ export class UrlService {
         this.urlProducer = urlProducer;
     }
     
-    async create(token: Token, longUrl: string, isPrivate: string): Promise<string> {     
+    async create(token: Token, longUrl: string, isPrivate: boolean): Promise<string> {     
         const email = await this.authHttpClient.getEmail(token);
         if (!email) { return new Promise((res, rej) => { rej("Token invalid") }); }
 
@@ -40,7 +39,7 @@ export class UrlService {
             return new Promise((res, rej) => { rej("Url is not valid"); })
         }
         const query: string = `SELECT * FROM Tiny_URL.Links where ShortURL = '${shortUrl}'`;
-        const linkInfo: UrlInfo  = await this.database.Execute<UrlInfo>(query);
+        const linkInfo: Url  = await this.database.Execute<Url>(query);
         if (!linkInfo) { return new Promise((res, rej) => { rej("No such url.") }); }
         
         const { isPrivate: privacy, longUrl: url } = linkInfo; 

@@ -1,3 +1,3 @@
-import { UrlInfo } from "./UrlInfo"
+import { Url } from "./Url"
 
-export { UrlInfo }
+export { Url }

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Token } from "../../../shared/models/authenticate"
 import { UrlService } from "./service";
 import { tokenUtils } from "../../../shared/jwtToken/tokenUtils"
-
+import { Url } from "../../../shared/models/url"
 
 export class UrlController { 
 
@@ -18,10 +18,11 @@ export class UrlController {
         const longUrl: string = req.body.longUrl;
         const email: string = req.body.Email;
         const isPrivate: boolean = Boolean(req.body.IsPrivate);
+        const url: Url = new Url (longUrl, email, isPrivate);
 
         try {
-            const url = await this.urlService.post(token, longUrl, email, isPrivate);
-            res.status(200).send(url);
+            const newUrl = await this.urlService.post(token, url);
+            res.status(200).send(newUrl);
         } catch (ex) {
             res.status(500).send(ex);
         }

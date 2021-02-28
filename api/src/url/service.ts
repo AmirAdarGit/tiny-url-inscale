@@ -1,5 +1,6 @@
 import { IUrlServiceHttpClient } from "../../../shared/interfaces/url/IUrlServiceHttpClient";
 import { Token } from "../../../shared/models/authenticate/index"
+import { Url } from "../../../shared/models/url";
 
 export class UrlService { 
 
@@ -9,8 +10,8 @@ export class UrlService {
         this.urlHttpClient = urlServiceHttpClient;
     }
 
-    async post(userToken: Token, longUrl: string, email: string, isPrivate: boolean) {
-        return await this.urlHttpClient.create(userToken, longUrl, email, isPrivate)
+    async post(userToken: Token, url: Url) {
+        return await this.urlHttpClient.create(userToken, url);
     }
 
     async get(shortUrl: number, userToken: Token): Promise<string> {
