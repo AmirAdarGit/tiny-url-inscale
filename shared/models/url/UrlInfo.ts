@@ -4,7 +4,3 @@ export interface UrlInfo{
     email: string,
     isPrivate: boolean
 }
-
-export interface Url{
-    longUrl: string
-}

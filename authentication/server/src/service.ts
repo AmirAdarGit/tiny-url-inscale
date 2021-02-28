@@ -1,5 +1,5 @@
 import { Credentials , UserMetadata} from '../../../shared/models/common'
-import { UserServiceHttpClient } from '../../../shared/modules/userServiceHttpClient/src/client'
+import { IUserServiceHttpClient } from "../../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from '../../../shared/models/user'
 import { Token } from "../../../shared/models/authenticate"
 import * as bcrypt from "bcrypt"
@@ -7,8 +7,8 @@ import * as jwt from 'jsonwebtoken'
 
 export class AuthService {
 
-    userHttpClient: UserServiceHttpClient;
-    constructor(userServiceHttpClient: UserServiceHttpClient){
+    userHttpClient: IUserServiceHttpClient;
+    constructor(userServiceHttpClient: IUserServiceHttpClient){
         this.userHttpClient = userServiceHttpClient;
     }
 

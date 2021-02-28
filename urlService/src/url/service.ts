@@ -1,15 +1,16 @@
 import { Token } from "../../../shared/models/authenticate"
-import { Database } from "../../../shared/modules/database/src/database"
+import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
 import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
+import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
 import { UrlProducer } from "../produce.url.sqs/produce"
 import { UrlInfo } from "../../../shared/models/url/index"
 
 export class UrlService {
-    private database: Database;
-    private authHttpClient: AuthServiceHttpClient;
-    private urlProducer: UrlProducer;
+    private database: Idatabase;
+    private authHttpClient: IAuthServiceHttpClient;
+    private urlProducer: UrlProducer; // TODO: change to interface for dependency injection?
 
-    constructor(database: Database, authHttpClient: AuthServiceHttpClient, urlProducer: UrlProducer) {
+    constructor(database: Idatabase, authHttpClient: IAuthServiceHttpClient, urlProducer: UrlProducer) {
         this.database = database;
         this.authHttpClient = authHttpClient;
         this.urlProducer = urlProducer;

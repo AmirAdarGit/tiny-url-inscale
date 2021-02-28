@@ -1,14 +1,14 @@
 import { Request, Response} from "express"   
 import { User } from "../../../shared/models/user/index"
 import { SignUpProducer } from '../produce.email.sqs/produce';
-import { Database } from '../../../shared/modules/database/src/database' 
+import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
 
 export class UserService {
 
-    private database: Database;
+    private database: Idatabase;
     private signUpProducer: SignUpProducer;
 
-    constructor(database: Database, signUpProducer: SignUpProducer) {
+    constructor(database: Idatabase, signUpProducer: SignUpProducer) {
         this.signUpProducer = signUpProducer;
         this.database = database;
     }

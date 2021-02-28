@@ -1,14 +1,14 @@
 import { IUserServiceHttpClient } from "../../../interfaces/user/IUserServiceHttpClient"
+import { IHttpClient } from "../../../interfaces/httpClient"
 import { Credentials, UserMetadata } from "../../../models/common";
 import { User } from "../../../models/user";
-import { HttpClient } from "../../httpClient/src/HttpClient";
 import { api, user } from "../../../const"
 
 export class UserServiceHttpClient implements IUserServiceHttpClient {
 
-    httpClient: HttpClient;
+    httpClient: IHttpClient;
 
-    constructor(httpClient: HttpClient) {
+    constructor(httpClient: IHttpClient) {
         this.httpClient = httpClient;
     }
 
