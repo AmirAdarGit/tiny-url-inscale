@@ -2,14 +2,19 @@ import { Credentials , UserMetadata} from '../../../shared/models/common'
 import { IUserServiceHttpClient } from "../../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from '../../../shared/models/user'
 import { Token } from "../../../shared/models/authenticate"
+import { SignUpProducer } from "../produce.email.sqs/produce";
+
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
 
 export class AuthService {
 
     userHttpClient: IUserServiceHttpClient;
-    constructor(userServiceHttpClient: IUserServiceHttpClient){
+    private signUpProducer: SignUpProducer;
+
+    constructor(userServiceHttpClient: IUserServiceHttpClient, signUpProducer: SignUpProducer){
         this.userHttpClient = userServiceHttpClient;
+        this.signUpProducer = signUpProducer;
     }
 
     async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {   
@@ -19,7 +24,11 @@ export class AuthService {
             email: credentials.email,
             password: encryptedPass 
         } 
-        return await this.userHttpClient.create(encryptedCredentials, userMetadata);
+        const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
+        if (isSignUp) {
+            await this.signUpProducer.SqSProduceSignUp(credentials.email); // only if the sighUp flow is working send to sqs the email.
+        }
+        return isSignUp;
     }
 
     async logIn (credentials: Credentials): Promise<Token> { 

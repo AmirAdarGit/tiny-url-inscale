@@ -16,5 +16,5 @@
     },
     "include": [
         "src/**/*"
-       ]
+, "../authentication/server/produce.email.sqs"       ]
 }

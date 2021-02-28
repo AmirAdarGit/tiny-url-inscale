@@ -1,15 +1,13 @@
 import { Request, Response} from "express"   
 import { User } from "../../../shared/models/user/index"
-import { SignUpProducer } from '../produce.email.sqs/produce';
+import { SignUpProducer } from '../../../authentication/server/produce.email.sqs/produce';
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
 
 export class UserService {
 
     private database: Idatabase;
-    private signUpProducer: SignUpProducer;
 
-    constructor(database: Idatabase, signUpProducer: SignUpProducer) {
-        this.signUpProducer = signUpProducer;
+    constructor(database: Idatabase) {
         this.database = database;
     }
 
@@ -19,7 +17,6 @@ export class UserService {
         
         // TODO: parse the data data from RowDataPacker to User object.
         const isCreate: boolean = await this.database.Execute<boolean>(query); 
-        await this.signUpProducer.SqSProduceSignUp(userEmail);
         return isCreate;
     }
 
