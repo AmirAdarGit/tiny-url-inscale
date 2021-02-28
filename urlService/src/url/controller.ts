@@ -14,19 +14,17 @@ export class UrlController{
     async post(req:Request, res:Response): Promise<void> {  
     
         const reqLongUrl: string = req.body.LongUrl;
-        const reqIsPrivate: string = String(req.body.IsPrivate)
-
-        const token: string = tokenUtils.getToken(req.headers.authorization)
-        const userToken: Token = new Token(token)
-        // ToDo: fatch the token from the header 
+        const reqIsPrivate: string = String(req.body.IsPrivate);
+        const token: Token = tokenUtils.getToken(req.headers.authorization);
         
         try {
-            const Shorturl: string = await this.urlService.create(userToken, reqLongUrl, reqIsPrivate); 
+            const Shorturl: string = await this.urlService.create(token, reqLongUrl, reqIsPrivate); 
             if (Shorturl) {
-                res.status(200).send(Shorturl)
-        }
-            else { return new Promise((res, rej) => { rej(`Cannot create new short Url from ${reqLongUrl}`)})}
-        } catch (ex) {
+                res.status(200).send(Shorturl);
+            } else {
+                res.status(403).send("Forbidden, cannot create new Url");
+            }
+    } catch (ex) {
             res.status(500).send(ex);
         }
     }
@@ -39,9 +37,11 @@ export class UrlController{
         try {
             const longUrl: string = await this.urlService.read(shortUrl, token);
             if (longUrl) {
-                res.status(200).send(longUrl) 
+                res.status(200).send(longUrl);
             }
-            else { return new Promise ((res, rej) => { rej(`Cannot get the url of ${shortUrl}`)})}
+            else {            
+                res.status(403).send("Forbidden, cannot get Url");
+            }
         } catch (ex) {
             res.status(500).send(ex);
         }

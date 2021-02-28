@@ -5,7 +5,8 @@ import { HttpClient } from "../../httpClient/src/HttpClient";
 
 export class UserServiceHttpClient implements IUserServiceHttpClient {
 
-    httpClient: HttpClient
+    httpClient: HttpClient;
+    userPath: string = '/api/user';
 
     constructor(httpClient: HttpClient) {
         this.httpClient = httpClient;

@@ -14,21 +14,6 @@ export class UrlService {
     }
 
     async get(shortUrl: number, userToken: Token): Promise<string> {
-
-        if (!this.validate(shortUrl)) {
-            return new Promise((res, rej) => {
-                rej("Url is not valid");
-            })
-        }
         return await this.urlHttpClient.get(shortUrl, { ...userToken });    
-    }
-
-
-    private validate(shortUrl: number): boolean {
-        if (isNaN(shortUrl) || shortUrl < 0) {
-            return false;
-        } else {
-            return true;
-        }
     }
 }

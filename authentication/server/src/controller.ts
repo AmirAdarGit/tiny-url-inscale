@@ -12,22 +12,20 @@ export class AuthController {
         this.authService = authServise;
     }
 
-    authenticateToken(req: Request, res: Response): Promise<void> {
-        const token: string = tokenUtils.getToken(req.headers.authorization)
+    async authenticateToken(req: Request, res: Response): Promise<void> {
+        const token: Token = tokenUtils.getToken(req.headers.authorization)
 
-        const userToken: Token = new Token(token)
-        
         try{
-            const email = this.authService.authenticate(userToken);
+            const email = this.authService.authenticate(token);
             if (email) {
                 res.status(200).send(email);
             } else {
-                return new Promise ((res, rej) => { rej(`Unauthorized Token`)})
+                res.status(401).send("Unauthorized Token")
             } 
         } catch (ex) {
             res.status(500).send(ex)
         }
-    }
+    };
 
     async signUp (req: Request, res: Response): Promise<void> {   
         const userPassword: string = req.body.Password;
@@ -38,15 +36,15 @@ export class AuthController {
         }
 
         const credentials: Credentials = {
-            Email: req.body.Email,
-            Password: userPassword
+            email: req.body.Email,
+            password: userPassword
         }
         try {
             const isSignUp: boolean = await this.authService.signUp(credentials, userMetadata);
             if (isSignUp) {
                 res.status(200);
             } else {
-                return new Promise ((res, rej) => { rej(`Unauthorized Token`)})
+                res.status(403).send(`Forbidden, cannot sign up for ${credentials.email}`);
             }
         } catch (ex) {
             console.log(`Failed creating user, error: ${ex}`);
@@ -57,14 +55,17 @@ export class AuthController {
     async logIn (req:Request, res:Response): Promise<void> {
 
         const credentials: Credentials = {
-            Email: String(req.query.Email),
-            Password: String(req.query.Password)
+            email: String(req.query.Email),
+            password: String(req.query.Password)
         }
 
         try {
             const token: Token = await this.authService.logIn(credentials);
-            if(!token) { return new Promise((req, res) => res("Invalid token."))}
-            res.status(200).send(token);
+            if(!token) { 
+                res.status(403).send(`Forbidden, cannot log in for ${credentials.email}`)
+            } else {
+                res.status(200).send(token);
+            }
         } catch (ex) {
             res.status(500).send(ex);
         }

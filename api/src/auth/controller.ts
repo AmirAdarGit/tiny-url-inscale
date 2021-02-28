@@ -12,11 +12,11 @@ export class AuthController {
         this.authService = authService;
     }
 
-    async LogIn(req: Request, res: Response): Promise<void> {
+    async logIn(req: Request, res: Response): Promise<void> {
         
         const credentials: Credentials = {
-            Email: req.body.userEmail,
-            Password: req.body.userPassword,
+            email: req.body.userEmail,
+            password: req.body.userPassword,
         }
 
         try {
@@ -28,11 +28,11 @@ export class AuthController {
     };
     
     
-    async SignUp(req: Request, res: Response): Promise<void> {
+    async signUp(req: Request, res: Response): Promise<void> {
     
         const credentials: Credentials = {
-            Email: req.body.userEmail,
-            Password: req.body.userPassword
+            email: req.body.userEmail,
+            password: req.body.userPassword
         }
     
         const userMetadata: UserMetadata = {
@@ -42,7 +42,7 @@ export class AuthController {
         
         try {
             await this.authService.SignUp(userMetadata, credentials);
-            res.status(200).send(`User: ${credentials.Email} has been created.`);
+            res.status(200).send(`User: ${credentials.email} has been created.`);
         } catch (ex) {
             res.status(500).send(ex);
         }

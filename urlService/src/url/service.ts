@@ -19,7 +19,7 @@ export class UrlService {
         const email = await this.authHttpClient.getEmail(token);
         if (!email) { return new Promise((res, rej) => { rej("Token invalid") }); }
 
-        const valid = /^(ftp|http|https):\/\/[^ "]+$/.test(longUrl);
+        const valid: boolean = this.isLegalSite(longUrl);
         if (!valid) { return new Promise((res, rej) => { rej("Url invalid") }); }
         
         const insertQuery: string = `INSERT INTO Tiny_URL.Links (LongURL, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate})`;
@@ -35,15 +35,31 @@ export class UrlService {
 
     async read(shortUrl: string, token: Token): Promise<string> {
 
+        if (!this.validNumber(Number(shortUrl))) {
+            return new Promise((res, rej) => { rej("Url is not valid"); })
+        }
         const query: string = `SELECT * FROM Tiny_URL.Links where ShortURL = '${shortUrl}'`;
         const linkInfo: UrlInfo  = await this.database.Execute<UrlInfo>(query);
         if (!linkInfo) { return new Promise((res, rej) => { rej("No such url.") }); }
         
-        const { isPrivate: privacy, email: userEmail, longUrl: url } = linkInfo; 
+        const { isPrivate: privacy, longUrl: url } = linkInfo; 
         if (!privacy) { return url; }
 
         const email = await this.authHttpClient.getEmail(token);
         if (!email) { return new Promise((res, rej) => { rej("Invalid Token.") }); }
         return url;
     }
+
+    private validNumber(shortUrl: number): boolean {
+        if (isNaN(shortUrl) || shortUrl < 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private isLegalSite(longUrl: string): boolean {
+        return /^(ftp|http|https):\/\/[^ "]+$/.test(longUrl)
+    }
+
 }

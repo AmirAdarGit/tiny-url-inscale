@@ -1,5 +1,5 @@
 import { Credentials, UserMetadata } from '../../models/common';
-import { Token, ValidetionToken } from '../../models/authenticate';
+import { Token } from '../../models/authenticate';
 
 export interface IAuthServiceHttpClient {
     login(credentials: Credentials): Promise<Token>

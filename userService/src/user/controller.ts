@@ -22,7 +22,7 @@ export class UserController {
             if (CreateUser) {
                 res.status(200).send(CreateUser);
             }
-            else { return new Promise((res, rej) => { rej("Cannot create new User") }) }
+            else { res.status(404).send("Forbidden, cannot create new User") }
         } catch (ex) {
             res.status(500).send(ex);
         }    
@@ -33,11 +33,10 @@ export class UserController {
        
         try {
             const user: User = await this.userService.read(userEmail); 
-            
             if(user) {
                 res.send(200).send(user)
             } 
-            else { return new Promise((res, rej) => { rej("Cannot get User info") }) }
+            else { res.status(404).send("Forbidden, cannot get User properties") }
         } catch (ex) {
             res.status(500).send(ex);
         }

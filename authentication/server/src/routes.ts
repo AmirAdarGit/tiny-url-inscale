@@ -5,7 +5,7 @@ import { HttpClient } from "../../../shared/modules/httpClient/src/HttpClient";
 import { AuthController } from "./controller";
 import { AuthService } from "./service";
 export const router = Router();
-
+import { signUp, logIn, authenticateToken } from "../../../shared/const";
 
 var jsonParser = bodyParser.json() //for parsing the data from the http post
 
@@ -14,6 +14,6 @@ const userServiceHttpClient = new UserServiceHttpClient(httpClient); //SignUp, L
 const authService: AuthService = new AuthService(userServiceHttpClient)
 const authController = new AuthController(authService);
 
-router.post('/signup', jsonParser, authController.signUp);
-router.get('/login', jsonParser, authController.logIn); 
-router.get('/validationToken', jsonParser, authController.authenticateToken); 
+router.post(signUp, jsonParser, authController.signUp);
+router.get(logIn, jsonParser, authController.logIn); 
+router.get(authenticateToken, jsonParser, authController.authenticateToken); 

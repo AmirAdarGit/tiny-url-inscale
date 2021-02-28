@@ -14,34 +14,29 @@ export class AuthService {
 
     async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {   
 
-        const encryptedPass = await this.getEncryptPassword(credentials.Password);
+        const encryptedPass = await this.getEncryptPassword(credentials.password);
         const encryptedCredentials: Credentials = {
-            Email: credentials.Email,
-            Password: encryptedPass 
+            email: credentials.email,
+            password: encryptedPass 
         } 
         return await this.userHttpClient.create(encryptedCredentials, userMetadata);
     }
 
     async logIn (credentials: Credentials): Promise<Token> { 
 
-        const user: User = await this.userHttpClient.get(credentials.Email);
+        const user: User = await this.userHttpClient.get(credentials.email);
         const { password: userEncryptedPassFromDb, email: email } = user;
-        const isValidPassword = await this.comparePasswords(credentials.Password, userEncryptedPassFromDb);
+        const isValidPassword = await this.comparePasswords(credentials.password, userEncryptedPassFromDb);
 
-        if (isValidPassword) { return await this.createToken(email); } 
-        return new Promise((res, rej) => {
-            rej("Password is not valid.");
-        })
-    }
-
-    authenticate(token: Token): string {
-
-        const authenticateEmail: string = this.getEmail(token);  
-        if (authenticateEmail) {
-            return authenticateEmail;
-        } else {
-            return '';
+        if (isValidPassword) { 
+            return this.createToken(email);
+        } else { 
+            return new Promise((res, rej) => { rej("Password is not valid."); })
         }
+    }
+    
+    authenticate(token: Token): string {
+        return this.getEmail(token);     
     }
 
     private async comparePasswords(originalPassword: string, encryptedPassword: string): Promise<boolean> {
