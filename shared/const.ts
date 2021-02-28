@@ -7,7 +7,7 @@ const deploy = "/deploy";
 const id = "/:id";
 const logIn = "/logIn";
 const signUp = "/signUp";
-const url = '/url';
+const url = "/url";
 const user = "/user";
 
 export { api, auth, authenticateToken, authentication, createUrl, deploy, id, logIn, signUp, url, user };

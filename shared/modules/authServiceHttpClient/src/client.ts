@@ -2,6 +2,7 @@ import { IAuthServiceHttpClient } from "../../../interfaces/authenticate/IAuthSe
 import { Credentials, UserMetadata } from '../../../models/common';
 import { Token } from '../../../models/authenticate';
 import { IHttpClient } from "../../../interfaces/httpClient";
+import { api, authentication, signUp, logIn, authenticateToken } from "../../../const"
 
 export class AuthServiceHttpClient implements IAuthServiceHttpClient {
 
@@ -17,15 +18,15 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
             ...credentials,
             ...userMetadata
         }
-        return await this.httpClient.post(`${process.env.AUTH_SERVICE_HOST}/api/autentication/signUp`, newUser)//process use - api.env, urlService.env
+        return await this.httpClient.post(`${process.env.AUTH_SERVICE_HOST}${api}${authentication}${signUp}`, newUser)
     }
 
 
     async login(credentials: Credentials): Promise<Token> {
-            return await this.httpClient.get<Token>(`${process.env.AUTH_SERVICE_HOST}/api/authentication/logIn`, { ...credentials })//process use - api.env, urlService.env
+            return await this.httpClient.get<Token>(`${process.env.AUTH_SERVICE_HOST}${api}${authentication}${logIn}`, { ...credentials })
     }
 
     async getEmail(token: Token): Promise<string> {
-            return await this.httpClient.get<string>(`${process.env.AUTH_SERVICE_HOST}/api/authentication/authenticateToken`, { ...token });//process use - api.env, urlService.env
+            return await this.httpClient.get<string>(`${process.env.AUTH_SERVICE_HOST}${api}${authentication}${authenticateToken}`, { ...token });
     }
 }
