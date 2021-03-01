@@ -1,6 +1,10 @@
 import  * as AWS  from "aws-sdk"
 
-export class SignUpProducer {
+export interface ISqsProducer {
+    SqSProduceSignUp (userEmail: string): void
+}
+
+export class SignUpProducer implements ISqsProducer {
 
     sqs: AWS.SQS;
 

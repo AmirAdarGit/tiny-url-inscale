@@ -1,23 +1,25 @@
-import { Credentials , UserMetadata} from '../../../shared/models/common'
-import { IUserServiceHttpClient } from "../../../shared/interfaces/user/IUserServiceHttpClient"
-import { User } from '../../../shared/models/user'
-import { Token } from "../../../shared/models/authenticate"
-import { SignUpProducer } from "../produce.email.sqs/produce";
+import { Credentials , UserMetadata} from '../../shared/models/common'
+import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServiceHttpClient"
+import { User } from '../../shared/models/user'
+import { Token } from "../../shared/models/authenticate"
+import { ISqsProducer } from "../produce.email.sqs/produce";
 
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
 
 export class AuthService {
 
-    userHttpClient: IUserServiceHttpClient;
-    private signUpProducer: SignUpProducer;
+    private userHttpClient: IUserServiceHttpClient;
+    private signUpProducer: ISqsProducer;
 
-    constructor(userServiceHttpClient: IUserServiceHttpClient, signUpProducer: SignUpProducer){
-        this.userHttpClient = userServiceHttpClient;
+    constructor(userHttpClient: IUserServiceHttpClient, signUpProducer: ISqsProducer){
+        this.userHttpClient = userHttpClient;
         this.signUpProducer = signUpProducer;
     }
 
     async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {   
+        const isValid: boolean = this.validate(credentials);
+        if(!isValid) return false;
 
         const encryptedPass = await this.getEncryptPassword(credentials.password);
         const encryptedCredentials: Credentials = {
@@ -25,8 +27,12 @@ export class AuthService {
             password: encryptedPass 
         } 
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
-        if (!isSignUp) return isSignUp;    
-        await this.signUpProducer.SqSProduceSignUp(credentials.email); // only if the sighUp flow is working send to sqs the email.   
+        if (!isSignUp) return isSignUp;  
+        
+        
+        try { await this.signUpProducer.SqSProduceSignUp(credentials.email); }   
+        catch { /*console.log("Failed to send message to sqs");*/ }
+        
         return isSignUp;
     }
 
@@ -67,5 +73,13 @@ export class AuthService {
         if (decrypted){
             return String(decrypted['email'])
         } else return '';
+    }
+
+    private validate(credentials: Credentials): boolean {
+        if (credentials == null) return false;
+        if (credentials.password == "") return false;
+        if (credentials.email == "") return false;
+
+        return true;
     }
 }    
