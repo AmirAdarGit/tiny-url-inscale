@@ -3,6 +3,7 @@ import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServic
 import { User } from '../../shared/models/user'
 import { Token } from "../../shared/models/authenticate"
 import { ISqsProducer } from "../produce.email.sqs/produce";
+import  * as errors  from "./errors"
 
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
@@ -17,9 +18,9 @@ export class AuthService {
         this.signUpProducer = signUpProducer;
     }
 
-    async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {   
+    async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<void> {   
         const isValid: boolean = this.validate(credentials);
-        if(!isValid) return false;
+        if(!isValid) return new Promise((res, rej) => { rej(new errors.ValidationError("invalid credentials"))});
 
         const encryptedPass = await this.getEncryptPassword(credentials.password);
         const encryptedCredentials: Credentials = {
@@ -27,28 +28,30 @@ export class AuthService {
             password: encryptedPass 
         } 
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
-        if (!isSignUp) return isSignUp;  
-        
-        
+        if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError()) }); 
+    
         try { await this.signUpProducer.SqSProduceSignUp(credentials.email); }   
         catch { /*console.log("Failed to send message to sqs");*/ }
         
-        return isSignUp;
     }
 
     async logIn (credentials: Credentials): Promise<Token> { 
+        const isValid: boolean = this.validate(credentials);
+        if(!isValid) return new Promise((res, rej) => { new errors.ValidationError("invalid credentials")});
 
         const user: User = await this.userHttpClient.get(credentials.email);
+        if (!user) return new Promise((res, rej) => { rej(new errors.HttpClientError()) });  
         const { password: userEncryptedPassFromDb, email: email } = user;
         const isValidPassword = await this.comparePasswords(credentials.password, userEncryptedPassFromDb);
 
         if (isValidPassword) { 
             return this.createToken(email);
         } else { 
-            return new Promise((res, rej) => { rej("Password is not valid."); })
+            return new Promise((res, rej) => { rej(new errors.ValidationError("Password does not match.")); })
         }
     }
     
+
     authenticate(token: Token): string {
         return this.getEmail(token);     
     }

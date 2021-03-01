@@ -6,69 +6,75 @@ import { IHttpClient } from "../../shared/interfaces/httpClient/IHttpClient"
 import  * as sinon from "sinon"
 import { HttpClient } from "../../shared/modules/httpClient/src/HttpClient";
 import { UserServiceHttpClient } from "../../shared/modules/userServiceHttpClient/src/client"
+import { HttpClientError, ValidationError } from "./errors";
 
-// class TestHttpClient implements IUserServiceHttpClient {
-//     get(email: string): Promise<User> {
-//         throw new Error("not implemented");
-//     }
-
-//     create(credentials: Credentials, userMetadata: UserMetadata): Promise<boolean> {
-//         if (credentials.email == "empty") { throw new Error("error!"); }
-
-//         return userMetadata ?
-//              new Promise((res, rej) => res(true)) : 
-//              new Promise((res, rej) => res(false));
-//     }
-// }
-
-// class TestSignUpProducer implements ISqsProducer {
-//     SqSProduceSignUp(userEmail: string): void { 
-//         if (userEmail == "empty2") { throw new Error("error!"); }
-//     }
-// }
-
-const httpClient = new HttpClient()// Post, Get 
+const httpClient: IHttpClient = new HttpClient() 
 const userServiceHttpClient: IUserServiceHttpClient = new UserServiceHttpClient(httpClient);
 const sqsProducer: ISqsProducer = new SignUpProducer();
 const service = new AuthService(userServiceHttpClient, sqsProducer);
-
 const credentials = new Credentials("carmels@gmail.com", "password");
-
-
+const httpClientStub: sinon.SinonStub = sinon.stub(userServiceHttpClient, "create");
+const sqsProducerStub: sinon.SinonStub = sinon.stub(sqsProducer, "SqSProduceSignUp");
 
 describe("Auth service signUp", () => {
 
-    test("Should return true when http request to user service returns positive response", async () => {
-        const stub: sinon.SinonStub = sinon.stub(userServiceHttpClient, "create");
-        stub.withArgs(credentials, new UserMetadata()).returns(true);
+    beforeEach(() => {
+        httpClientStub.reset();
+        sqsProducerStub.reset();
+    })
 
-        const expected: boolean = true; 
-        const actual: boolean = await service.signUp(credentials, new UserMetadata());
-        expect(actual).toBe(expected);
+    test("Should succeed when http request to user service returns positive response", async () => {
+
+        httpClientStub.returns(true);
+        sqsProducerStub.returns(null);
+
+        await service.signUp(credentials, new UserMetadata());
+        expect(httpClientStub.calledOnce).toBe(true);
+        expect(sqsProducerStub.calledOnce).toBe(true);
 
     });
 
-    // test("Should return false when http request to user service returns negative response", async () => {
-    //     const expected: boolean = false; 
-    //     const actual: boolean = await service.signUp(credentials, null);
+    test("Should fail when http request to user service returns negative response", async () => {
 
-    //     expect(actual).toBe(expected);
-    // });
+        httpClientStub.returns(false);
+        sqsProducerStub.returns(null);
+        
+        await expect(service.signUp(credentials, null)).rejects.toThrow(new HttpClientError());
+        expect(httpClientStub.calledOnce).toBe(true);
+        expect(sqsProducerStub.calledOnce).toBe(false);
+    });
 
-    // test("Should return false when input is invalid", async () => {
-    //     const expected: boolean = false; 
-    //     const actual: boolean = await service.signUp(null, new UserMetadata());
+    test("Should fail when input is invalid", async () => {
+        httpClientStub.returns(false);
+        sqsProducerStub.returns(null);
 
-    //     expect(actual).toBe(expected);
-    // });
+        await expect(service.signUp(null, null)).rejects.toThrow(new ValidationError());
 
-    // test("Should throw an exception when userHttpClient fails", async () => {
-    //     await expect(service.signUp(new Credentials("empty", "password"), new UserMetadata())).rejects.toThrow();
-       
-    // });
+        expect(httpClientStub.calledOnce).toBe(false);
+        expect(sqsProducerStub.calledOnce).toBe(false);
+    });
 
-    // test("Should not throw an exception when sqsProducer fails", async () => {
-    //     await expect(service.signUp(new Credentials("empty2", "password"), new UserMetadata())).resolves;
-    // });
+    test("Should throw an exception when userHttpClient fails", async () => {
+
+        const expectedError: Error = new Error("error!");
+
+        httpClientStub.throws(expectedError);
+        sqsProducerStub.returns(null);
+
+        await expect(service.signUp(credentials, new UserMetadata())).rejects.toThrow(expectedError);
+        expect(httpClientStub.calledOnce).toBe(true);
+        expect(sqsProducerStub.calledOnce).toBe(false);
+    });
+
+    test("Should not throw an exception when sqsProducer fails", async () => {
+
+        httpClientStub.returns(true);
+        sqsProducerStub.throws(new Error("error!"));
+
+        await expect(service.signUp(credentials, new UserMetadata())).resolves.toBeUndefined();
+        expect(httpClientStub.calledOnce).toBe(true);
+        expect(sqsProducerStub.calledOnce).toBe(true);
+        expect(sqsProducerStub.threw()).toBe(true);
+    });
     
 });
