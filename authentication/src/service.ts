@@ -53,7 +53,9 @@ export class AuthService {
     
 
     authenticate(token: Token): string {
-        return this.getEmail(token);     
+        const email: string = this.getEmail(token);
+        if (email) return email;
+        else new Promise((res, rej) => { rej( new errors.jwtError("Exception from jew module")) })     
     }
 
     private async comparePasswords(originalPassword: string, encryptedPassword: string): Promise<boolean> {
