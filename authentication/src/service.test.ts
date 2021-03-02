@@ -33,10 +33,46 @@ var credentials: Credentials = {
 const httpClientCreateStub: sinon.SinonStub = sinon.stub(userServiceHttpClient, "create");
 const httpClientGetStub: sinon.SinonStub = sinon.stub(userServiceHttpClient, "get");
 const sqsProducerStub: sinon.SinonStub = sinon.stub(sqsProducer, "SqSProduceSignUp");
-const jwtSignStut: sinon.SinonStub = sinon.stub(jwt,"sign");
+const jwtSignStut: sinon.SinonStub = sinon.stub(jwt, "sign");
+const jwtVerifyStut: sinon.SinonStub = sinon.stub(jwt, "verify");
 
 
 // Testing
+
+describe("Auth service - authenticate method", () => {
+
+    beforeEach(() => {
+        jwtVerifyStut.reset()
+    })
+
+    test("Should return user email from the encoded token", () => {
+        
+        const jwtObj = {
+                        "email": "vasilisky@gmail.com",
+                        "iat": 1612956569
+                        }
+        jwtVerifyStut.returns(jwtObj)
+        const token: Token = new Token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc");
+        const userEmail: string = service.authenticate(token);
+        
+        expect(userEmail).toEqual("vasilisky@gmail.com");
+        expect(jwtVerifyStut.calledOnce).toBe(true);
+    });
+
+
+    test("Should fail when the Token is invalid", async () => {
+        jwtVerifyStut.returns(null);
+
+        const token: Token = new Token("invalid token");
+        const userEmail: string = service.authenticate(token);
+
+        expect(userEmail).toEqual(null);
+        expect(jwtVerifyStut.calledOnce).toBe(true);
+    });
+
+});
+
+
 describe("Auth service logIn", () => {
 
     beforeEach(() => {

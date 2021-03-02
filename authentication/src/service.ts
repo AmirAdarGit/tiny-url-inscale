@@ -75,7 +75,7 @@ export class AuthService {
         const decrypted = <any>jwt.verify(token.value, process.env.ACCESS_TOKEN_SECRET)
         if (decrypted){
             return String(decrypted['email'])
-        } else return '';
+        } else return null;
     }
 
     private validate(credentials: Credentials): boolean {
