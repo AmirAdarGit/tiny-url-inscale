@@ -46,25 +46,33 @@ describe("Auth service - authenticate method", () => {
     })
 
     test("Should return user email from the encoded token", () => {
+        const expected = "vasilisky@gmail.com";
+        jwtVerifyStub.returns({ email: expected })
+
+        const actual: string = service.authenticate(new Token(""));
         
-        const jwtObj = {
-                        "email": "vasilisky@gmail.com",
-                        "iat": 1612956569
-                        }
-        jwtVerifyStub.returns(jwtObj)
-        const token: Token = new Token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc");
-        const userEmail: string = service.authenticate(token);
-        
-        expect(userEmail).toEqual("vasilisky@gmail.com");
+        expect(actual).toEqual(expected);
         expect(jwtVerifyStub.calledOnce).toBe(true);
     });
 
 
-    test("Should fail when the Token is invalid", async () => {
+    test("Should fail when the token is invalid", async () => {
         jwtVerifyStub.returns(null);
 
+        const expected: string = "";
         const token: Token = new Token("invalid token");
-        expect(service.authenticate(token)).toThrow(new jwtError("Password does not match."));
+
+        expect(service.authenticate(token)).toBe(expected);
+        expect(jwtVerifyStub.calledOnce).toBe(true);
+    });
+
+    test("Should fail when an exception is thrown", async () => {
+        jwtVerifyStub.throws(new Error("error!"));
+
+        const expected: string = "";
+        const token: Token = new Token("invalid token");
+
+        expect(service.authenticate(token)).toBe(expected);
         expect(jwtVerifyStub.calledOnce).toBe(true);
     });
 
@@ -77,12 +85,16 @@ describe("Auth service logIn", () => {
         httpClientGetStub.reset();
         jwtSignStub.reset();
     })
-    test("Should succeed when nothing fails", async () => {
-        httpClientGetStub.returns(user);
-        jwtSignStub.returns("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc")
 
-        expect(await service.logIn(credentials)).toEqual(new Token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc"));
-        
+    test("Should succeed when nothing fails", async () => {
+        const jwtToken: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc";
+        httpClientGetStub.returns(user);
+        jwtSignStub.returns(jwtToken)
+
+        const expected = new Token(jwtToken);
+        const actual = await service.logIn(credentials);
+
+        expect(actual).toEqual(expected);
         expect(httpClientGetStub.calledOnce).toBe(true);
         expect(jwtSignStub.calledOnce).toBe(true);
     });
@@ -92,35 +104,39 @@ describe("Auth service logIn", () => {
         await expect(service.logIn(null)).rejects.toThrow(new ValidationError("invalid credentials"));
     });
 
-    test("Should fail when http request to user service returns negative response (user: null)", async () => {
-
+    test("Should fail when http request to user service returns null", async () => {
         httpClientGetStub.returns(null);
-        //jwtSignStub.returns(null);
 
-        await expect(service.logIn(credentials)).rejects.toThrow(new HttpClientError());
+        await expect(service.logIn(credentials)).rejects.toThrow(new HttpClientError("Failed to get user"));
         expect(httpClientGetStub.calledOnce).toBe(true);
-        //expect(jwtSignStub.calledOnce).toBe(false);
-
     });
 
     test("Should throw an exception when user password is incorrect", async () => {
-
         var credentials: Credentials = {
             email: "vasilisky@gmail.com",
-            password: "error password" 
-        }
+            password: "different" 
+        };
 
         httpClientGetStub.returns(user);
-        jwtSignStub.returns(null);
 
         await expect(service.logIn(credentials)).rejects.toThrow(new ValidationError("Password does not match."));
         expect(httpClientGetStub.calledOnce).toBe(true);
         expect(jwtSignStub.calledOnce).toBe(false);
-    });   
+    });  
+    
+    test("Should throw an exception when user password is incorrect", async () => {
+        var credentials: Credentials = {
+            email: "vasilisky@gmail.com",
+            password: "different" 
+        };
+
+        httpClientGetStub.returns(user);
+
+        await expect(service.logIn(credentials)).rejects.toThrow(new ValidationError("Password does not match."));
+        expect(httpClientGetStub.calledOnce).toBe(true);
+        expect(jwtSignStub.calledOnce).toBe(false);
+    });  
 });
-
-
-
 
 
 describe("Auth service signUp", () => {
@@ -173,15 +189,14 @@ describe("Auth service signUp", () => {
         expect(sqsProducerStub.calledOnce).toBe(false);
     });
 
-    // test("Should not throw an exception when sqsProducer fails", async () => {
+    test("Should not throw an exception when sqsProducer fails", async () => {
 
-    //     httpClientCreateStub.returns(true);
-    //     sqsProducerStub.throws(new Error("error!"));
+        httpClientCreateStub.returns(true);
+        sqsProducerStub.throws(new Error("error!"));
 
-    //     await expect(service.signUp(credentials, new UserMetadata())).resolves.toBeUndefined();
-    //     expect(httpClientCreateStub.calledOnce).toBe(true);
-    //     expect(sqsProducerStub.calledOnce).toBe(true);
-    //     expect(sqsProducerStub.threw()).toBe(true);
-    // });
-    
+        await expect(service.signUp(credentials, new UserMetadata())).resolves.toBeUndefined();
+        expect(httpClientCreateStub.calledOnce).toBe(true);
+        expect(sqsProducerStub.calledOnce).toBe(true);
+        expect(sqsProducerStub.threw()).toBe(true);
+    });
 });

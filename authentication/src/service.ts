@@ -40,26 +40,28 @@ export class AuthService {
         if(!isValid) return new Promise((res, rej) => { rej(new errors.ValidationError("invalid credentials"))});
 
         const user: User = await this.userHttpClient.get(credentials.email);
-        if (!user) return new Promise((res, rej) => { rej(new errors.HttpClientError()) });  
+        if (!user) return new Promise((res, rej) => { rej(new errors.HttpClientError("Failed to get user")) });  
+        
         const { password: userEncryptedPassFromDb, email: email } = user;
-        const isValidPassword = await this.comparePasswords(credentials.password, userEncryptedPassFromDb);
-
-        if (isValidPassword) { 
-            return this.createToken(email);
-        } else { 
-            return new Promise((res, rej) => { rej(new errors.ValidationError("Password does not match.")); })
-        }
+        const isValidPassword = await this.comparePasswords(credentials.password, userEncryptedPassFromDb); 
+        
+        return isValidPassword ? 
+            this.createToken(email) : 
+            new Promise((res, rej) => { rej(new errors.ValidationError("Password does not match.")); });
     }
     
 
     authenticate(token: Token): string {
-        const email: string = this.getEmail(token);
-        if (email) return email;
-        else new Promise((res, rej) => { rej( new errors.jwtError("Exception from jew module")) })     
+        try {
+            return this.getEmail(token);;
+        } catch (e) {
+            return "";
+        }
     }
 
     private async comparePasswords(originalPassword: string, encryptedPassword: string): Promise<boolean> {
-        return await bcrypt.compare(originalPassword, encryptedPassword);
+        try { await bcrypt.compare(originalPassword, encryptedPassword); }
+        catch { return false; }
     }
             
     private async getEncryptPassword(userPassword: string): Promise<string>{
@@ -74,10 +76,11 @@ export class AuthService {
     }
 
     private getEmail(token: Token): string {
+
         const decrypted = <any>jwt.verify(token.value, process.env.ACCESS_TOKEN_SECRET)
         if (decrypted){
             return String(decrypted['email'])
-        } else return null;
+        } else return "";
     }
 
     private validate(credentials: Credentials): boolean {
