@@ -37,7 +37,7 @@ export class AuthService {
 
     async logIn (credentials: Credentials): Promise<Token> { 
         const isValid: boolean = this.validate(credentials);
-        if(!isValid) return new Promise((res, rej) => { new errors.ValidationError("invalid credentials")});
+        if(!isValid) return new Promise((res, rej) => { rej(new errors.ValidationError("invalid credentials"))});
 
         const user: User = await this.userHttpClient.get(credentials.email);
         if (!user) return new Promise((res, rej) => { rej(new errors.HttpClientError()) });  
