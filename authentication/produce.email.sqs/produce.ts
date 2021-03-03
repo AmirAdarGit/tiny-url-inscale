@@ -1,8 +1,5 @@
 import  * as AWS  from "aws-sdk"
-
-export interface ISqsProducer {
-    SqSProduceSignUp (userEmail: string): void
-}
+import { ISqsProducer } from "../../shared/interfaces/sqsProducer"
 
 export class SignUpProducer implements ISqsProducer {
 
@@ -13,10 +10,10 @@ export class SignUpProducer implements ISqsProducer {
         this.sqs = new AWS.SQS({ apiVersion: '2012-11-05'})
     }
 
-    async SqSProduceSignUp (userEmail: string) {
-        console.log("User-Service-Produce, send the Email to SQS");
+    async SqSProduce<T>(obj: T): Promise<void> {
+        console.log("Authentiacation-service-Produce, send the Email to SQS");
         const params = {
-            MessageBody: userEmail,
+            MessageBody: String(obj),
             QueueUrl: process.env.AWS_SQS_URL
         }
         try{

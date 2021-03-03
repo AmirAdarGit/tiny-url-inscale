@@ -2,7 +2,7 @@ import { Credentials , UserMetadata} from '../../shared/models/common'
 import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from '../../shared/models/user'
 import { Token } from "../../shared/models/authenticate"
-import { ISqsProducer } from "../produce.email.sqs/produce";
+import { ISqsProducer } from "../../shared/interfaces/sqsProducer";
 import  * as errors  from "./errors"
 
 import * as bcrypt from "bcrypt"
@@ -30,7 +30,7 @@ export class AuthService {
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
         if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError()) }); 
     
-        try { await this.signUpProducer.SqSProduceSignUp(credentials.email); }   
+        try { await this.signUpProducer.SqSProduce( {email: credentials.email} ); }   
         catch { /*console.log("Failed to send message to sqs");*/ }
         
     }
@@ -53,7 +53,7 @@ export class AuthService {
 
     authenticate(token: Token): string {
         try {
-            return this.getEmail(token);;
+            return this.getEmail(token);
         } catch (e) {
             return "";
         }

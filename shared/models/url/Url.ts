@@ -4,7 +4,7 @@ export class Url{
     email: string;
     isPrivate: boolean;
 
-    constructor(longUrl:string, email: string, isPrivate: boolean, shortUrl?: string){
+    constructor(longUrl?:string, email?: string, isPrivate?: boolean, shortUrl?: string){
         this.longUrl = longUrl;
         this.email = email;
         this.isPrivate = isPrivate;

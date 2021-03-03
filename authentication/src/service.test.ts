@@ -1,6 +1,7 @@
 import { AuthService } from "./service";
 import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServiceHttpClient";
-import { ISqsProducer, SignUpProducer } from "../produce.email.sqs/produce";
+import { SignUpProducer } from "../produce.email.sqs/produce";
+import { ISqsProducer } from "../../shared/interfaces/sqsProducer"
 import { Credentials , UserMetadata} from '../../shared/models/common';
 import { IHttpClient } from "../../shared/interfaces/httpClient/IHttpClient";
 import { HttpClient } from "../../shared/modules/httpClient/src/HttpClient";
@@ -15,8 +16,8 @@ import * as jwt from 'jsonwebtoken';
    
 const httpClient: IHttpClient = new HttpClient();
 const userServiceHttpClient: IUserServiceHttpClient = new UserServiceHttpClient(httpClient);
-const sqsProducer: ISqsProducer = new SignUpProducer();
-const service = new AuthService(userServiceHttpClient, sqsProducer);
+const signUpProducer: ISqsProducer = new SignUpProducer();
+const service = new AuthService(userServiceHttpClient, signUpProducer);
 
 var user: User = { 
     email: "vasilisky@gmail.com",
@@ -32,7 +33,7 @@ var credentials: Credentials = {
 
 const httpClientCreateStub: sinon.SinonStub = sinon.stub(userServiceHttpClient, "create");
 const httpClientGetStub: sinon.SinonStub = sinon.stub(userServiceHttpClient, "get");
-const sqsProducerStub: sinon.SinonStub = sinon.stub(sqsProducer, "SqSProduceSignUp");
+const sqsProducerStub: sinon.SinonStub = sinon.stub(signUpProducer, "SqSProduce");
 const jwtSignStub: sinon.SinonStub = sinon.stub(jwt, "sign");
 const jwtVerifyStub: sinon.SinonStub = sinon.stub(jwt, "verify");
 

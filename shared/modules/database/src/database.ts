@@ -5,9 +5,16 @@ import * as util from "util"
 export class Database implements Idatabase{
     
     connection: mysql.Connection;
-    
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+
     constructor(host: string, user: string, password:string, database: string){
-        this.Connect(host, user, password, database); 
+        this.host = host;
+        this.user = user;
+        this.password = password;
+        this.database = database;
     }
 
     Connect(host: string, user: string, password: string, database: string): void{
