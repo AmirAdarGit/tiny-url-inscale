@@ -60,7 +60,7 @@ export class AuthService {
     }
 
     private async comparePasswords(originalPassword: string, encryptedPassword: string): Promise<boolean> {
-        try { await bcrypt.compare(originalPassword, encryptedPassword); }
+        try { return await bcrypt.compare(originalPassword, encryptedPassword); }
         catch { return false; }
     }
             

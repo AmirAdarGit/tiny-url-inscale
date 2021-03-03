@@ -1,19 +1,19 @@
 import { AuthService } from "./service";
-import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServiceHttpClient"
+import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServiceHttpClient";
 import { ISqsProducer, SignUpProducer } from "../produce.email.sqs/produce";
 import { Credentials , UserMetadata} from '../../shared/models/common';
-import { IHttpClient } from "../../shared/interfaces/httpClient/IHttpClient"
-import  * as sinon from "sinon"
+import { IHttpClient } from "../../shared/interfaces/httpClient/IHttpClient";
 import { HttpClient } from "../../shared/modules/httpClient/src/HttpClient";
-import { UserServiceHttpClient } from "../../shared/modules/userServiceHttpClient/src/client"
+import { UserServiceHttpClient } from "../../shared/modules/userServiceHttpClient/src/client";
 import { HttpClientError, jwtError, ValidationError } from "./errors";
 import { User } from "../../shared/models/user";
 import { Token } from "../../shared/models/authenticate";
-import * as jwt from 'jsonwebtoken' 
+import  * as sinon from "sinon";
+import * as jwt from 'jsonwebtoken'; 
 
 // Dependencies
    
-const httpClient: IHttpClient = new HttpClient() 
+const httpClient: IHttpClient = new HttpClient();
 const userServiceHttpClient: IUserServiceHttpClient = new UserServiceHttpClient(httpClient);
 const sqsProducer: ISqsProducer = new SignUpProducer();
 const service = new AuthService(userServiceHttpClient, sqsProducer);
@@ -21,7 +21,7 @@ const service = new AuthService(userServiceHttpClient, sqsProducer);
 var user: User = { 
     email: "vasilisky@gmail.com",
     password: "$2b$10$aMameXgn6zr31D7WpaU0TOQr6Tk8fKfvt2SRYHGZN2bGcg3H5v0Vq" 
- }
+}
 
 var credentials: Credentials = {
     email: "vasilisky@gmail.com",
@@ -35,7 +35,6 @@ const httpClientGetStub: sinon.SinonStub = sinon.stub(userServiceHttpClient, "ge
 const sqsProducerStub: sinon.SinonStub = sinon.stub(sqsProducer, "SqSProduceSignUp");
 const jwtSignStub: sinon.SinonStub = sinon.stub(jwt, "sign");
 const jwtVerifyStub: sinon.SinonStub = sinon.stub(jwt, "verify");
-
 
 // Testing
 
