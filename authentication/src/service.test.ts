@@ -54,7 +54,6 @@ describe("Auth service - authenticate method", () => {
         expect(jwtVerifyStub.calledOnce).toBe(true);
     });
 
-
     test("Should fail when the token is invalid", async () => {
         jwtVerifyStub.returns(null);
 
@@ -74,7 +73,6 @@ describe("Auth service - authenticate method", () => {
         expect(service.authenticate(token)).toBe(expected);
         expect(jwtVerifyStub.calledOnce).toBe(true);
     });
-
 });
 
 
@@ -123,18 +121,6 @@ describe("Auth service logIn", () => {
         expect(jwtSignStub.calledOnce).toBe(false);
     });  
     
-    test("Should throw an exception when user password is incorrect", async () => {
-        var credentials: Credentials = {
-            email: "vasilisky@gmail.com",
-            password: "different" 
-        };
-
-        httpClientGetStub.returns(user);
-
-        await expect(service.logIn(credentials)).rejects.toThrow(new ValidationError("Password does not match."));
-        expect(httpClientGetStub.calledOnce).toBe(true);
-        expect(jwtSignStub.calledOnce).toBe(false);
-    });  
 });
 
 
