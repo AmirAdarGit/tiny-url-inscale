@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { UserServiceHttpClient } from "../../../shared/modules/userServiceHttpClient/src/client"
+import { UserServiceHttpClient } from "../../shared/modules/userServiceHttpClient/src/client"
 import * as bodyParser from 'body-parser'
-import { HttpClient } from "../../../shared/modules/httpClient/src/HttpClient";
+import { HttpClient } from "../../shared/modules/httpClient/src/HttpClient";
 import { AuthController } from "./controller";
 import { AuthService } from "./service";
-import { signUp, logIn, authenticateToken } from "../../../shared/const";
+import { signUp, logIn, authenticateToken } from "../../shared/const";
 import { SignUpProducer } from "../produce.email.sqs/produce";
 
 export const router = Router();

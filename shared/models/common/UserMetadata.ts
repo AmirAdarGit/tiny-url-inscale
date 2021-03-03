@@ -1,4 +1,4 @@
-export interface UserMetadata {
+export class UserMetadata {
     Name: string
     Newsletter: boolean
 }
