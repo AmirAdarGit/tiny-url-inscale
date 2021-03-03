@@ -5,7 +5,7 @@ import { Credentials , UserMetadata} from '../../shared/models/common';
 import { IHttpClient } from "../../shared/interfaces/httpClient/IHttpClient";
 import { HttpClient } from "../../shared/modules/httpClient/src/HttpClient";
 import { UserServiceHttpClient } from "../../shared/modules/userServiceHttpClient/src/client";
-import { HttpClientError, jwtError, ValidationError } from "./errors";
+import { HttpClientError, ValidationError } from "./errors";
 import { User } from "../../shared/models/user";
 import { Token } from "../../shared/models/authenticate";
 import  * as sinon from "sinon";
