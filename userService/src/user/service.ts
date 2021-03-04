@@ -1,6 +1,5 @@
 import { Request, Response} from "express"   
 import { User } from "../../../shared/models/user/index"
-import { SignUpProducer } from '../../../authentication/server/produce.email.sqs/produce';
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
 
 export class UserService {

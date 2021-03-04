@@ -4,4 +4,4 @@ import { router as urlRouter} from './url/routes'
 import { api, url } from "../../shared/const"
 export const app = express();
 
-app.use(`${api}/${url}`, urlRouter);
+app.use(`/${api}/${url}`, urlRouter);

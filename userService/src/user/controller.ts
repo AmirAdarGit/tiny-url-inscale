@@ -16,7 +16,7 @@ export class UserController {
         const userEmail: string = req.body.Email;
         const userPassword: string = req.body.Password;
         const userFullName: string = req.body.Name;
-
+        console.log("in User service");
         try {
             const CreateUser: boolean = await this.userService.create(userEmail, userPassword, userFullName);
             if (CreateUser) {

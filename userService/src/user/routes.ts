@@ -4,7 +4,6 @@ import * as bodyParser from 'body-parser'
 export const router = Router();
 import { Database } from "../../../shared/modules/database/src/database";
 import { UserService } from "./service";
-import { SignUpProducer } from '../../../authentication/server/produce.email.sqs/produce';
 
 var jsonParser = bodyParser.json() //for parsing the data from the http post
 

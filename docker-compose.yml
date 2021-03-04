@@ -15,7 +15,7 @@ services:
         image: "amiradar/tiny-url.url-service"
 
     authentication:
-        env_file: ./authentication/server/auth.env
+        env_file: ./authentication/auth.env
         image: "amiradar/tiny-url.authentication"
 
     email-consume:

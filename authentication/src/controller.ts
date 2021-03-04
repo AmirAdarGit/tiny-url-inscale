@@ -30,8 +30,8 @@ export class AuthController {
     };
 
     async signUp (req: Request, res: Response): Promise<void> {   
+        console.log("in Authentication module");
         const userPassword: string = req.body.Password;
-
         const userMetadata: UserMetadata = {
             Name: req.body.Name,
             Newsletter: true

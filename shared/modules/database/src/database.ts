@@ -1,6 +1,7 @@
 import { Idatabase } from "../../../interfaces/database/Idatabase"
 import  * as mysql  from 'mysql';
-import * as util from "util"
+import * as util from "util";
+import { OkPacket, RowDataPacket } from "mysql";
 
 export class Database implements Idatabase{
     
@@ -17,12 +18,12 @@ export class Database implements Idatabase{
         this.database = database;
     }
 
-    Connect(host: string, user: string, password: string, database: string): void{
+    Connect(): void{
         var db_config = {
-            host: host,
-            user: user,
-            password: password,
-            database: database
+            host: this.host,
+            user: this.user,
+            password: this.password,
+            database: this.database
         };
         this.connection = mysql.createConnection(db_config);                 
         handleDisconnect(this.connection);
@@ -50,7 +51,7 @@ export class Database implements Idatabase{
         console.log("Database module, Execute method");
             const query = util.promisify(this.connection.query).bind(this.connection);
             try {
-                return await query(dbQuery, function(err: mysql.QueryError, results: any){
+                return await query(dbQuery, function(err: mysql.QueryError, results: T){
                     if (err) {
                         return err;
                     } else {
@@ -63,5 +64,11 @@ export class Database implements Idatabase{
               console.log(`Database-Module: Error: ${ex}`)
               return ex;  
             }
+    }
+
+    private parseObj<T>(results: T): any{
+        if( results.constructor.prototype != 'RowDataPacket') {
+
+        }
     }
 }

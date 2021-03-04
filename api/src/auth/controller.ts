@@ -39,7 +39,7 @@ export class AuthController {
             Name: req.body.userFullName,
             Newsletter: true // TODO: take newsletter from body.
         }
-        
+        console.log("in Api");
         try {
             await this.authService.SignUp(userMetadata, credentials);
             res.status(200).send(`User: ${credentials.email} has been created.`);

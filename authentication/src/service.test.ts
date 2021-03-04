@@ -58,20 +58,22 @@ describe("Auth service - authenticate method", () => {
     test("Should fail when the token is invalid", async () => {
         jwtVerifyStub.returns(null);
 
-        const expected: string = "";
         const token: Token = new Token("invalid token");
-
-        expect(service.authenticate(token)).toBe(expected);
+        const expected: string = "";
+        const actual = service.authenticate(token); 
+        
+        expect(actual).toBe(expected);
         expect(jwtVerifyStub.calledOnce).toBe(true);
     });
 
     test("Should fail when an exception is thrown", async () => {
         jwtVerifyStub.throws(new Error("error!"));
-
-        const expected: string = "";
         const token: Token = new Token("invalid token");
 
-        expect(service.authenticate(token)).toBe(expected);
+        const expected: string = "";
+        const actual = service.authenticate(token); 
+
+        expect(actual).toBe(expected);
         expect(jwtVerifyStub.calledOnce).toBe(true);
     });
 });

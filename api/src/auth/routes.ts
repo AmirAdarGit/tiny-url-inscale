@@ -15,5 +15,5 @@ const authService: AuthService = new AuthService(authServiceHttpClient);
 const authController: AuthController = new AuthController(authService); //SighUp LogIn
 
 
-router.post(signUp, jsonParser, authController.signUp);
-router.post(logIn, jsonParser, authController.logIn);
+router.post(`/${signUp}`, jsonParser, authController.signUp);
+router.post(`/${logIn}`, jsonParser, authController.logIn);

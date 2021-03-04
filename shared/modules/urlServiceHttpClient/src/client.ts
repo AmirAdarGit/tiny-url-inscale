@@ -12,11 +12,13 @@ export class UrlServiceHttpClient implements IUrlServiceHttpClient {
         this.httpClient = httpClient;
     }
 
+    async create(userToken: Token, url: Url): Promise<string> {
+        return this.httpClient.post<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { url }, userToken)
+    }
+
     async get(shortUrl: number, token: Token): Promise<string> {
         return this.httpClient.get<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { shortUrl, ...token })
     }
 
-    async create(userToken: Token, url: Url): Promise<string> {
-        return this.httpClient.post<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { url }, userToken)
-    }
+
 }

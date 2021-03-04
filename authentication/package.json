@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "prod": "node ./dist/authentication/server/src/server.js",
-    "start": "tsc && node ./dist/authentication/server/src/server.js",
+    "prod": "node ./dist/authentication/src/server.js",
+    "start": "tsc && node ./dist/authentication/src/server.js",
     "test": "jest"
   },
   "author": "",
