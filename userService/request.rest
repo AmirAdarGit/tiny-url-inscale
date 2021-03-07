@@ -1,0 +1,9 @@
+//SignUp - working!
+POST http://localhost:3001/api/user
+Content-Type: application/json
+
+{
+    "email": "xxga1axd@gmail.com",
+    "name": "xxx",
+    "password": "xxx"
+}

@@ -7,6 +7,7 @@ import  * as errors  from "./errors"
 
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
+import { user } from '../../shared/const';
 
 export class AuthService {
 
@@ -19,6 +20,8 @@ export class AuthService {
     }
 
     async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<void> {   
+        console.log(`[SignUp] - credentials: ${JSON.stringify(credentials)}, userMetadata: ${JSON.stringify(userMetadata)}`)
+
         const isValid: boolean = this.validate(credentials);
         if(!isValid) return new Promise((res, rej) => { rej(new errors.ValidationError("invalid credentials"))});
 
@@ -84,9 +87,9 @@ export class AuthService {
     }
 
     private validate(credentials: Credentials): boolean {
-        if (credentials == null) return false;
-        if (credentials.password == "") return false;
-        if (credentials.email == "") return false;
+        if (!credentials) return false;
+        if (!credentials.password) return false;
+        if (!credentials.email) return false;
 
         return true;
     }

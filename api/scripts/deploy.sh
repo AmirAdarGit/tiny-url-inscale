@@ -1,0 +1,1 @@
+docker run -p 3001:8080 --env-file ../api.env amiradar/tiny-url.api 

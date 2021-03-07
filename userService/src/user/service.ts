@@ -9,7 +9,6 @@ export class UserService {
     constructor(database: Idatabase) {
         this.database = database;
     }
-
  
     async create(userEmail: string, userName: string, userPassword: string): Promise<boolean> {
         const query: string = `INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPassword}')`; 

@@ -4,9 +4,9 @@ POST http://localhost:3001/api/auth/signUp
 Content-Type: application/json
 
 {
-    "userEmail": "xxxd@gmail.com",
-    "userFullName": "xxx",
-    "userPassword": "xxx"
+    "email": "xxgxd@gmail.com",
+    "name": "xxx",
+    "password": "xxx"
 }
 
 ###
@@ -47,5 +47,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtaXJhZ
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE
 
 # ###
-
-

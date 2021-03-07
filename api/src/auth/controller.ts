@@ -15,8 +15,8 @@ export class AuthController {
     async logIn(req: Request, res: Response): Promise<void> {
         
         const credentials: Credentials = {
-            email: req.body.userEmail,
-            password: req.body.userPassword,
+            email: req.body.email,
+            password: req.body.password,
         }
 
         try {
@@ -29,17 +29,17 @@ export class AuthController {
     
     
     async signUp(req: Request, res: Response): Promise<void> {
-    
+        
         const credentials: Credentials = {
-            email: req.body.userEmail,
-            password: req.body.userPassword
+            email: req.body.email,
+            password: req.body.password
         }
     
         const userMetadata: UserMetadata = {
-            Name: req.body.userFullName,
-            Newsletter: true // TODO: take newsletter from body.
+            name: req.body.name,
+            newsletter: true // TODO: take newsletter from body.
         }
-        console.log("in Api");
+        
         try {
             await this.authService.SignUp(userMetadata, credentials);
             res.status(200).send(`User: ${credentials.email} has been created.`);

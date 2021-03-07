@@ -30,15 +30,14 @@ export class AuthController {
     };
 
     async signUp (req: Request, res: Response): Promise<void> {   
-        console.log("in Authentication module");
-        const userPassword: string = req.body.Password;
+        const userPassword: string = req.body.password;
         const userMetadata: UserMetadata = {
-            Name: req.body.Name,
-            Newsletter: true
+            name: req.body.name,
+            newsletter: true
         }
 
         const credentials: Credentials = {
-            email: req.body.Email,
+            email: req.body.email,
             password: userPassword
         }
         try {
@@ -56,8 +55,8 @@ export class AuthController {
     async logIn (req:Request, res:Response): Promise<void> {
 
         const credentials: Credentials = {
-            email: String(req.query.Email),
-            password: String(req.query.Password)
+            email: String(req.query.email),
+            password: String(req.query.password)
         }
 
         try {

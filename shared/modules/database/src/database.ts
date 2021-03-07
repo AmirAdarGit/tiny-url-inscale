@@ -1,5 +1,5 @@
 import { Idatabase } from "../../../interfaces/database/Idatabase"
-import  * as mysql  from 'mysql';
+import * as mysql  from 'mysql';
 import * as util from "util";
 import { OkPacket, RowDataPacket } from "mysql";
 
@@ -49,26 +49,8 @@ export class Database implements Idatabase{
 
     async Execute<T>(dbQuery: string) : Promise<T>{
         console.log("Database module, Execute method");
-            const query = util.promisify(this.connection.query).bind(this.connection);
-            try {
-                return await query(dbQuery, function(err: mysql.QueryError, results: T){
-                    if (err) {
-                        return err;
-                    } else {
-                        console.log("Database module, Execute method - results type: ", typeof(results));
-                        console.log("Database module, Execute method - results: ", results);
-                        return results;
-                    }
-                })
-            } catch (ex) {
-              console.log(`Database-Module: Error: ${ex}`)
-              return ex;  
-            }
-    }
-
-    private parseObj<T>(results: T): any{
-        if( results.constructor.prototype != 'RowDataPacket') {
-
-        }
+        const query = util.promisify(this.connection.query).bind(this.connection);
+        
+        return await query(dbQuery);
     }
 }
