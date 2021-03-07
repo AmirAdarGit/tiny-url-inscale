@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "prod": "node ./dist/consume.newUrl.js & node ./dist/consume.signUp.js",
+    "prod": "node ./dist/consume.signUp.js & node ./dist/consume.newUrl.js",
     "start": "tsc && node ./dist/consume.newUrl.js & ./dist/consume.signUp.js",
     "watch": "nodemon ./dist/server.ts"
   },

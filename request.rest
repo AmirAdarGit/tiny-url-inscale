@@ -4,7 +4,7 @@ POST http://localhost:3001/api/auth/signUp
 Content-Type: application/json
 
 {
-    "email": "xxgxd@gmail.com",
+    "email": "amiradar12345@gmail.com",
     "name": "xxx",
     "password": "xxx"
 }

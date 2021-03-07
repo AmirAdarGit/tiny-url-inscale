@@ -10,10 +10,10 @@ export class SignUpProducer implements ISqsProducer {
         this.sqs = new AWS.SQS({ apiVersion: '2012-11-05'})
     }
 
-    async SqSProduce<T>(obj: T): Promise<void> {
-        console.log("Authentiacation-service-Produce, send the Email to SQS");
+    async SqSProduce<T>(email: any): Promise<void> {
+        console.log(`Authentiacation-service-Produce, send the Email to SQS with email: ${email}`);
         const params = {
-            MessageBody: String(obj),
+            MessageBody: String(email),
             QueueUrl: process.env.AWS_SQS_URL
         }
         try{

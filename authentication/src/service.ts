@@ -33,7 +33,7 @@ export class AuthService {
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
         if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError()) }); 
     
-        try { await this.signUpProducer.SqSProduce( {email: credentials.email} ); }   
+        try { await this.signUpProducer.SqSProduce( credentials.email ); }   
         catch { /*console.log("Failed to send message to sqs");*/ }
         
     }

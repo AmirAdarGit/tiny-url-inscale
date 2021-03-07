@@ -10,7 +10,7 @@ export class UserService {
         this.database = database;
     }
  
-    async create(userEmail: string, userName: string, userPassword: string): Promise<boolean> {
+    async create(userEmail: string, userPassword: string, userName: string): Promise<boolean> {
         const query: string = `INSERT INTO Tiny_URL.Users VALUES ( '${userEmail}', '${userName}', '${userPassword}')`; 
         
         // TODO: parse the data data from RowDataPacker to User object.
