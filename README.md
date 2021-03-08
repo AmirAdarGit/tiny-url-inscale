@@ -6,9 +6,13 @@ Web application where a user can generate a short url for a given url.
 
 In this project I implemented the backend of the familiar app - tiny url.
 
-In this project I used Docker to run the images on containers, so make sure you have a version of docker installed on your computer.
+## Dependencies
 
-Use this link [Docker install](https://docs.docker.com/get-docker/) to install Docker.
+In this project I used Docker to run the images on containers, so make sure you have a version of docker installed on your computer.
+Use this link [Docker](https://docs.docker.com/get-docker/) to install Docker.
+
+In order to manage all the microservices together we will use Docker Compose.
+it is a tool for running multi-container applications on Docker, defined in `docker-compose.yml` file.
 
 There are 4 main flows to the project.
 1) sign up
