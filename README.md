@@ -5,7 +5,25 @@ Web application where a user can generate a short url for a given url.
 ## Introduction
 
 In this project I implemented the backend of the familiar app - tiny url.
+In order to maximize the ability of each service i use the microservice methodology and use Docker to run the images on containers.
+The microservices:
+Api module- The only server that is exposed to the world.
+On local enviroment in host: `localhost:3001`.
+On production enviroment In  host: `ec2-3-127-150-52.eu-central-1.compute.amazonaws.com:80`
 
+User Service module: server that expose post and get http methods.
+post: create new user and insert it to mySql database.
+get: get the user properties from mySql database.
+
+Url service module: server that expose post and get http methods.
+post: create new short url from given long url, and insert them in to mySql database.
+get: get Url from givan short url, resive the data from mySql database.
+
+Authentication module: server that used for sign up and log in flows, and validation user Token.
+
+Email consumer module: microservice that use to consume data from SQS i.e. user email, in order to send "sign up welcome email" for the new user.
+
+Deploy service module: //TODO: complete.
 ## Dependencies
 
 In this project I used Docker to run the images on containers, so make sure you have a version of docker installed on your computer.
