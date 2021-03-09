@@ -13,7 +13,7 @@ const urlServiceHttpClient = new UrlServiceHttpClient(httpClient);
 const urlService = new UrlService(urlServiceHttpClient);
 const urlController = new UrlController(urlService);
 
-router.get(id, jsonParser, urlController.get);
-router.post(createUrl, jsonParser, urlController.post);
+router.get(`/${id}`, jsonParser, urlController.get);
+router.post(`/${createUrl}`, jsonParser, urlController.post);
 
 

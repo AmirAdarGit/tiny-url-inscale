@@ -2,16 +2,18 @@ import  * as AWS  from "aws-sdk"
 import * as nodemailer  from 'nodemailer'
 import { Consumer } from 'sqs-consumer' 
 
+console.log("In consumer !!");
 
 const signUpConsumer = Consumer.create({
     queueUrl: process.env.AWS_SQS_SIGN_UP_URL,
     handleMessage: async (message: any) => {
-        console.log(message.Body); 
+        console.log("only the message:", message);
+        console.log("the object: message body ", JSON.stringify(message.Body)); 
         await sendEmail(message.Body)  
     }
 })
 signUpConsumer.on('error', (err: Error) => {
-    console.error(err.message);
+    console.error(`in create consumer: ${err.message}`);
 });
 
 signUpConsumer.on('processing_error', (err: Error) => {
@@ -23,6 +25,7 @@ signUpConsumer.start();
 
 
 async function sendEmail(userEmail: string): Promise<void>{
+    console.log("in sending email:", userEmail);
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -45,7 +48,7 @@ async function sendEmail(userEmail: string): Promise<void>{
   
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-            console.log(error);
+            console.log(`in send email error ${error}`);
         } else {
             console.log('Email sent: ' + info.response);
         }

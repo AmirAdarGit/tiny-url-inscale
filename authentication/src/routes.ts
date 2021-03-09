@@ -17,6 +17,6 @@ const signUpProducer: SignUpProducer = new SignUpProducer();
 const authService: AuthService = new AuthService(userServiceHttpClient, signUpProducer)
 const authController = new AuthController(authService);
 
-router.post(signUp, jsonParser, authController.signUp);
-router.get(logIn, jsonParser, authController.logIn); 
-router.get(authenticateToken, jsonParser, authController.authenticateToken); 
+router.post(`/${signUp}`, jsonParser, (req, res) => authController.signUp(req, res));
+router.get(`/${logIn}`, jsonParser, (req, res) => authController.logIn(req, res)); 
+router.get(`/${authenticateToken}`, jsonParser, (req, res) => authController.authenticateToken(req, res)); 

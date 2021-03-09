@@ -1,15 +1,18 @@
 import { Token } from "../../../shared/models/authenticate"
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
-import { UrlProducer } from "../produce.url.sqs/produce"
+import { ISqsProducer } from "../../../shared/interfaces/sqsProducer"
 import { Url } from "../../../shared/models/url/index"
+import  * as errors  from "./errors";
+import * as mysql from "mysql"
+import { OkPacket, RowDataPacket} from "mysql";
 
 export class UrlService {
     private database: Idatabase;
     private authHttpClient: IAuthServiceHttpClient;
-    private urlProducer: UrlProducer; // TODO: change to interface for dependency injection?
+    private urlProducer: ISqsProducer; 
 
-    constructor(database: Idatabase, authHttpClient: IAuthServiceHttpClient, urlProducer: UrlProducer) {
+    constructor(database: Idatabase, authHttpClient: IAuthServiceHttpClient, urlProducer: ISqsProducer) {
         this.database = database;
         this.authHttpClient = authHttpClient;
         this.urlProducer = urlProducer;
@@ -17,36 +20,43 @@ export class UrlService {
     
     async create(token: Token, longUrl: string, isPrivate: boolean): Promise<string> {     
         const email = await this.authHttpClient.getEmail(token);
-        if (!email) { return new Promise((res, rej) => { rej("Token invalid") }); }
+        if (!email) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Token")) }); }
 
         const valid: boolean = this.isLegalSite(longUrl);
-        if (!valid) { return new Promise((res, rej) => { rej("Url invalid") }); }
-        
+        if (!valid) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url")) }); }
         const insertQuery: string = `INSERT INTO Tiny_URL.Links (LongURL, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate})`;
-        const isInserted: boolean = await this.database.Execute<boolean>(insertQuery);
-        if (!isInserted) { return new Promise((res, rej) => { rej("Error inserting url to database") }); }
 
+        const isInserted = await this.database.Execute<boolean>(insertQuery);
+        if (!(isInserted)) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
+        
         const selectQuery: string = `SELECT ShortURL FROM Tiny_URL.Links WHERE LongURL = '${longUrl}'`;
-        const shortUrl: string = await this.database.Execute<string>(selectQuery);
+        const shortUrl: any = await this.database.Execute<any>(selectQuery);
+        if (!shortUrl) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error selecting url from the database")) }); }
 
-        await this.urlProducer.ProduceShortUrl(email, shortUrl, longUrl);
-        return shortUrl;
+        try {
+            await this.urlProducer.SqSProduce({ email: email, shortUrl: shortUrl, longUrl: longUrl });
+            return shortUrl;
+        } catch(ex) {
+            console.log("Error, SQS produc faild");
+            return shortUrl;
+        }
     }
-
     async read(shortUrl: string, token: Token): Promise<string> {
 
         if (!this.validNumber(Number(shortUrl))) {
-            return new Promise((res, rej) => { rej("Url is not valid"); })
+            return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url")); });
         }
         const query: string = `SELECT * FROM Tiny_URL.Links where ShortURL = '${shortUrl}'`;
         const linkInfo: Url  = await this.database.Execute<Url>(query);
-        if (!linkInfo) { return new Promise((res, rej) => { rej("No such url.") }); }
+        if (!linkInfo) {
+            return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); 
+        }
         
         const { isPrivate: privacy, longUrl: url } = linkInfo; 
         if (!privacy) { return url; }
 
         const email = await this.authHttpClient.getEmail(token);
-        if (!email) { return new Promise((res, rej) => { rej("Invalid Token.") }); }
+        if (!email) { return new Promise((res, rej) => { rej("Invalid Token for private url.") }); }
         return url;
     }
 

@@ -2,11 +2,12 @@ import { Credentials , UserMetadata} from '../../shared/models/common'
 import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServiceHttpClient"
 import { User } from '../../shared/models/user'
 import { Token } from "../../shared/models/authenticate"
-import { ISqsProducer } from "../produce.email.sqs/produce";
+import { ISqsProducer } from "../../shared/interfaces/sqsProducer";
 import  * as errors  from "./errors"
 
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
+import { user } from '../../shared/const';
 
 export class AuthService {
 
@@ -19,6 +20,8 @@ export class AuthService {
     }
 
     async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<void> {   
+        console.log(`[SignUp] - credentials: ${JSON.stringify(credentials)}, userMetadata: ${JSON.stringify(userMetadata)}`)
+
         const isValid: boolean = this.validate(credentials);
         if(!isValid) return new Promise((res, rej) => { rej(new errors.ValidationError("invalid credentials"))});
 
@@ -30,7 +33,7 @@ export class AuthService {
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
         if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError()) }); 
     
-        try { await this.signUpProducer.SqSProduceSignUp(credentials.email); }   
+        try { await this.signUpProducer.SqSProduce( credentials.email ); }   
         catch { /*console.log("Failed to send message to sqs");*/ }
         
     }
@@ -53,7 +56,7 @@ export class AuthService {
 
     authenticate(token: Token): string {
         try {
-            return this.getEmail(token);;
+            return this.getEmail(token);
         } catch (e) {
             return "";
         }
@@ -84,9 +87,9 @@ export class AuthService {
     }
 
     private validate(credentials: Credentials): boolean {
-        if (credentials == null) return false;
-        if (credentials.password == "") return false;
-        if (credentials.email == "") return false;
+        if (!credentials) return false;
+        if (!credentials.password) return false;
+        if (!credentials.email) return false;
 
         return true;
     }

@@ -1,12 +1,12 @@
     
 //SignUp - working!
-POST http://localhost:3001/api/auth/signup
+POST http://localhost:3001/api/auth/signUp
 Content-Type: application/json
 
 {
-    "userEmail": "Amiradar@gmail.com",
-    "userFullName": "Amir Adar",
-    "userPassword": "amir123"
+    "email": "amiradar12345@gmail.com",
+    "name": "xxx",
+    "password": "xxx"
 }
 
 ###
@@ -47,5 +47,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtaXJhZ
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE
 
 # ###
-
-

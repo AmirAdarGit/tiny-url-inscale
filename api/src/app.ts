@@ -7,8 +7,8 @@ import { api, auth, url } from "../../shared/const"
 export const app = express();
 
 // Express configuration
-app.use(`${api}/${auth}`, authentication);
-app.use(`${api}/${url}`, urlRouter);
+app.use(`/${api}/${auth}`, authentication);
+app.use(`/${api}/${url}`, urlRouter);
 
 
 

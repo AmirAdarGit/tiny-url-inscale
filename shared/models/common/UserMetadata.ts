@@ -1,4 +1,4 @@
 export class UserMetadata {
-    Name: string
-    Newsletter: boolean
+    name: string
+    newsletter: boolean
 }

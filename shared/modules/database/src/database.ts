@@ -1,21 +1,29 @@
 import { Idatabase } from "../../../interfaces/database/Idatabase"
-import  * as mysql  from 'mysql';
-import * as util from "util"
+import * as mysql  from 'mysql';
+import * as util from "util";
+import { OkPacket, RowDataPacket } from "mysql";
 
 export class Database implements Idatabase{
     
     connection: mysql.Connection;
-    
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+
     constructor(host: string, user: string, password:string, database: string){
-        this.Connect(host, user, password, database); 
+        this.host = host;
+        this.user = user;
+        this.password = password;
+        this.database = database;
     }
 
-    Connect(host: string, user: string, password: string, database: string): void{
+    Connect(): void{
         var db_config = {
-            host: host,
-            user: user,
-            password: password,
-            database: database
+            host: this.host,
+            user: this.user,
+            password: this.password,
+            database: this.database
         };
         this.connection = mysql.createConnection(db_config);                 
         handleDisconnect(this.connection);
@@ -41,20 +49,8 @@ export class Database implements Idatabase{
 
     async Execute<T>(dbQuery: string) : Promise<T>{
         console.log("Database module, Execute method");
-            const query = util.promisify(this.connection.query).bind(this.connection);
-            try {
-                return await query(dbQuery, function(err: mysql.QueryError, results: any){
-                    if (err) {
-                        return err;
-                    } else {
-                        console.log("Database module, Execute method - results type: ", typeof(results));
-                        console.log("Database module, Execute method - results: ", results);
-                        return results;
-                    }
-                })
-            } catch (ex) {
-              console.log(`Database-Module: Error: ${ex}`)
-              return ex;  
-            }
+        const query = util.promisify(this.connection.query).bind(this.connection);
+        
+        return await query(dbQuery);
     }
 }
