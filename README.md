@@ -82,11 +82,19 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 ![image](https://user-images.githubusercontent.com/44618095/110477145-7c89af00-80eb-11eb-8792-6959a2fc3c7b.png)
 
+---
+
 ## Create new url
 
 ![image](https://user-images.githubusercontent.com/44618095/110480053-b9a37080-80ee-11eb-9703-97bce641d366.png)
 
+---
 
+## Get public url
+
+![image](https://user-images.githubusercontent.com/44618095/110483266-3a17a080-80f2-11eb-8058-4f09abf05a41.png)
+
+---
 
 
 
