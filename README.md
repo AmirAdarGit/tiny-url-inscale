@@ -66,7 +66,7 @@ There are 4 main flows to the project.
 1) sign up
 2) log in
 3) create url
-4) get url
+4) get public/ private - url 
 
 For each flow there is an http request which will execute the API.
 
