@@ -84,19 +84,19 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 ---
 
-## Create new url
+## Create new url flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110480053-b9a37080-80ee-11eb-9703-97bce641d366.png)
 
 ---
 
-## Get public url
+## Get public url flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110488270-fecba080-80f6-11eb-9b69-add3ca38ec59.png)
 
 ---
 
-## Get private url
+## Get private url flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110485742-a2678180-80f4-11eb-84e4-e2b43cdcb874.png)
 
