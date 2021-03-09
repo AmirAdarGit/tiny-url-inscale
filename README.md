@@ -74,7 +74,7 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 ## sign up flow:
 
-![image](https://user-images.githubusercontent.com/44618095/110461446-1e9f9c00-80d8-11eb-8f04-753f0078ae58.png)
+![image](https://user-images.githubusercontent.com/44618095/110476715-f66d6880-80ea-11eb-8fa5-d8d001250b4d.png)
 
 ## log in flow:
 
