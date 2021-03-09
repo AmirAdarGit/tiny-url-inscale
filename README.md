@@ -6,9 +6,11 @@ Web application where a user can generate a short url for a given url.<br/>
 
 In this project I implemented the backend of the familiar app - tiny url.<br/>
 In order to maximize the ability of each service i use the microservice methodology and use Docker to run the images on containers.<br/>
-The microservices:<br/>
+
+The microservices descriptiens:<br/>
+
 Api module- The only server that is exposed to the world.<br/>
-On local enviroment in host: `localhost:3001`.<br/>
+On local enviroment in host: `localhost:3001`<br/>
 On production enviroment In  host: `ec2-3-127-150-52.eu-central-1.compute.amazonaws.com:80`<br/>
 
 User Service module: server that expose post and get http methods.<br/>
@@ -21,9 +23,11 @@ get: get Url from givan short url, resive the data from mySql database.<br/>
 
 Authentication module: server that used for sign up and log in flows, and validation user Token.<br/>
 
-Email consumer module: microservice that use to consume data from SQS i.e. user email, in order to send "sign up welcome email" for the new user.<br/>
+Email consumer module: microservice that use to consume data from SQS.
+i.e. user email, in order to send "sign up welcome email" for the new user.<br/>
 
 Deploy service module: //TODO: complete.
+
 ## Dependencies
 
 In this project I used Docker to run the images on containers, so make sure you have a version of docker installed on your computer.<br/>
@@ -72,5 +76,6 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 
 
+![image](https://user-images.githubusercontent.com/44618095/110457484-5a843280-80d3-11eb-80b4-44a50fa65ab1.png)
 
 
