@@ -92,7 +92,7 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 ## Get public url
 
-![image](https://user-images.githubusercontent.com/44618095/110483266-3a17a080-80f2-11eb-8058-4f09abf05a41.png)
+![image](https://user-images.githubusercontent.com/44618095/110487905-b0b69d00-80f6-11eb-8ebd-88745508826c.png)
 
 ---
 
