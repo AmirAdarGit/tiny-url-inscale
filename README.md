@@ -76,7 +76,7 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 
 
-![image](https://user-images.githubusercontent.com/44618095/110458237-34ab5d80-80d4-11eb-870c-8ccd31029066.png)
+![image](https://user-images.githubusercontent.com/44618095/110458406-645a6580-80d4-11eb-8e51-7b69e9c31dde.png)
 
 
 
