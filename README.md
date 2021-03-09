@@ -96,7 +96,7 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 ---
 
-### Get private url
+## Get private url
 
 ![image](https://user-images.githubusercontent.com/44618095/110485742-a2678180-80f4-11eb-84e4-e2b43cdcb874.png)
 
