@@ -72,11 +72,11 @@ For each flow there is an http request which will execute the API.
 
 In order to make the http request you can use the Postman app or vsCode extension (request.rest).
 
-### sign up flow:
+## sign up flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110461446-1e9f9c00-80d8-11eb-8f04-753f0078ae58.png)
 
-### log in flow:
+## log in flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110461858-a8e80000-80d8-11eb-9f34-9a4508e8cea5.png)
 
