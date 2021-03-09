@@ -82,6 +82,8 @@ In order to make the http request you can use the Postman app or vsCode extensio
 
 ## Create new url
 
+![image](https://user-images.githubusercontent.com/44618095/110478924-83192600-80ed-11eb-806e-1599966ce5f8.png)
+
 
 
 
