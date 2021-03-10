@@ -9,24 +9,27 @@ In order to maximize the ability of each service i use the microservice methodol
 
 The microservices descriptiens:<br/>
 
-Api module- The only server that is exposed to the world.<br/>
+Api module - The only server that is exposed to the world.<br/>
 On local enviroment in host: `localhost:3001`<br/>
 On production enviroment In  host: `ec2-3-127-150-52.eu-central-1.compute.amazonaws.com:80`<br/>
 
-User Service module: server that expose post and get http methods.<br/>
+User Service module - server that expose post and get http methods.<br/>
 post: create new user and insert it to mySql database.<br/>
 get: get the user properties from mySql database.<br/>
 
-Url service module: server that expose post and get http methods.<br/>
+Url service module - server that expose post and get http methods.<br/>
 post: create new short url from given long url, and insert them in to mySql database.<br/>
 get: get Url from givan short url, resive the data from mySql database.<br/>
 
-Authentication module: server that used for sign up and log in flows, and validation user Token.<br/>
+Authentication module - server that used for sign up and log in flows, and validation user Token.<br/>
 
-Email consumer module: microservice that use to consume data from SQS.
+Email consumer module - microservice that use to consume data from SQS.
 i.e. user email, in order to send "sign up welcome email" for the new user.<br/>
 
-Deploy service module: //TODO: complete.
+Deploy service module - server that listening on port:3456 for http post request wich send from Github-Action.
+It compite the CI/CD flow, while i pushed to the github repo using `ci.yml` file to build the images and push them
+in to docker-hub. while the server get post request he pull the images from docker-hub and run all the containers
+together using docker-compose with the correct enviroment virobles for deploying. 
 
 ## Dependencies
 
