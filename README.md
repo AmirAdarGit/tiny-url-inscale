@@ -72,32 +72,38 @@ For each flow there is an http request which will execute the API.
 
 In order to make the http request you can use the Postman app or vsCode extension (request.rest).
 
-## Sign up flow:
+### Sign up flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110481045-cf656580-80ef-11eb-884f-b71bfb273639.png)
 
 --- 
 
-## Log in flow:
+### Log in flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110477145-7c89af00-80eb-11eb-8792-6959a2fc3c7b.png)
 
 ---
 
-## Create new url flow:
+### Create new url flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110480053-b9a37080-80ee-11eb-9703-97bce641d366.png)
 
 ---
 
-## Get public url flow:
+### Get public url flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110488270-fecba080-80f6-11eb-9b69-add3ca38ec59.png)
 
 ---
 
-## Get private url flow:
+### Get private url flow:
 
 ![image](https://user-images.githubusercontent.com/44618095/110485742-a2678180-80f4-11eb-84e4-e2b43cdcb874.png)
 
+---
+
+## Testing:
+In order to unitest the modules in the project and used spyies, I used Jest package.
+To create mokes and stubs I used the `sinon` library.
+For testing the modues pick module and run `npm test` in the sorce module folder, this command will run jest.
 
