@@ -10,3 +10,5 @@ services:
         image: "amiradar/tiny-url.url-service"
     authentication:
         image: "amiradar/tiny-url.authentication"
+    email-consume:
+        image: "amiradar/tiny-url.email-consume"   
