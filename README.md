@@ -109,7 +109,7 @@ In order to make the http request you can use the Postman app or vsCode extensio
 You can unitest the modules of the project and spyies methods by `Jest` framework. <br/>
 I create mokes and stubs by `Sinon` library, in order to stub the database module, httpClient module, and more.<br/>
 
-For testing the modues pick module (UrlService, UserService, Authentication) and go to his sorce code and run: <br/>
+For testing the modues pick module (UrlService, UserService, Authentication) go to his sorce code and run: <br/>
 `npm test`<br/>
 
 this command will run the `Jest` testing framework.<br/>
