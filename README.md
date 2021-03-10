@@ -71,9 +71,10 @@ There are 4 main flows to the project.<br/>
 3) create url<br/>
 4) get public/ private - url <br/>
 
-For each flow there is an http request which will execute the API.<br/>
 
-In order to make the http request you can use the Postman app or vsCode extension (request.rest).<br/>
+For each flow there is an http request which execute the API.<br/>
+
+In order to make the http request you can use the Postman app or vsCode extension and check `request.rest`.<br/>
 
 ### Sign up flow:
 
