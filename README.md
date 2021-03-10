@@ -65,15 +65,15 @@ will run the following scripts:<br/>
 
 ## Api Documentations:
 
-There are 4 main flows to the project.
-1) sign up
-2) log in
-3) create url
-4) get public/ private - url 
+There are 4 main flows to the project.<br/>
+1) sign up<br/>
+2) log in<br/>
+3) create url<br/>
+4) get public/ private - url <br/>
 
-For each flow there is an http request which will execute the API.
+For each flow there is an http request which will execute the API.<br/>
 
-In order to make the http request you can use the Postman app or vsCode extension (request.rest).
+In order to make the http request you can use the Postman app or vsCode extension (request.rest).<br/>
 
 ### Sign up flow:
 
@@ -106,11 +106,11 @@ In order to make the http request you can use the Postman app or vsCode extensio
 ---
 
 ## Testing:
-You can unitest the modules of the project and spyies methods by `Jest` framework, 
-I create mokes and stubs by `sinon` library in order to stub the database module, httpClient, etc.
+You can unitest the modules of the project and spyies methods by `Jest` framework. <br/>
+I create mokes and stubs by `Sinon` library, in order to stub the database module, httpClient module, and more.<br/>
 
-For testing the modues pick module and go to his sorce code (UrlService, UserService, Authentication) and run: 
-`npm test`
+For testing the modues pick module (UrlService, UserService, Authentication) and go to his sorce code and run: <br/>
+`npm test`<br/>
 
-this command will run the jest testing framework.
+this command will run the `Jest` testing framework.<br/>
 
