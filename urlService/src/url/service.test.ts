@@ -85,30 +85,18 @@ describe("Url service - read method", () => {
     test("Should fail when short url is invalid", async () => {
         
         const negativNumber: string = "-10";
-        const actual =  urlService.read(negativNumber, token);
+        const decimalNumber: string = "3.5"
+        const englishWord: string = "hello world";
+
         const expected = new errors.ValidationError("invalid Url");
-        await expect(actual).rejects.toThrow(expected);
-
-        // const decimalNumber: string = "2.3";
-        // const englishWord: string = "hello world";
-
-        //httpClentStub.returns(email);
-        // const url: Url = new Url(legalUrl, email, isPrivate)
-        // databaseExecuteStub.withArgs(getUrlQuery).returns(url);
-
-        // try {
-        // expect(actual).rejects.toThrow(expected);
-        // } catch (e){
-        //     console.log("catch - ", e);
-        //     console.log("expected", expected);
-            
-        // }
+        const actual1 = urlService.read(negativNumber, token);
+        const actual2 = urlService.read(decimalNumber, token);
+        const actual3 = urlService.read(englishWord, token);
         
-        // const actual1 = await urlService.read(negativNumber, token);
-        // const actual2 = await urlService.read(decimalNumber, token);
-        // const actual3 = await urlService.read(englishWord, token);
-
-        //await expect(actual1).toThrow(expected);
+        
+        await expect(actual1).rejects.toThrow(expected);
+        await expect(actual2).rejects.toThrow(expected);
+        await expect(actual3).rejects.toThrow(expected);
 
     });
 
@@ -132,6 +120,7 @@ describe("Url service - read method", () => {
 
         const expected: Error = new errors.ValidationError("Private links must have token for validation");
         const actual = urlService.read(expectedShortUrl, invalidToken);
+       
         expect(actual).rejects.toThrow(expected);
     });
 
@@ -143,11 +132,10 @@ describe("Url service - read method", () => {
 
         const expected: Error = new errors.ValidationError("invalid Token");
         const actual = urlService.read(expectedShortUrl, token);
+       
         expect(actual).rejects.toThrow(expected);
     });
-
 });
-
 
     describe("Url service - create method", () => {
 
@@ -164,6 +152,7 @@ describe("Url service - read method", () => {
             
             const expected: string = expectedShortUrl;
             const actual = await urlService.create(token, legalUrl, isPrivate)
+            
             expect(actual).toBe(expected);
         });
     
@@ -177,25 +166,27 @@ describe("Url service - read method", () => {
         });
     
         test("Should fail when the site is not legal", async () => {
+
             const ilegalUrl: string = "https://www.yodds dutube.ccom";
-    
             httpClientStub.returns(email);
             databaseExecuteStub.withArgs(insertUrlQuery).returns(true);
             databaseExecuteStub.withArgs(getShortUrlQuery).returns("10");
             
             const expected: Error = new errors.ValidationError("invalid Url");
             const actual = urlService.create(token, ilegalUrl, isPrivate)
+            
             await expect(actual).rejects.toThrow(expected);
         });
     
         test("Should fail when an the database cannot insert new url", async () => {
+            
             httpClientStub.returns(email);
             databaseExecuteStub.withArgs(insertUrlQuery).returns(false);
             
             const expected: Error = new errors.DatabaseError("Error inserting url to the database");
             const actual = urlService.create(token, legalUrl, isPrivate)
+            
             expect(actual).rejects.toThrow(expected);
-    
         });
     
         test("Should fail when an the database cannot get short url", async () => {
@@ -206,6 +197,7 @@ describe("Url service - read method", () => {
     
             const expected: Error = new errors.DatabaseError("Error selecting url from the database");
             const actual = urlService.create(token, legalUrl, isPrivate)
+        
             expect(actual).rejects.toThrow(expected);
         });
     
@@ -221,6 +213,4 @@ describe("Url service - read method", () => {
             expect(actual).toBe(expected);
             expect(urlProducerStub.threw()).toBe(true);
         });
-    
     });
-

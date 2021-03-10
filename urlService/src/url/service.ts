@@ -43,7 +43,7 @@ export class UrlService {
         }
     }
     async read(shortUrl: string, token: Token): Promise<string> {
-
+        
         const isValidNumner: boolean = this.validNumber(Number(shortUrl)); 
         if (!isValidNumner) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url"))}); }
 
@@ -63,7 +63,7 @@ export class UrlService {
     }
 
     private validNumber(shortUrl: number): boolean {
-        if (isNaN(shortUrl) || shortUrl < 0) {
+        if (shortUrl < 0 || !Number.isInteger(shortUrl)) {
             return false;
         } else {
             return true;

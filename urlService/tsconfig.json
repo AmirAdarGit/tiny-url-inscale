@@ -17,5 +17,5 @@
     "include": [
         "src/**/*"
     ],
-    "exclude": ["src/url/servicde.test.ts"]
+    "exclude": ["src/url/service.test.ts"]
 }
