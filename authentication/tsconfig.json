@@ -16,5 +16,7 @@
     },
     "include": [
         "src/**/*"
-       ]
+    ],
+    "exclude": ["src/service.test.ts"]
+
 }
