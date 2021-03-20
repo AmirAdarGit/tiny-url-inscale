@@ -1,6 +1,6 @@
-# Tiny url inscale
+# Tiny URL Inscale
  
-Web application where a user can generate a short url for a given url.<br/>
+A user service application replacing an arbitrary length URL address with a short one..<br/>
 
 ## Introduction
 
