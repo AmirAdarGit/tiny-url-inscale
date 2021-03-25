@@ -3,7 +3,7 @@ import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
 import { ISqsProducer } from "../../../shared/interfaces/sqsProducer"
 import { Url } from "../../../shared/models/url/index"
-import  * as errors  from "./errors";
+import  * as errors  from "../../../shared/errors"
 import * as mysql from "mysql"
 import { OkPacket, RowDataPacket} from "mysql";
 import { bool } from "aws-sdk/clients/signer"

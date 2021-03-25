@@ -3,8 +3,7 @@ import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServic
 import { User } from '../../shared/models/user'
 import { Token } from "../../shared/models/authenticate"
 import { ISqsProducer } from "../../shared/interfaces/sqsProducer";
-import  * as errors  from "./errors"
-
+import  * as errors  from "../../shared/errors"
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
 import { user } from '../../shared/const';

@@ -1,7 +1,7 @@
 import { Request, Response} from "express"   
 import { User } from "../../../shared/models/user/index"
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
-import  * as errors from "./errors"
+import  * as errors  from "../../../shared/errors"
 export class UserService {
 
     private database: Idatabase;

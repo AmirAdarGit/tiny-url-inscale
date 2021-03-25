@@ -1,7 +1,7 @@
 import { Database } from "../../../shared/modules/database/src/database";
 import { Idatabase } from "../../../shared/interfaces/database/Idatabase";
 import  * as sinon from "sinon";
-import  * as errors  from ".././user/errors";
+import  * as errors  from "../../../shared/errors"
 import { UserService } from "../user/service";
 
 // Dependencies

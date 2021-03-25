@@ -14,8 +14,7 @@ import  * as sinon from "sinon";
 import { Token } from "../../../shared/models/authenticate";
 
 import  * as mysql  from 'mysql';
-import  * as errors  from "./errors";
-
+import  * as errors  from "../../../shared/errors"
 import  * as AWS  from "aws-sdk"
 import { Url } from "../../../shared/models/url";
 
