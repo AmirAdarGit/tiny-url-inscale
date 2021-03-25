@@ -16,5 +16,6 @@
     },
     "include": [
         "src/**/*"
-, "../authentication/produce.email.sqs"       ]
+    ],
+    "exclude": ["src/service.test.ts"]
 }

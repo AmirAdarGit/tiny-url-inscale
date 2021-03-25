@@ -1,5 +1,5 @@
-    
-//SignUp - working!
+// Sign Up.
+
 POST http://localhost:3001/api/auth/signUp
 Content-Type: application/json
 
@@ -10,17 +10,17 @@ Content-Type: application/json
 }
 
 ###
-//LogIn - working
+// LogIn.
 POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "vasilisky@gmail.com",
-    "userPassword": "talV"
+    "userEmail": "xxx@gmail.com",
+    "userPassword": "xxx"
 }
 
 ###
-//Create new short Url - working
+// Create new short Url.
 POST http://localhost:3001/api/url/createUrl
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc
@@ -32,18 +32,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsa
 }
 
 ###
-//Get public url - working 
+// Get public url.
 GET http://localhost:3001/api/url/53
 
 ###
-//Get private url, with token - Working
+// Get private url, with token.
 GET http://localhost:3001/api/url/52
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtaXJhZGFyMTIzNDVAZ21haWwuY29tIiwiaWF0IjoxNjEyODY5NDU1fQ.lO9pbTPzcLXAClXT5vS0t8SfdTDXbc96KjLK3PfHy8I
-
-###
-
-# GET http://localhost:3001/api/list
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieWFtaXRAZ21haWwuY29tIiwiaWF0IjoxNjEwNjMyMTM0fQ.hdn23_xrklz3BYD_XU61aS3M1cVPtUp140XmNtOAycE
-
-# ###

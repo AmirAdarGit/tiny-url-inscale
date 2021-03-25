@@ -1,7 +1,6 @@
 import { Idatabase } from "../../../interfaces/database/Idatabase"
 import * as mysql  from 'mysql';
 import * as util from "util";
-import { OkPacket, RowDataPacket } from "mysql";
 
 export class Database implements Idatabase{
     

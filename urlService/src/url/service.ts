@@ -3,9 +3,10 @@ import { Idatabase } from "../../../shared/interfaces/database/Idatabase"
 import { IAuthServiceHttpClient } from "../../../shared/interfaces/authenticate/IAuthServiceHttpClient"
 import { ISqsProducer } from "../../../shared/interfaces/sqsProducer"
 import { Url } from "../../../shared/models/url/index"
-import  * as errors  from "./errors";
+import  * as errors  from "../../../shared/errors"
 import * as mysql from "mysql"
 import { OkPacket, RowDataPacket} from "mysql";
+import { bool } from "aws-sdk/clients/signer"
 
 export class UrlService {
     private database: Idatabase;
@@ -37,31 +38,32 @@ export class UrlService {
             await this.urlProducer.SqSProduce({ email: email, shortUrl: shortUrl, longUrl: longUrl });
             return shortUrl;
         } catch(ex) {
-            console.log("Error, SQS produc faild");
+            console.log("Error, SQS produce faild");
             return shortUrl;
         }
     }
     async read(shortUrl: string, token: Token): Promise<string> {
+        
+        const isValidNumner: boolean = this.validNumber(Number(shortUrl)); 
+        if (!isValidNumner) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url"))}); }
 
-        if (!this.validNumber(Number(shortUrl))) {
-            return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url")); });
-        }
         const query: string = `SELECT * FROM Tiny_URL.Links where ShortURL = '${shortUrl}'`;
         const linkInfo: Url  = await this.database.Execute<Url>(query);
-        if (!linkInfo) {
-            return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); 
-        }
+        
+        if (!linkInfo) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
         
         const { isPrivate: privacy, longUrl: url } = linkInfo; 
         if (!privacy) { return url; }
 
+        if (token.value == null) { return new Promise((res, rej) => { rej (new errors.ValidationError("Private links must have token for validation"))})}
+        
         const email = await this.authHttpClient.getEmail(token);
-        if (!email) { return new Promise((res, rej) => { rej("Invalid Token for private url.") }); }
+        if (!email) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Token")) }); }
         return url;
     }
 
     private validNumber(shortUrl: number): boolean {
-        if (isNaN(shortUrl) || shortUrl < 0) {
+        if (shortUrl < 0 || !Number.isInteger(shortUrl)) {
             return false;
         } else {
             return true;

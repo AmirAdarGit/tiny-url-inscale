@@ -6,7 +6,7 @@ import { Credentials , UserMetadata} from '../../shared/models/common';
 import { IHttpClient } from "../../shared/interfaces/httpClient/IHttpClient";
 import { HttpClient } from "../../shared/modules/httpClient/src/HttpClient";
 import { UserServiceHttpClient } from "../../shared/modules/userServiceHttpClient/src/client";
-import { HttpClientError, ValidationError } from "./errors";
+import  * as errors  from "../../shared/errors"
 import { User } from "../../shared/models/user";
 import { Token } from "../../shared/models/authenticate";
 import  * as sinon from "sinon";
@@ -101,13 +101,18 @@ describe("Auth service logIn", () => {
 
 
     test("Should fail when input is invalid", async () => {
-        await expect(service.logIn(null)).rejects.toThrow(new ValidationError("invalid credentials"));
+        const actual = service.logIn(null);
+        const expected: Error =  new errors.ValidationError("invalid credentials")
+        await expect(actual).rejects.toThrow(expected);
     });
 
     test("Should fail when http request to user service returns null", async () => {
         httpClientGetStub.returns(null);
+        
+        const actual = service.logIn(credentials);
+        const expected: Error =  new errors.HttpClientError("Failed to get user");
 
-        await expect(service.logIn(credentials)).rejects.toThrow(new HttpClientError("Failed to get user"));
+        await expect(actual).rejects.toThrow(expected);
         expect(httpClientGetStub.calledOnce).toBe(true);
     });
 
@@ -119,7 +124,7 @@ describe("Auth service logIn", () => {
 
         httpClientGetStub.returns(user);
 
-        await expect(service.logIn(credentials)).rejects.toThrow(new ValidationError("Password does not match."));
+        await expect(service.logIn(credentials)).rejects.toThrow(new errors.ValidationError("Password does not match."));
         expect(httpClientGetStub.calledOnce).toBe(true);
         expect(jwtSignStub.calledOnce).toBe(false);
     });  
@@ -149,8 +154,10 @@ describe("Auth service signUp", () => {
 
         httpClientCreateStub.returns(false);
         sqsProducerStub.returns(null);
-        
-        await expect(service.signUp(credentials, null)).rejects.toThrow(new HttpClientError());
+        const actual = service.signUp(credentials, null);
+        const expected: Error = new errors.HttpClientError("Failed to create user");
+
+        await expect(actual).rejects.toThrow(expected);
         expect(httpClientCreateStub.calledOnce).toBe(true);
         expect(sqsProducerStub.calledOnce).toBe(false);
     });
@@ -159,7 +166,7 @@ describe("Auth service signUp", () => {
         httpClientCreateStub.returns(false);
         sqsProducerStub.returns(null);
 
-        await expect(service.signUp(null, null)).rejects.toThrow(new ValidationError("invalid credentials"));
+        await expect(service.signUp(null, null)).rejects.toThrow(new errors.ValidationError("invalid credentials"));
 
         expect(httpClientCreateStub.calledOnce).toBe(false);
         expect(sqsProducerStub.calledOnce).toBe(false);

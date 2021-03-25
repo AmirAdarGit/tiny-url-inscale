@@ -3,8 +3,7 @@ import { IUserServiceHttpClient } from "../../shared/interfaces/user/IUserServic
 import { User } from '../../shared/models/user'
 import { Token } from "../../shared/models/authenticate"
 import { ISqsProducer } from "../../shared/interfaces/sqsProducer";
-import  * as errors  from "./errors"
-
+import  * as errors  from "../../shared/errors"
 import * as bcrypt from "bcrypt"
 import * as jwt from 'jsonwebtoken' 
 import { user } from '../../shared/const';
@@ -31,7 +30,7 @@ export class AuthService {
             password: encryptedPass 
         } 
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
-        if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError()) }); 
+        if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError("Failed to create user")) }); 
     
         try { await this.signUpProducer.SqSProduce( credentials.email ); }   
         catch { /*console.log("Failed to send message to sqs");*/ }
