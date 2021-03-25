@@ -17,7 +17,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image 
       run: |
-        sudo ./install_dependencies.sh 
+        sudo ./scripts/install_dependencies.sh 
         cd api
         tsc
         docker login --username=amiradar --password=amiradar123
@@ -35,7 +35,7 @@ jobs:
       - name: Build, tag, and push image to Docker Hub
         id: build-image
         run: |
-          sudo ./install_dependencies.sh 
+          sudo ./scripts/install_dependencies.sh 
           cd userService
           tsc
           docker login --username=amiradar --password=amiradar123
@@ -54,7 +54,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
-        sudo ./install_dependencies.sh 
+        sudo ./scripts/install_dependencies.sh 
         cd urlService
         tsc
         docker login --username=amiradar --password=amiradar123
@@ -72,7 +72,7 @@ jobs:
     - name: Build, tag, and push image to Docker Hub
       id: build-image
       run: |
-        sudo ./install_dependencies.sh 
+        sudo ./scripts/install_dependencies.sh 
         cd emailConsume
         tsc
         docker login --username=amiradar --password=amiradar123
