@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Signup from './pages/Signup' 
+import User from './pages/User'
+
+import { Route, BrowserRouter as Router, Link} from 'react-router-dom'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App">     
+      <Router>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" className="Typograpy" component={Link} to="/" >Tiny Url</Typography>
+            <Button color="inherit" float="right" component={Link} to="/login">Login</Button>
+            <Button color="inherit" float="right" component={Link} to="/signup">Signup</Button>
+          </Toolbar>
+        </AppBar>
+            <Route path ='/' exact component={Home}></Route>    
+            <Route path ='/login' exact component={Login} to="/login"></Route>
+            <Route path ='/signup' exact component={Signup} to="/signup"></Route>
+            <Route path ='/user' exact component={User}></Route>
+
+    </Router>
     </div>
   );
 }
