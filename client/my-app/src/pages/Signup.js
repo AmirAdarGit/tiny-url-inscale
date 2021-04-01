@@ -45,7 +45,7 @@ function Signup() {
             history.push("/login");
         }).catch((error) => {
             console.log(JSON.stringify(error.response.data));
-            setError(`${error}`);
+            setError(`${JSON.stringify(error.response.data)}`);
         })
 
 
