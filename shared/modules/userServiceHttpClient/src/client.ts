@@ -21,6 +21,8 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
             ...credentials,
             ...userMetadata
         }
-        return await this.httpClient.post<boolean>(`${process.env.USER_SERVICE_PATH}/${api}/${user}`, newUser)
+
+        return await this.httpClient.post<boolean>(`${process.env.USER_SERVICE_PATH}/${api}/${user}`, newUser)   
+        
     }
 }

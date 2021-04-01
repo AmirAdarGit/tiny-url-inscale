@@ -1,6 +1,7 @@
 import { Request, Response} from "express"   
 import { User } from "../../../shared/models/user/index"
 import { UserService } from "./service";
+import { OkPacket } from "mysql";
 
 export class UserController {
 
@@ -21,8 +22,9 @@ export class UserController {
     
         try {
             const createUser: boolean = await this.userService.create(userEmail, userPassword, userFullName);
+            console.log("tryy 1",createUser);
             if (createUser) {
-                res.status(200).send(createUser);
+                res.sendStatus(200);
             } else {
                 res.status(404).send("Forbidden, cannot create new user") 
             }

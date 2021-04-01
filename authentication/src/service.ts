@@ -11,11 +11,11 @@ import { user } from '../../shared/const';
 export class AuthService {
 
     private userHttpClient: IUserServiceHttpClient;
-    private signUpProducer: ISqsProducer;
+    //private signUpProducer: ISqsProducer;
 
-    constructor(userHttpClient: IUserServiceHttpClient, signUpProducer: ISqsProducer){
+    constructor(userHttpClient: IUserServiceHttpClient){
         this.userHttpClient = userHttpClient;
-        this.signUpProducer = signUpProducer;
+    //    this.signUpProducer = signUpProducer;
     }
 
     async signUp (credentials: Credentials, userMetadata: UserMetadata): Promise<void> {   
@@ -29,11 +29,14 @@ export class AuthService {
             email: credentials.email,
             password: encryptedPass 
         } 
+        
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
+        console.log("herr 2", isSignUp)
         if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError("Failed to create user")) }); 
     
-        try { await this.signUpProducer.SqSProduce( credentials.email ); }   
-        catch { /*console.log("Failed to send message to sqs");*/ }
+        // SQS is not working since aws is not connecting.
+        // try { await this.signUpProducer.SqSProduce( credentials.email ); }   
+        // catch { /*console.log("Failed to send message to sqs");*/ }
         
     }
 

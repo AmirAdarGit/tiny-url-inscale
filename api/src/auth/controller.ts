@@ -33,6 +33,7 @@ export class AuthController {
         const credentials: Credentials = {
             email: req.body.email,
             password: req.body.password
+            
         }
     
         const userMetadata: UserMetadata = {
@@ -41,10 +42,11 @@ export class AuthController {
         }
         
         try {
-            await this.authService.SignUp(userMetadata, credentials);
-            res.status(200).send(`User: ${credentials.email} has been created.`);
+            console.log(`[SignUp] - credentials: ${JSON.stringify(credentials)}, userMetadata: ${JSON.stringify(userMetadata)}`)
+           await this.authService.SignUp(userMetadata, credentials);
+            res.sendStatus(200);
         } catch (ex) {
-            res.status(500).send(ex);
+            res.status(500).send(`${credentials.email} is already in use.`);
         }
     }
 }

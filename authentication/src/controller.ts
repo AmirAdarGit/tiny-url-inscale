@@ -4,7 +4,7 @@ import { Token } from '../../shared/models/authenticate/index'
 import { AuthService } from "./service"
 import { tokenUtils } from "../../shared/jwtToken/tokenUtils"
 import { EQUALITY_BINARY_OPERATORS } from "@babel/types"
-import { ValidationError } from "./errors"
+import { ValidationError } from "../../shared/errors"
 
 export class AuthController {
 
@@ -42,12 +42,12 @@ export class AuthController {
         }
         try {
             await this.authService.signUp(credentials, userMetadata);
-            res.status(200);
+            res.sendStatus(200);
         } catch (ex) {
             if(ex instanceof ValidationError) {
                 res.status(403).send(`Forbidden, cannot sign up for ${credentials.email}`);
             } else {
-                res.status(500).send(`Failed creating user, error: ${ex}`);
+                res.status(500).send(`${credentials.email} is already in use.`);
             }
         }
     }

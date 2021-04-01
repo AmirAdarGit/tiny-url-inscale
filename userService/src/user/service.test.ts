@@ -16,8 +16,8 @@ const email: string = "vasilisky@gmail.com";
 const userName: string = "vasilisky";
 const userPassword: string = "talV";
 
-const insertUserQuery: string = `INSERT INTO Tiny_URL.Users VALUES ( '${email}', '${userName}', '${userPassword}')`; 
-const selectUserQuery = `SELECT * FROM Tiny_URL.Users where Email = '${email}'`;
+const insertUserQuery: string = `INSERT INTO tiny_url.Users VALUES ( '${email}', '${userName}', '${userPassword}')`; 
+const selectUserQuery = `SELECT * FROM tiny_url.Users where Email = '${email}'`;
 
 describe("User service - create method", () => {
 

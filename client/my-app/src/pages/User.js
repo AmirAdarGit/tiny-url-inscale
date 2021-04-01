@@ -65,9 +65,7 @@ function User() {
                         click to copy the short url
                     </Button>
                 </div>}
-            </div>
-            
-            
+            </div>\
         </div>
     )
 }

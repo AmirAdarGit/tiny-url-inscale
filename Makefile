@@ -14,8 +14,7 @@ build_url_service:
 	sh build.sh
 
 build_user_service:
-	cd userService/scripts
-	sh build.shls
+	userService/scripts/build.sh
 
 
 deploy:

@@ -5,7 +5,7 @@ import { HttpClient } from "../../../shared/modules/httpClient/src/HttpClient";
 import { AuthServiceHttpClient } from "../../../shared/modules/authServiceHttpClient/src/client"
 import { Database } from "../../../shared/modules/database/src/database";
 import { UrlService } from "./service"
-import { NewUrlProducer } from "../produce.url.sqs/produce";
+//import { NewUrlProducer } from "../produce.url.sqs/produce";
 import { ISqsProducer } from "../../../shared/interfaces/sqsProducer"
 export const router = Router();
 
@@ -15,8 +15,8 @@ const database: Database = new Database(process.env.DB_CONFIGE_HOST, process.env
 database.Connect();
 const httpClient: HttpClient = new HttpClient();
 const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(httpClient);
-const urlProducer: ISqsProducer = new NewUrlProducer(process.env.AWS_QUEUE_REGION, process.env.AWS_QUEUE_URL); //inject the region
-const urlService: UrlService = new UrlService (database, authServiceHttpClient, urlProducer);
+//const urlProducer: ISqsProducer = new NewUrlProducer(process.env.AWS_QUEUE_REGION, process.env.AWS_QUEUE_URL); //inject the region
+const urlService: UrlService = new UrlService (database, authServiceHttpClient);
 const urlController: UrlController = new UrlController(urlService);
 
 router.post('/', jsonParser, urlController.post);

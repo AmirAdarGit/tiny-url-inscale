@@ -1,11 +1,11 @@
 import { TextField, Button } from '@material-ui/core';
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
-
+import axios from "axios"
 
 function Signup() {
-    const history = useHistory();
 
+    const history = useHistory();
     const [error, setError] = useState('');
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
@@ -24,21 +24,31 @@ function Signup() {
             email: email,
             password: password     
         })
-        console.log(userInfo);
-        //const response = await httpClient.post<void>('http://localhost:3001/api/auth/signUp', {email: email, name: userName, password: password}); 
-        // TODO: cheack valid input properties 
-        try{
 
-            if(!email || !userName || !password){
-                console.log("error on of them")
-                setError("enter an email and password and user name! ");
-            } else {
-                console.log("not error")
-                history.push("/login");
+        if(!email || !userName || !password){
+            setError("enter an email and password and user name! ");
+            return;
+        } 
+
+        axios({
+            headers: { 
+                'content-type': 'application/json'
+            },
+            method: 'post',
+            url: 'http://localhost:3001/api/auth/signUp',
+            data: {
+                email: email,
+                name: userName,
+                password: password
             }
-        } catch (err){
+        }).then(() => {
+            history.push("/login");
+        }).catch((error) => {
+            console.log(JSON.stringify(error.response.data));
             setError(`${error}`);
-        }
+        })
+
+
     }
     
     const handleUserName = (e) => {

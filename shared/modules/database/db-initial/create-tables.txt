@@ -1,0 +1,22 @@
+CREATE DATABASE tiny_url;
+
+
+    CREATE TABLE tiny_url.Links (
+        LinkId int NOT NULL AUTO_INCREMENT,
+        LongUrl varchar(255) NOT NULL,
+        Email varchar(255),
+        IsPrivate boolean,
+        PRIMARY KEY (LinkId),
+        FOREIGN KEY (Email) REFERENCES tiny_url.Users(Email)
+    );
+
+    CREATE TABLE tiny_url.Users (
+        Email varchar(255),
+        UserName varchar(255),
+        Password varchar(255),
+        PRIMARY KEY (Email)
+    );
+
+INSERT INTO tiny_url.Links (LongURL, Email, IsPrivate) VALUES ('gmail.co.il/asdfasfasf/sdfasfsafasf', 'carmel@gmail.com', 0)
+INSERT INTO tiny_url.Users VALUES ( 'carmel@gmail.com', 'Carmel Shupak', '2222');
+select * from tiny_url.Links

@@ -1,2 +1,5 @@
-build_and_deploy: 
-  sh build_and_deploy.sh
+build: 
+  ./scripts/sh build.sh
+
+deploy:
+  ./scripts/sh deploy.sh

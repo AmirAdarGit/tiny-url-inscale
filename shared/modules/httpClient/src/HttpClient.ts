@@ -27,6 +27,7 @@ export class HttpClient implements IHttpClient {
         if (response.status != 200) {
             return new Promise((resolve, reject) => reject(response.data));
         }
+        console.log("[HttpClient] post ", response.data)
         return response.data;    
     }
 }

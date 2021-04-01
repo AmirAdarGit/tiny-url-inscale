@@ -38,9 +38,9 @@ const legalUrl: string = "https://www.yoddsdutube.ccom";
 const expectedShortUrl: string = "10";
 const token: Token = new Token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc");
 
-const getShortUrlQuery: string = `SELECT ShortURL FROM Tiny_URL.Links WHERE LongURL = '${legalUrl}'`;
-const insertUrlQuery: string = `INSERT INTO Tiny_URL.Links (LongURL, Email, IsPrivate) VALUES ('${legalUrl}', '${email}', ${isPrivate})`;
-const getUrlQuery: string = `SELECT * FROM Tiny_URL.Links where ShortURL = '${expectedShortUrl}'`;
+const getShortUrlQuery: string = `SELECT ShortURL FROM tiny_url.Links WHERE LongURL = '${legalUrl}'`;
+const insertUrlQuery: string = `INSERT INTO tiny_url.Links (LongURL, Email, IsPrivate) VALUES ('${legalUrl}', '${email}', ${isPrivate})`;
+const getUrlQuery: string = `SELECT * FROM tiny_url.Links where ShortURL = '${expectedShortUrl}'`;
 
 
 describe("Url service - read method", () => {

@@ -10,12 +10,11 @@ cd ../userService
 tsc
 docker build -t amiradar/tiny-url.user-service .
 
-cd ../emailConsume
-tsc
-docker build -t amiradar/tiny-url.email-consume .
+# cd ../emailConsume
+# tsc
+# docker build -t amiradar/tiny-url.email-consume .
 
 cd ../authentication
 tsc
 docker build -t amiradar/tiny-url.authentication .
-
 

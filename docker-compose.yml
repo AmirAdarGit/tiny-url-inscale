@@ -1,23 +1,50 @@
 version: "3.9"
 services:
-    api:
-        env_file: ./api/api.env
-        image: "amiradar/tiny-url.api"
-        ports:
-            - "3001:8080"
-            
-    user-service:
-        env_file: ./userService/userService.env
-        image: "amiradar/tiny-url.user-service"
-        
-    url-service:
-        env_file: ./urlService/urlService.env
-        image: "amiradar/tiny-url.url-service"
+  api:
+    env_file: ./api/api.env
+    image: "amiradar/tiny-url.api"
+    ports:
+      - "3001:8080"
 
-    authentication:
-        env_file: ./authentication/auth.env
-        image: "amiradar/tiny-url.authentication"
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - dbdata:/var/lib/mysql
 
-    email-consume:
-        env_file: ./emailConsume/emailConsume.env
-        image: "amiradar/tiny-url.email-consume"        
+  user-service:
+    env_file: ./userService/userService.env
+    image: "amiradar/tiny-url.user-service"
+    depends_on:
+      - "db"
+
+  url-service:
+    env_file: ./urlService/urlService.env
+    image: "amiradar/tiny-url.url-service"
+
+  authentication:
+    env_file: ./authentication/auth.env
+    image: "amiradar/tiny-url.authentication"
+
+  # email-consume:
+  #   env_file: ./emailConsume/emailConsume.env
+  #   image: "amiradar/tiny-url.email-consume"
+#   sqs:
+#     image: localstack/localstack
+#     environment:
+#       SERVICES: sqs
+#       DATA_DIR: /tmp/localstack/data
+#     volumes:
+#       - "sqs:/tmp/localstack"
+#     ports:
+#       - "4563-4599:4563-4599"
+#       - "8055:8080"
+
+volumes:
+  dbdata:
