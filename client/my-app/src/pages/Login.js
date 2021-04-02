@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Component } from 'react'
 import { TextField, Button } from '@material-ui/core';
 import { Route, BrowserRouter as Link, Router} from 'react-router-dom'
-//import { HttpClient } from '../../../../shared/modules/httpClient/src/HttpClient'
 import { useHistory } from 'react-router-dom';
+import axios from "axios"
 
 function Login() {
     const history = useHistory();
@@ -28,27 +28,43 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if (!email || !password) {
+            setError("enter an email and password! ");
+        }
+        
         setInfo({
             email: email,
             passeord: password
         })
-        try{
-            setError('');
-            if (!email || !password) {
-                setError("enter an email and password! ");
-            } else {
-            //const token = await httpClient.post<Token>('http://localhost:3001/api/auth/logIn', {email: email, password: password}); 
-            const token = 'try.the.token';
-            localStorage.setItem('token', token);
+        
+        axios({
+            headers: { 
+                'content-type': 'application/json'
+            },
+            method: 'post',
+            url: 'http://localhost:3001/api/auth/logIn',
+            data: {
+                email: email,
+                password: password
+            }
+        }).then((token) => {
             console.log(token);
-            history.push({
-                pathname: '/user',
-                state: {email: email}});
-            } 
-        } catch (err) {
-            setError(`${err}`);
-        }
+            history.push("/user");
+        }).catch((error) => {
+            console.log(JSON.stringify(error.response.data));
+            setError(`${JSON.stringify(error.response.data)}`);
+        })
+
+            // localStorage.setItem('token', token);
+            // console.log(token);
+            // history.push({
+            //     pathname: '/user',
+            //     state: {email: email}});
+            // } 
     }
+    
+
     return (
         <div>
             <h1>Login</h1>

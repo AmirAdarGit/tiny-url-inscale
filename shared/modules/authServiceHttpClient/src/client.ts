@@ -22,7 +22,8 @@ export class AuthServiceHttpClient implements IAuthServiceHttpClient {
     }
 
     async login(credentials: Credentials): Promise<Token> {
-            return await this.httpClient.get<Token>(`${process.env.AUTH_SERVICE_HOST}/${api}/${authentication}/${logIn}`, { ...credentials })
+            console.log("[AuthServiceHttpClient] - LogIn", credentials)
+            return await this.httpClient.post<Token>(`${process.env.AUTH_SERVICE_HOST}/${api}/${authentication}/${logIn}`, { ...credentials })
     }
 
     async getEmail(token: Token): Promise<string> {

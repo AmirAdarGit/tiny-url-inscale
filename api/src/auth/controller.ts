@@ -20,6 +20,7 @@ export class AuthController {
         }
 
         try {
+            console.log(`[LogIn] - credentials: ${JSON.stringify(credentials)})}`)
             const token: Token = await this.authService.LogIn(credentials);
             res.status(200).send(token); //return the Token to the user -> in future save it in the browser cookies.
         } catch (ex) {

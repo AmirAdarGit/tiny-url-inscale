@@ -18,17 +18,17 @@ function Signup() {
 
     const handleFromSubmit = (e) => {
         e.preventDefault();
-        
+  
+        if(!email || !userName || !password){
+            setError("enter an email and password and user name! ");
+            return;
+        } 
+
         setUserInfo({
             userName: userName,
             email: email,
             password: password     
         })
-
-        if(!email || !userName || !password){
-            setError("enter an email and password and user name! ");
-            return;
-        } 
 
         axios({
             headers: { 

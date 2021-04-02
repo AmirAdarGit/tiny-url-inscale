@@ -55,11 +55,12 @@ export class AuthController {
     async logIn (req:Request, res:Response): Promise<void> {
 
         const credentials: Credentials = {
-            email: String(req.query.email),
-            password: String(req.query.password)
+            email: String(req.body.email),
+            password: String(req.body.password)
         }
 
         try {
+            console.log("[Authentication] LogIn - ", JSON.stringify(credentials))
             const token: Token = await this.authService.logIn(credentials);
             if(!token) { 
                 res.status(403).send(`Forbidden, cannot log in for ${credentials.email}`)

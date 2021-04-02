@@ -4,7 +4,7 @@ POST http://localhost:3001/api/auth/signUp
 Content-Type: application/json
 
 {
-    "email": "2",
+    "email": "2dddd",
     "name": "1",
     "password": "3"
 }
@@ -15,8 +15,8 @@ POST http://localhost:3001/api/auth/logIn
 Content-Type: application/json
 
 {
-    "userEmail": "xxx@gmail.com",
-    "userPassword": "xxx"
+    "userEmail": "11@gmail.com",
+    "userPassword": "11"
 }
 
 ###
