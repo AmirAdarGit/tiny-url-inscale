@@ -22,7 +22,7 @@ export class UrlController {
         console.log("email ", email);
         try {
             console.log(`[Api] - controller email: ${email}, longUrl:${longUrl}, isPrivate: ${isPrivate}`)
-            console.log(`[Api] - controller token: ${token}`)
+            console.log(`[Api] - controller token: ${token.value}`)
 
             const newUrl = await this.urlService.post(token, url);
             res.status(200).send(newUrl);
