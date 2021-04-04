@@ -29,7 +29,6 @@ export class UserService {
         console.log("After selecting the user from the db: ", dbUser);
         if (!dbUser) { return new Promise ((res, rej) => { rej(new errors.DatabaseError("Fail to get user"))})}
         const newUser: User = new User(dbUser[0]);
-        newUser.print();        
         return newUser
     }
 }  

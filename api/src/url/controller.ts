@@ -16,11 +16,14 @@ export class UrlController {
 
         const token: Token = tokenUtils.getToken(req.headers.authorization)
         const longUrl: string = req.body.longUrl;
-        const email: string = req.body.Email;
-        const isPrivate: boolean = Boolean(req.body.IsPrivate);
+        const email: string = req.body.email;
+        const isPrivate: boolean = Boolean(req.body.isPrivate);
         const url: Url = new Url (longUrl, email, isPrivate);
-
+        console.log("email ", email);
         try {
+            console.log(`[Api] - controller email: ${email}, longUrl:${longUrl}, isPrivate: ${isPrivate}`)
+            console.log(`[Api] - controller token: ${token}`)
+
             const newUrl = await this.urlService.post(token, url);
             res.status(200).send(newUrl);
         } catch (ex) {

@@ -1,20 +1,17 @@
 import { TextField, Button } from '@material-ui/core';
 import React, { useState } from 'react'
+import { useDispatch, useSelector} from 'react-redux'
 import { useHistory } from 'react-router-dom';
 import axios from "axios"
 
 function Signup() {
-
     const history = useHistory();
+
     const [error, setError] = useState('');
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userInfo, setUserInfo] = useState({
-        userName: '',
-        email: '',
-        password: ''
-    })
+
 
     const handleFromSubmit = (e) => {
         e.preventDefault();
@@ -23,13 +20,11 @@ function Signup() {
             setError("enter an email and password and user name! ");
             return;
         } 
-
-        setUserInfo({
+        const userInfo = {
             userName: userName,
             email: email,
-            password: password     
-        })
-
+            password: password
+        }
         axios({
             headers: { 
                 'content-type': 'application/json'

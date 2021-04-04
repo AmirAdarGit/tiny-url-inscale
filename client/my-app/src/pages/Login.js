@@ -1,21 +1,21 @@
 import React, { useState, useEffect, Component } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { setToken, getToken } from '../redux/tokenSlice'
+import { setId, getId } from '../redux/userIdSlice'
+
 import { TextField, Button } from '@material-ui/core';
-import { Route, BrowserRouter as Link, Router} from 'react-router-dom'
 import { useHistory } from 'react-router-dom';
 import axios from "axios"
 
 function Login() {
+
+    const dispatch = useDispatch();
     const history = useHistory();
-    //const httpClient = new HttpClient();
-    
+
     const [error, setError] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [info, setInfo] = useState({
-        email: '',
-        password: ''
-    });
-    const [jwt, setJwt] = useState('');
+
 
     const handleEmailChange = (e) => {
         e.preventDefault();
@@ -32,12 +32,7 @@ function Login() {
         if (!email || !password) {
             setError("enter an email and password! ");
         }
-        
-        setInfo({
-            email: email,
-            passeord: password
-        })
-        
+             
         axios({
             headers: { 
                 'content-type': 'application/json'
@@ -49,23 +44,18 @@ function Login() {
                 password: password
             }
         }).then((response) => {
-            console.log(response.data);
-            
+            console.log(response.data.value);
+            console.log(email);
+
+            dispatch(setToken(response.data.value)); 
+            dispatch(setId(email));            
             history.push("/user");
         }).catch((error) => {
             console.log(JSON.stringify(error.response.data));
             setError(`${JSON.stringify(error.response.data)}`);
         })
-
-            // localStorage.setItem('token', token);
-            // console.log(token);
-            // history.push({
-            //     pathname: '/user',
-            //     state: {email: email}});
-            // } 
     }
     
-
     return (
         <div>
             <h1>Login</h1>
