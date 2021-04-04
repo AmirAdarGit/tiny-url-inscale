@@ -5,9 +5,9 @@ build_api:
 	cd api/scripts 
 	sh build.sh
 
-build_authentication:
-	cd authentication/scripts
-	sh build.sh
+build_authentication: 
+	 cd authentication/scripts
+	 sh build.sh
 
 build_url_service:
 	cd urlService/scripts

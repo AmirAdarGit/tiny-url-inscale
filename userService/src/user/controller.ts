@@ -34,8 +34,11 @@ export class UserController {
     }
 
     async get(req:Request, res:Response): Promise<void> {
+        console.log("with query", req.query.params);
+        console.log("with param", req.params);
+
         const userEmail: string = String(req.query.email);// param instend of query because get does not have body, but params.
-       
+       console.log("[User service] - user email: "+ userEmail);
         try {
             const user: User = await this.userService.read(userEmail); 
             if(user) {

@@ -45,11 +45,12 @@ export class AuthService {
         if(!isValid) return new Promise((res, rej) => { rej(new errors.ValidationError("invalid credentials"))});
 
         const user: User = await this.userHttpClient.get(credentials.email);
+        console.log(JSON.stringify("User from the DB: " + JSON.stringify(user)));
         if (!user) return new Promise((res, rej) => { rej(new errors.HttpClientError("Failed to get user")) });  
         
         const { password: userEncryptedPassFromDb, email: email } = user;
         const isValidPassword = await this.comparePasswords(credentials.password, userEncryptedPassFromDb); 
-        
+
         return isValidPassword ? 
             this.createToken(email) : 
             new Promise((res, rej) => { rej(new errors.ValidationError("Password does not match.")); });
@@ -92,7 +93,7 @@ export class AuthService {
         if (!credentials) return false;
         if (!credentials.password) return false;
         if (!credentials.email) return false;
-
+        console.log("In validation method");
         return true;
     }
 }    

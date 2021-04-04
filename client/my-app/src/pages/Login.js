@@ -48,8 +48,9 @@ function Login() {
                 email: email,
                 password: password
             }
-        }).then((token) => {
-            console.log(token);
+        }).then((response) => {
+            console.log(response.data);
+            
             history.push("/user");
         }).catch((error) => {
             console.log(JSON.stringify(error.response.data));

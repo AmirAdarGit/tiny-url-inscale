@@ -62,6 +62,7 @@ export class AuthController {
         try {
             console.log("[Authentication] LogIn - ", JSON.stringify(credentials))
             const token: Token = await this.authService.logIn(credentials);
+            
             if(!token) { 
                 res.status(403).send(`Forbidden, cannot log in for ${credentials.email}`)
             } else {

@@ -13,6 +13,7 @@ export class UserServiceHttpClient implements IUserServiceHttpClient {
     }
 
     async get(email: string): Promise<User> {
+        console.log("In UserHttpClient get method, email:" + email);
         return await this.httpClient.get<User>(`${process.env.USER_SERVICE_PATH}/${api}/${user}`, { email })
     }
 

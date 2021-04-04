@@ -18,5 +18,5 @@ const authService: AuthService = new AuthService(userServiceHttpClient)
 const authController = new AuthController(authService);
 
 router.post(`/${signUp}`, jsonParser, (req, res) => authController.signUp(req, res));
-router.get(`/${logIn}`, jsonParser, (req, res) => authController.logIn(req, res)); 
+router.post(`/${logIn}`, jsonParser, (req, res) => authController.logIn(req, res)); 
 router.get(`/${authenticateToken}`, jsonParser, (req, res) => authController.authenticateToken(req, res)); 

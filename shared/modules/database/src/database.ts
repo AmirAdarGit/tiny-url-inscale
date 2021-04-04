@@ -43,6 +43,7 @@ export class Database implements Idatabase{
         try {
             const query = util.promisify(this.connection.query).bind(this.connection);
             const ans = await query(dbQuery);
+            console.log(ans);
             return ans;
         } catch (err) {
             console.log(err);
