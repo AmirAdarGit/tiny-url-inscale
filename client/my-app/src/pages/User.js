@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Checkbox, TextField, Button }  from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import { useParams, Route } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, connect } from 'react-redux'
 import axios from "axios"
-import  getToken  from '../redux/tokenSlice';
-import  getId  from '../redux/userIdSlice';
 
 function User() {
     
@@ -16,8 +11,8 @@ function User() {
     const [url, setUrl] = useState('');
     const [button, setButton] = useState(false);
 
-    const token = useSelector(state => state.userToken.value);
     const email = useSelector(state => state.userId.value);
+    const token = useSelector(state => state.userToken.value)
 
     const dispatch = useDispatch();
 
@@ -87,6 +82,7 @@ function User() {
 
     return (
         <div>
+            <h1>{`email: ${email}, token: ${token}`}</h1>
             <h1>User</h1><br/>
             <h3>Please enter the your URL you want to be shorten </h3>
             <form className="formClass" onSubmit={handleSubmit}>
@@ -110,5 +106,6 @@ function User() {
         </div>
     )
 }
+
 
 export default User

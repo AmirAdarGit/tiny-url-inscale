@@ -19,21 +19,28 @@ export class UrlService {
         //this.urlProducer = urlProducer;
     }
     
-    async create(token: Token, longUrl: string, isPrivate: boolean): Promise<string> {     
+    async create(token: Token, longUrl: string, isPrivate: boolean): Promise<string> {  
+        console.log(`[Url service] - post - url: ${longUrl} token: ${token.value}, isPrivate: ${isPrivate}`);
+   
         const email = await this.authHttpClient.getEmail(token);
+        console.log("[Url service] - email: ",email);
         if (!email) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Token")) }); }
 
         const valid: boolean = this.isLegalSite(longUrl);
-        if (!valid) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url")) }); }
-        const insertQuery: string = `INSERT INTO tiny_url.Links (LongURL, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate})`;
+        console.log("[Url service] - is valid: ",valid);
 
-        const isInserted = await this.database.Execute<boolean>(insertQuery);
+        if (!valid) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url")) }); }
+        const insertQuery: string = `INSERT INTO tiny_url.Links (LongUrl, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate})`;
+
+        const isInserted = await this.database.Execute<OkPacket>(insertQuery);
         if (!(isInserted)) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
         
-        const selectQuery: string = `SELECT ShortURL FROM tiny_url.Links WHERE LongURL = '${longUrl}'`;
-        const shortUrl: any = await this.database.Execute<any>(selectQuery);
-        if (!shortUrl) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error selecting url from the database")) }); }
-
+        const selectQuery: string = `SELECT LinkId FROM tiny_url.Links WHERE LongUrl = '${longUrl}'`;
+        const dbUrl: RowDataPacket = await this.database.Execute<RowDataPacket>(selectQuery);
+        console.log("After selecting the shortUrl from the db: ", dbUrl);
+        if (!dbUrl) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error selecting url from the database")) }); }
+        const shortUrl: string = dbUrl[0];
+        return shortUrl;
         // try {
         //     await this.urlProducer.SqSProduce({ email: email, shortUrl: shortUrl, longUrl: longUrl });
         //     return shortUrl;

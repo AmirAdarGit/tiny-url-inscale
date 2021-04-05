@@ -11,6 +11,7 @@ export class UrlService {
     }
 
     async post(userToken: Token, url: Url) {
+        console.log(`[Api] post UrlService class, token: ${userToken} url: ${JSON.stringify(url)}`)
         return await this.urlHttpClient.create(userToken, url);
     }
 

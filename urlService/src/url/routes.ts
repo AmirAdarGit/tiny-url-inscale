@@ -19,5 +19,5 @@ const authServiceHttpClient: AuthServiceHttpClient = new AuthServiceHttpClient(h
 const urlService: UrlService = new UrlService (database, authServiceHttpClient);
 const urlController: UrlController = new UrlController(urlService);
 
-router.post('/', jsonParser, urlController.post);
-router.get('/',jsonParser, urlController.get);
+router.post('/', jsonParser, (req, res) => urlController.post(req, res));
+router.get('/',jsonParser, (req, res) => urlController.get(req, res));

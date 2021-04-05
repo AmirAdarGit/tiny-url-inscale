@@ -19,4 +19,4 @@ const authController = new AuthController(authService);
 
 router.post(`/${signUp}`, jsonParser, (req, res) => authController.signUp(req, res));
 router.post(`/${logIn}`, jsonParser, (req, res) => authController.logIn(req, res)); 
-router.get(`/${authenticateToken}`, jsonParser, (req, res) => authController.authenticateToken(req, res)); 
+router.post(`/${authenticateToken}`, jsonParser, (req, res) => authController.authenticateToken(req, res)); 

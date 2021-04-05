@@ -1,13 +1,12 @@
 import React, { useState, useEffect, Component } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setToken, getToken } from '../redux/tokenSlice'
-import { setId, getId } from '../redux/userIdSlice'
-
 import { TextField, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { setId } from '../redux/userIdSlice';
+import { setToken } from '../redux/tokenSlice'
 import axios from "axios"
 
-function Login() {
+function Login(props) {
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -46,9 +45,8 @@ function Login() {
         }).then((response) => {
             console.log(response.data.value);
             console.log(email);
-
             dispatch(setToken(response.data.value)); 
-            dispatch(setId(email));            
+            dispatch(setId(email));         
             history.push("/user");
         }).catch((error) => {
             console.log(JSON.stringify(error.response.data));
@@ -66,10 +64,11 @@ function Login() {
             </form>
             
             <div>{error && <h2>{error}</h2> }</div>
-
         </div>
 
     )
 }
 
-export default Login
+
+
+export default Login    

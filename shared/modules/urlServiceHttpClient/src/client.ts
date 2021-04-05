@@ -12,8 +12,9 @@ export class UrlServiceHttpClient implements IUrlServiceHttpClient {
         this.httpClient = httpClient;
     }
 
-    async create(userToken: Token, url: Url): Promise<string> {
-        return this.httpClient.post<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { url }, userToken)
+    async create(userToken: Token, urlInfo: Url): Promise<string> {
+        console.log(`[UrlServiceHttpClient] - create - Token: ${userToken.value} url:${urlInfo}`);
+        return this.httpClient.post<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { urlInfo }, userToken)
     }
 
     async get(shortUrl: number, token: Token): Promise<string> {

@@ -15,8 +15,10 @@ export class AuthController {
     }
 
     async authenticateToken(req: Request, res: Response): Promise<void> {
-        const token: Token = tokenUtils.getToken(req.headers.authorization)
+        // const token: Token = tokenUtils.getToken(req.headers.authorization)
 
+        const token: Token = new Token(req.body.value);
+        console.log("[Authentication] - req ",token);
         try{
             const email = this.authService.authenticate(token);
             if (email) {

@@ -14,9 +14,9 @@ export class UrlController{
 
     async post(req:Request, res:Response): Promise<void> {  
     
-        const url: Url = req.body.url;
+        const url: Url = req.body.urlInfo;
         const token: Token = tokenUtils.getToken(req.headers.authorization);
-        
+        console.log(`[Url service] - post - url: ${JSON.stringify(url)} token: ${token}`);
         try {
             const Shorturl: string = await this.urlService.create(token, url.longUrl, url.isPrivate); 
             if (Shorturl) {

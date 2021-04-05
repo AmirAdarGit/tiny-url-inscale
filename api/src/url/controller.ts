@@ -19,7 +19,6 @@ export class UrlController {
         const email: string = req.body.email;
         const isPrivate: boolean = Boolean(req.body.isPrivate);
         const url: Url = new Url (longUrl, email, isPrivate);
-        console.log("email ", email);
         try {
             console.log(`[Api] - controller email: ${email}, longUrl:${longUrl}, isPrivate: ${isPrivate}`)
             console.log(`[Api] - controller token: ${token.value}`)
