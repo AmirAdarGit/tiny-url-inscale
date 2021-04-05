@@ -33,6 +33,7 @@ function User() {
     }
 
     const handleSubmit = (e) => {
+        setError('');
         e.preventDefault();
             if(!url){
                 setError("Enter Url for the service");
@@ -53,7 +54,7 @@ function User() {
                         'isPrivate': button
                     }
                 }).then((response) => {
-                    setShortUrl(response.data.value);
+                    setShortUrl(response.data.LinkId);
                     console.log("user Short Url:", shortUrl);
                 }).catch((error) => {
                     console.log(JSON.stringify(error.response.data));
@@ -61,28 +62,8 @@ function User() {
                 })
             }
         }
-        
-    
-
-
-
-
-    // http://localhost:3001/api/url/createUrl
-    // Content-Type: application/json
-    // Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsaXNreUBnbWFpbC5jb20iLCJpYXQiOjE2MTI5NTY1Njl9.ui8tjpxTCJ437HeM3nFLw9obzej7_sfdMKvl36ZfkAc
-    
-    // {
-    //     "LongURL": "https://www.tal-king-22222243315aaffrd111/search?q=%D7%A9%D7%90%D7%99%D7%9C%D7%AA%D7%94+%D7%91%D7%A8%D7%91%D7%99%D7%9D+%D7%AA%D7%A8%D7%92%D7%95%D7%9D&rlz=1C1SQJL_enUS782US782&oq=%D7%A9%D7%90%D7%99%D7%9C%D7%AA%D7%94+%D7%91%D7%A8%D7%91%D7%99%D7%9D+%D7%AA%D7%A8%D7%92%D7%95%D7%9D&aqs=chrome..69i57.10279j1j1&sourceid=chrome&ie=UTF-8",
-    //     "Email": "vasilisky@gmail.com",
-    //     "IsPrivate": true
-    // }
-
-
-
-
     return (
         <div>
-            <h1>{`email: ${email}, token: ${token}`}</h1>
             <h1>User</h1><br/>
             <h3>Please enter the your URL you want to be shorten </h3>
             <form className="formClass" onSubmit={handleSubmit}>
@@ -97,7 +78,7 @@ function User() {
             <div>{error && <h2>{error}</h2>}</div>
             <div>{shortUrl && 
                 <div>
-                    <h1>{shortUrl}</h1>
+                    <h1>{`http://localhost:3001/api/url/${shortUrl}`}</h1>
                     <Button onClick={() => {navigator.clipboard.writeText(shortUrl)}}>
                         click to copy the short url
                     </Button>

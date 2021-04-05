@@ -33,7 +33,7 @@ export class UrlService {
         const insertQuery: string = `INSERT INTO tiny_url.Links (LongUrl, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate})`;
 
         const isInserted = await this.database.Execute<OkPacket>(insertQuery);
-        if (!(isInserted)) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
+        if (!isInserted) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
         
         const selectQuery: string = `SELECT LinkId FROM tiny_url.Links WHERE LongUrl = '${longUrl}'`;
         const dbUrl: RowDataPacket = await this.database.Execute<RowDataPacket>(selectQuery);

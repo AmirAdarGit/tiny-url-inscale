@@ -24,7 +24,9 @@ export class UrlController {
             console.log(`[Api] - controller token: ${token.value}`)
 
             const newUrl = await this.urlService.post(token, url);
-            res.status(200).send(newUrl);
+            console.log(`[Api] - shortUrl: ${JSON.stringify(newUrl)}`);
+
+            res.status(200).send(JSON.stringify(newUrl));
         } catch (ex) {
             res.status(500).send(ex);
         }
