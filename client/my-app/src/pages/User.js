@@ -79,7 +79,7 @@ function User() {
             <div>{shortUrl && 
                 <div>
                     <h1>{`http://localhost:3001/api/url/${shortUrl}`}</h1>
-                    <Button onClick={() => {navigator.clipboard.writeText(shortUrl)}}>
+                    <Button onClick={() => {navigator.clipboard.writeText(`http://localhost:3001/api/url/${shortUrl}`)}}>
                         click to copy the short url
                     </Button>
                 </div>}
