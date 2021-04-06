@@ -37,3 +37,10 @@
     transform: rotate(360deg);
   }
 }
+
+.logout-btn {
+  float: right;
+  position: absolute;
+  top: 50%;
+  border: rgb(194, 113, 113) solid;
+}

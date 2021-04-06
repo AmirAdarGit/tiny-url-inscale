@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { TextField, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { setId } from '../redux/userIdSlice';
-import { setToken } from '../redux/tokenSlice'
 import axios from "axios"
 
 function Login(props) {
@@ -45,7 +44,6 @@ function Login(props) {
         }).then((response) => {
             console.log(response.data.value);
             console.log(email);
-            //dispatch(setToken(response.data.value)); 
             localStorage.setItem('jwt', response.data.value)
             dispatch(setId(email));         
             history.push("/user");

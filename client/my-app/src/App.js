@@ -20,6 +20,8 @@ function App() {
             <Typography variant="h6" className="Typograpy" component={Link} to="/" >Tiny Url</Typography>
             <Button color="inherit" float="right" component={Link} to="/login">Login</Button>
             <Button color="inherit" float="right" component={Link} to="/signup">Signup</Button>
+            <Button className="logout-btn"  component={Link} to="/">Logout</Button>
+
           </Toolbar>
         </AppBar>
             <Route path ='/' exact component={Home}></Route>    
