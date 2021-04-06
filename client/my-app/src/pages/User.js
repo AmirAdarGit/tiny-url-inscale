@@ -64,16 +64,17 @@ function User() {
         }
     return (
         <div>
-            <h1>User</h1><br/>
-            <h3>Please enter the your URL you want to be shorten </h3>
+            <h1>Hello User: {email}</h1><br/>
+            <h3>Paste the URL to be shortened </h3>
             <form className="formClass" onSubmit={handleSubmit}>
-                <TextField id="standard-basic" value={url} label="Url" onChange={handleUrlChange}/><br/><br/><br/>
+                <TextField id="standard-basic" value={url} label="Enter the link here" onChange={handleUrlChange}/><br/><br/><br/>
                 <FormControlLabel
                     control={<Checkbox checked={button} onChange={handleButtonChange} />}
                     label="Private url (only you could convert the url to the original one)"
                 />
                 <br/>
-                <Button type="submit">Submit</Button>
+                <Button type="submit" style={{ border: '2px solid black'}
+  } >Shorten URL</Button>
             </form>
             <div>{error && <h2>{error}</h2>}</div>
             <div>{shortUrl && 
