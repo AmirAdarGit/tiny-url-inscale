@@ -45,7 +45,8 @@ function Login(props) {
         }).then((response) => {
             console.log(response.data.value);
             console.log(email);
-            dispatch(setToken(response.data.value)); 
+            //dispatch(setToken(response.data.value)); 
+            localStorage.setItem('jwt', response.data.value)
             dispatch(setId(email));         
             history.push("/user");
         }).catch((error) => {

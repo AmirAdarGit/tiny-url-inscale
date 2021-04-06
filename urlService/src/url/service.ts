@@ -54,12 +54,12 @@ export class UrlService {
         const isValidNumner: boolean = this.validNumber(Number(shortUrl)); 
         if (!isValidNumner) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url"))}); }
 
-        const query: string = `SELECT * FROM tiny_url.Links where ShortURL = '${shortUrl}'`;
-        const linkInfo: Url  = await this.database.Execute<Url>(query);
+        const query: string = `SELECT * FROM tiny_url.Links where LinkId = '${shortUrl}'`;
+        const dblinkInfo: RowDataPacket  = await this.database.Execute<RowDataPacket>(query);
+        console.log("link info:", dblinkInfo[0]);
         
-        if (!linkInfo) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
-        
-        const { isPrivate: privacy, longUrl: url } = linkInfo; 
+        if (!dblinkInfo) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
+        const { IsPrivate: privacy, LongUrl: url } = dblinkInfo[0]; 
         if (!privacy) { return url; }
 
         if (token.value == null) { return new Promise((res, rej) => { rej (new errors.ValidationError("Private links must have token for validation"))})}

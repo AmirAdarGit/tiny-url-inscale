@@ -43,7 +43,8 @@ export class UrlController {
         }
         try {
             const url: string = await this.urlService.get(shortUrl, token);
-            res.status(200).send(url);
+            res.redirect(url);
+            //res.status(200).send(url);
         } catch (ex) {
             res.status(500).send(ex);
         }

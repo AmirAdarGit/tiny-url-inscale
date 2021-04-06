@@ -33,7 +33,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhc2lsa
 
 ###
 // Get public url.
-GET http://localhost:3001/api/url/53
+GET http://localhost:3001/api/url/30
 
 ###
 // Get private url, with token.

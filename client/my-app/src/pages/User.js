@@ -12,7 +12,7 @@ function User() {
     const [button, setButton] = useState(false);
 
     const email = useSelector(state => state.userId.value);
-    const token = useSelector(state => state.userToken.value)
+    const token = localStorage.getItem('jwt')
 
     const dispatch = useDispatch();
 

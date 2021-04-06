@@ -5,21 +5,29 @@ import { json } from "express";
 
 export class HttpClient implements IHttpClient {
 
-    async get<T>(url: string, params: object, token?: Token): Promise<T> {
-        console.log("in httpClient, params: ", params);
+    async get<T>(url: string, payload: number, token?: Token): Promise<T> {
+        console.log("in httpClient, url: ", url);
+    
+        console.log("in httpClient, params: ", payload);
         
         const config = {
             headers: { 'Authorization': `Bearer ${token}`},
-            params,
-            json: true        }
-        const response = await axios.get<T>(url, config);
+            params: {
+                shortUrl: payload 
+            }
+        }
+        try {
+            const response = await axios.get<T>(url, { params: {payload}});
 
-        if (response.status != 200) {
+            if (response.status != 200) {
             return new Promise((resolve, reject) => reject(response.data));
         }
         console.log("[HttpClient] get ", response.data);
 
         return response.data;
+        } catch (err) {
+            console.log("Error in Httpclient ",err);
+        }
     }
     async post<T>(url: string, payload: object, token?: Token): Promise<T> {
         try{

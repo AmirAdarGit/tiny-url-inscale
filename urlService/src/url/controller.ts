@@ -13,7 +13,7 @@ export class UrlController{
     }
 
     async post(req:Request, res:Response): Promise<void> {  
-    
+        console.log("[Url service]", req.body);
         const url: Url = req.body.urlInfo;
         const token: Token = tokenUtils.getToken(req.headers.authorization);
         console.log(`[Url service] - post - url: ${JSON.stringify(url)} token: ${token}`);
@@ -30,10 +30,14 @@ export class UrlController{
     }
 
     async get(req:Request, res:Response): Promise<void> {
+        console.log("Request data:");
+        console.log(req.query.payload);
 
-        const shortUrl: string = String(req.body.shortUrl);
-        const token: Token = req.body.token;
-       
+        // const shortUrl: string = String(req.headers);
+        // const token: Token = new Token (String(req.query.token));
+        // console.log(`[Url service] - shortUrl: ${shortUrl}`);
+       const shortUrl = String(req.query.payload);
+       const token: Token = new Token(null);
         try {
             const longUrl: string = await this.urlService.read(shortUrl, token);
             if (longUrl) {

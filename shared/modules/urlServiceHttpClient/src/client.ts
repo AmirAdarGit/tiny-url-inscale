@@ -18,7 +18,7 @@ export class UrlServiceHttpClient implements IUrlServiceHttpClient {
     }
 
     async get(shortUrl: number, token: Token): Promise<string> {
-        return this.httpClient.get<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`, { shortUrl, ...token })
+        return this.httpClient.get<string>(`${process.env.URL_SERVICE_PATH}/${api}/${url}`,  shortUrl , token )
     }
 
 
