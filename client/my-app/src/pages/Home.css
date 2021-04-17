@@ -1,0 +1,12 @@
+.home-content {
+  border: 2px solid black;
+  box-sizing: content-box;
+  padding: 14px;
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 35px;
+  box-shadow: 0 0 100px 10px cornflowerblue;
+}
+.home-title {
+  box-shadow: 20 0 100px 10px rgb(45, 156, 41);
+}

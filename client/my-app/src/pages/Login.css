@@ -1,0 +1,13 @@
+.log-in {
+  border: 2px solid black;
+  width: 24%;
+  margin-left: 39%;
+  margin-top: 47px;
+  padding-bottom: 12px;
+  box-shadow: 0 0 100px 10px #00806e;
+}
+.log-in .submit-btn {
+  border: 1px solid black;
+  width: 27%;
+  margin-top: 10px;
+}
