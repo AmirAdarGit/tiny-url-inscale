@@ -2,15 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Checkbox, TextField, Button } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useSelector, useDispatch, connect } from "react-redux";
+
+import { useAppSelector, useAppDispatch } from '../redux/hooks'
+
+
 import axios from "axios";
 import "./User.css";
+// import userId from "../redux/userIdSlice"
 function User() {
   const [shortUrl, setShortUrl] = useState("");
   const [error, setError] = useState("");
   const [url, setUrl] = useState("");
   const [button, setButton] = useState(false);
 
-  const email = useSelector((state) => state.userId.value);
+  const email = useAppSelector((state) => state.userId.value);
   const token = localStorage.getItem("jwt");
 
   const dispatch = useDispatch();
@@ -18,19 +23,19 @@ function User() {
   console.log("Email ", email);
   console.log("Token ", token);
 
-  const handleUrlChange = (e) => {
+  const handleUrlChange = (e: any) => {
     e.preventDefault();
     console.log(e.target.value);
     setUrl(e.target.value);
   };
 
-  const handleButtonChange = (e) => {
+  const handleButtonChange = (e: any) => {
     e.preventDefault();
     console.log("button: ", button);
     setButton(!button);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     setError("");
     e.preventDefault();
     if (!url) {

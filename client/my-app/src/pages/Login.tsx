@@ -6,7 +6,7 @@ import { setId } from "../redux/userIdSlice";
 import axios from "axios";
 import "./Login.css";
 
-function Login(props) {
+function Login(props: any) {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -14,16 +14,16 @@ function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: any) => {
     e.preventDefault();
     setEmail(e.target.value);
   };
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: any) => {
     e.preventDefault();
     setPassword(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (!email || !password) {

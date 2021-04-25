@@ -13,7 +13,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleFromSubmit = (e) => {
+  const handleFromSubmit = (e: any) => {
     e.preventDefault();
 
     if (!email || !userName || !password) {
@@ -46,15 +46,15 @@ function Signup() {
       });
   };
 
-  const handleUserName = (e) => {
+  const handleUserName = (e: any) => {
     e.preventDefault();
     setUserName(e.target.value);
   };
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: any) => {
     e.preventDefault();
     setEmail(e.target.value);
   };
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: any) => {
     e.preventDefault();
     setPassword(e.target.value);
   };
