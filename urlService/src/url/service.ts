@@ -31,7 +31,7 @@ export class UrlService {
 
         if (!valid) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url")) }); }
 
-        const existUrlQuery: string = `SELECT LinkId from tiny_url.Links WHERE LongUrl = '${longUrl}'` 
+        const existUrlQuery: string = `SELECT LinkId from tiny_url.Links WHERE LongUrl = '${longUrl}' AND Email = '${email}'` 
         const dbResponseLongUrlExist: RowDataPacket = await this.database.Execute<RowDataPacket>(existUrlQuery);
         if (dbResponseLongUrlExist.length != 0) {
             const shortUrl: string =  dbResponseLongUrlExist[0];
@@ -40,11 +40,10 @@ export class UrlService {
         }
 
         const insertQuery: string = `INSERT INTO tiny_url.Links (LongUrl, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate})`;
-
         const isInserted = await this.database.Execute<OkPacket>(insertQuery);
         if (!isInserted) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error inserting url to the database")) }); }
         
-        const selectQuery: string = `SELECT LinkId FROM tiny_url.Links WHERE LongUrl = '${longUrl}'`;
+        const selectQuery: string = `SELECT LinkId from tiny_url.Links WHERE LongUrl = '${longUrl}' AND Email = '${email}'`;
         const dbUrl: RowDataPacket = await this.database.Execute<RowDataPacket>(selectQuery);
         console.log("After selecting the shortUrl from the db: ", dbUrl);
         if (!dbUrl) { return new Promise((res, rej) => { rej( new errors.DatabaseError("Error selecting url from the database")) }); }

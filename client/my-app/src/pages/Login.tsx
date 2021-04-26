@@ -44,6 +44,7 @@ function Login(props: any) {
       .then((response) => {
         console.log(response.data.value);
         console.log(email);
+        
         localStorage.setItem("jwt", response.data.value);
         dispatch(setId(email));
         history.push("/user");
