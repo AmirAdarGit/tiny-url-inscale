@@ -30,6 +30,15 @@ export class UrlService {
         console.log("[Url service] - is valid: ",valid);
 
         if (!valid) { return new Promise((res, rej) => { rej( new errors.ValidationError("invalid Url")) }); }
+
+        const existUrlQuery: string = `SELECT LinkId from tiny_url.Links WHERE LongUrl = '${longUrl}'` 
+        const dbResponseLongUrlExist: RowDataPacket = await this.database.Execute<RowDataPacket>(existUrlQuery);
+        if (dbResponseLongUrlExist.length != 0) {
+            const shortUrl: string =  dbResponseLongUrlExist[0];
+            console.log("[Url service] - long url is already exist: ",shortUrl)
+            return shortUrl;
+        }
+
         const insertQuery: string = `INSERT INTO tiny_url.Links (LongUrl, Email, IsPrivate) VALUES ('${longUrl}', '${email}', ${isPrivate})`;
 
         const isInserted = await this.database.Execute<OkPacket>(insertQuery);

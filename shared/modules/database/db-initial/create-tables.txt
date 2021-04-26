@@ -3,7 +3,7 @@ CREATE DATABASE tiny_url;
 
     CREATE TABLE tiny_url.Links (
         LinkId int NOT NULL AUTO_INCREMENT,
-        LongUrl varchar(255) NOT NULL,
+        LongUrl varchar(32770) NOT NULL,
         Email varchar(255),
         IsPrivate boolean,
         PRIMARY KEY (LinkId),
