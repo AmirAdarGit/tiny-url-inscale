@@ -5,7 +5,7 @@ import { json } from "express";
 
 export class HttpClient implements IHttpClient {
 
-    async get<T>(url: string, payload: number, token?: Token): Promise<T> {
+    async get<T>(url: string, payload: number | string, token?: Token): Promise<T> {
         console.log("in httpClient, url: ", url);
     
         console.log("in httpClient, params: ", payload);
