@@ -22,7 +22,6 @@ export class UserController {
     
         try {
             const createUser: boolean = await this.userService.create(userEmail, userPassword, userFullName);
-            console.log("tryy 1",createUser);
             if (createUser) {
                 res.sendStatus(200);
             } else {
@@ -34,7 +33,9 @@ export class UserController {
     }
 
     async get(req:Request, res:Response): Promise<void> {
-    const userEmail: string = String(req.query.email);// param instend of query because get does not have body, but params.
+
+    console.log("[User service]  req.query- ",req.query.payload);
+    const userEmail: string = String(req.query.payload);// param instend of query because get does not have body, but params.
        console.log("[User service] - user email: "+ userEmail);
         try {
             const user: User = await this.userService.read(userEmail); 

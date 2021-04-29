@@ -24,6 +24,7 @@ export class UserService {
     }
 
     async read(userEmail: string): Promise<User> {
+        console.log("[User Service]: the user email is: ",userEmail);
         const query = `SELECT * FROM tiny_url.Users where Email = '${userEmail}'`
         const dbUser: RowDataPacket = await this.database.Execute<RowDataPacket>(query); 
         console.log("After selecting the user from the db: ", dbUser);

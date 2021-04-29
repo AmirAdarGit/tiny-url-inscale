@@ -31,7 +31,6 @@ export class AuthService {
         } 
         
         const isSignUp = await this.userHttpClient.create(encryptedCredentials, userMetadata);
-        console.log("herr 2", isSignUp)
         if (!isSignUp) return new Promise((res, rej) => { rej(new errors.HttpClientError("Failed to create user")) }); 
     
         // SQS is not working since aws is not connecting.

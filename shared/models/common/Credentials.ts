@@ -6,5 +6,4 @@ export class Credentials {
         this.email = email;
         this.password = password;
     }
-
 } 

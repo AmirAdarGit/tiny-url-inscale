@@ -44,7 +44,7 @@ export class AuthController {
         
         try {
             console.log(`[SignUp] - credentials: ${JSON.stringify(credentials)}, userMetadata: ${JSON.stringify(userMetadata)}`)
-           await this.authService.SignUp(userMetadata, credentials);
+            await this.authService.SignUp(userMetadata, credentials);
             res.sendStatus(200);
         } catch (ex) {
             res.status(500).send(`${credentials.email} is already in use.`);
